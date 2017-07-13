@@ -1,0 +1,53 @@
+---
+- name: Update apt
+  become: yes
+  apt: update_cache=yes
+
+- name: Install System Packages
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items:
+    - curl
+    - wget
+    - git
+    - vim
+    - htop
+    - unzip
+
+- name: Install Extra Packages
+  become: yes
+  apt: pkg={{ item }} state=latest
+  with_items: server_packages
+  when: server_packages is defined
+
+- name: Configure the timezone
+  become: yes
+  template: src=timezone.tpl dest=/etc/timezone
+  tags: timezone
+
+- name: More Configuring the timezone
+  become: yes
+  file: src=/usr/share/zoneinfo/Europe/Bucharest dest=/etc/localtime state=link force=yes backup=yes
+  tags: timezone
+
+- name: Set default system language pack
+  become: yes
+  shell: locale-gen {{server_locale}}
+  tags: locale
+
+- name: Set the hostname in /etc/hostname
+  become: yes
+  shell: echo {{ server_hostname }} > /etc/hostname
+  when: server_hostname is defined
+  tags: hostname
+
+- name: Set the hostname
+  become: yes
+  shell: hostname {{ server_hostname }}
+  when: server_hostname is defined
+  tags: hostname
+
+- name: Update /etc/hosts
+  become: yes
+  lineinfile: dest=/etc/hosts regexp='^127\.0\.1\.1' line='127.0.1.1 localhost {{ server_hostname }}' owner=root group=root mode=0644
+  tags: hostname

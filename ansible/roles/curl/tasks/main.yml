@@ -1,0 +1,5 @@
+---
+- name: Install curl
+  become: yes
+  become_user: root
+  apt: pkg=curl state=latest
