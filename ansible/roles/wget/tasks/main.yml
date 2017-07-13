@@ -1,0 +1,5 @@
+---
+- name: Install wget
+  become: yes
+  become_user: root
+  apt: pkg=wget state=latest

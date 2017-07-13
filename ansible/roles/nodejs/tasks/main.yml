@@ -1,0 +1,13 @@
+---
+- name: Install nodesource ppa
+  shell: >
+    curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+    creates=/etc/apt/sources.list.d/nodesource.list
+
+- name: Install node.js
+  apt:
+    name: nodejs
+    state: present
+    update_cache: yes
+  become: yes
+  become_user: root

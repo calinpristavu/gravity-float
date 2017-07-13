@@ -1,0 +1,11 @@
+---
+- name: hook | Create shared config dir
+  file: path={{symfony_shared_dir}}/{{symfony_project_config_dir}} state=directory
+
+- name: hook | Configure parameters.yml
+  template:
+    src=parameters.yml.tpl
+    dest={{symfony_shared_dir}}/{{symfony_project_config_dir}}/{{symfony_project_parameters_file}}
+    mode=0644
+    owner={{ app_deploy_user }}
+    group={{ app_deploy_group }}

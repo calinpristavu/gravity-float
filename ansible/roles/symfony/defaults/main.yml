@@ -1,0 +1,68 @@
+---
+# necessary project vars
+
+symfony_project_root: "/var/www/gravity-float"
+symfony_project_composer_path: "/usr/local/bin/composer"
+symfony_project_repo: "git@github.com:calinpristavu/gravity-float.git"
+symfony_project_env: "prod"
+
+app_user: www-data
+app_group: www-data
+app_deploy_user: danimuresan
+app_deploy_group: deploy
+
+nginx_docroot: /var/www/gravity-float/current/web
+nginx_index: app.php
+
+mysql_root_password: 'root'
+mysql_database: floathamburg
+mysql_user: root
+mysql_password: 'root'
+mysql_dump: ''
+
+mailer_transport: smtp
+mailer_host: 127.0.0.1
+mailer_user: ~
+mailer_password: ~
+mailer_port: 25
+mailer_address: 'calinpristavu@gmail.com'
+mailer_sender_name: 'FLOAT_HAMBURG Dev'
+
+composer_opts: --no-ansi --no-interaction --no-progress --optimize-autoloader
+
+
+# hooks
+symfony_project_post_folder_creation_tasks: "{{role_path}}/hooks/post_folder_creation.yml"
+symfony_project_pre_cache_warmup_tasks: "{{role_path}}/tasks/empty.yml"
+symfony_project_pre_live_switch_tasks: "{{role_path}}/hooks/pre_live_switch.yml"
+symfony_project_post_live_switch_tasks: "{{role_path}}/hooks/post_live_switch.yml"
+
+symfony_project_release: ~
+symfony_project_branch: master
+symfony_project_php_path: php
+symfony_project_keep_releases: 5
+symfony_project_git_clone_depth: 1
+symfony_project_github_token: "f0728ae3eae363b9de9592b25c020aac9a3df160"
+symfony_project_console_opts: ""
+symfony_project_console_command: "bin/console"
+symfony_project_config_dir: "app/config"
+symfony_project_parameters_file: parameters.yml
+symfony_project_cache_command: cache:warmup
+
+symfony_project_manage_composer: True
+symfony_project_composer_opts: "--no-dev --optimize-autoloader --no-interaction"
+symfony_project_composer_run_install: True
+
+symfony_project_enable_cache_warmup: True
+symfony_project_fire_schema_update: False
+symfony_project_fire_migrations: True
+symfony_project_symlink_assets: True
+
+# ensured to be absent in release and linked from shared
+symfony_project_shared_folders:
+  - {name: logs, src: var/logs, path: var/logs}
+  - {name: sessions, src: var/sessions, path: var/sessions}
+
+# ensured to be present
+symfony_project_managed_folders:
+  - {name: cache, path: var/cache}

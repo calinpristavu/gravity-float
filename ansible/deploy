@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+run_deploy() {
+    if [ -n "$2" ]; then
+        ansible-playbook -i inventories/"$1" --extra-vars="symfony_project_branch=$2" site.yml
+    else
+        ansible-playbook -i inventories/"$1" site.yml
+    fi
+    exit 0
+}
+
+show_usage() {
+    echo "Error: Invalid environment $1"
+    echo "Usage: $0 ENVIRONMENT [TAG]"
+    echo "Available environments:"
+    echo "  production"
+    echo "  integration"
+    echo "  test"
+    exit 1
+}
+
+if [ $# -eq 0 ] || [ ! -e "inventories/$1" ]; then
+    show_usage
+fi
+
+run_deploy "$@"

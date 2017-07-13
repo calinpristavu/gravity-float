@@ -1,0 +1,6 @@
+---
+mysql_root_password: root
+home_dir: /home/deploy
+dbuser: root
+dbpass: root
+dbname: floathamburg

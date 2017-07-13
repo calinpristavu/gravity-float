@@ -1,0 +1,5 @@
+---
+- name: Install mcrypt
+  apt: name=mcrypt update_cache=yes state=latest
+  become: yes
+  become_user: root

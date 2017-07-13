@@ -1,0 +1,10 @@
+server_hostname: float-hamburg.com
+
+symfony_project_root: "/var/www/gravity-float"
+
+nginx_docroot: /var/www/gravity-float/current/web
+nginx_servername: float-hamburg.com
+nginx_index: app.php
+
+app_deploy_user: calinpristavu
+app_deploy_group: opsworks
