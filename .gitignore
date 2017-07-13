@@ -15,9 +15,9 @@ node_modules/
 /app/spool/*
 
 # Cache, session files and logs (Symfony3)
-#/var/cache/*
-#/var/logs/*
-#/var/sessions/*
+/var/cache/*
+/var/logs/*
+/var/sessions/*
 !var/cache/.gitkeep
 !var/logs/.gitkeep
 !var/sessions/.gitkeep
@@ -51,3 +51,4 @@ node_modules/
 # Backup entities generated with doctrine:generate:entities command
 */Entity/*~
 
+/vendor
