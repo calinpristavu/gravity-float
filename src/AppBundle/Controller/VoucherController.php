@@ -16,7 +16,7 @@ class VoucherController extends Controller
      */
     public function homepageAction()
     {
-        return $this->render('floathamburg/vouchersearch.html.twig');
+        return $this->render('floathamburg/homepage.html.twig');
     }
 
     /**
