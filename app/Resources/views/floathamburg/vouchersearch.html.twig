@@ -5,7 +5,38 @@
 {% endblock %}
 
 {% block body %}
-    Search
+    {{ form_start(searchForm) }}
+        {{ form_errors(searchForm) }}
+        {{ form_row(searchForm.vouchercode) }}
+        {{ form_row(searchForm.search, { 'label': 'Search' }) }}
+    {{ form_end(searchForm) }}
+
+    {% if submitted == true %}
+        {% if voucher != null %}
+            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
+            {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
+            {{ 'created.by'|trans }} {{ voucher.author }} <br />
+            {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
+            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
+            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
+            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
+            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
+
+            {{ 'you.can.use.this.voucher.in.shops'|trans }} <br />
+
+            {% for shop in shops %}
+                {{ shop.name }}
+                {{ shop.address }} <br />
+            {% endfor %}
+            
+        {% else %}
+            {{ 'voucher.with.code.doesnt.exist'|trans }}
+        {% endif %}
+    {% endif %}
+
+    <br />
+    <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
+
 {% endblock %}
 
 {% block javascripts %}
