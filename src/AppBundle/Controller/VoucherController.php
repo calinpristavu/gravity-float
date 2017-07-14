@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class VoucherController
@@ -11,6 +12,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class VoucherController extends Controller
 {
+    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 5;
+
     /**
      * @Route("/voucher/", name="voucher_homepage")
      */
@@ -37,9 +40,63 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/all", name="voucher_all")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function vouchersAction()
+    public function vouchersAction(Request $request)
     {
-        return $this->render('floathamburg/vouchers.html.twig');
+        $page = $this->validatePageNumber($request->get('page'));
+        $offset = self::$NUMBER_OF_VOUCHERS_PER_PAGE*($page - 1);
+
+        $vouchers = $this->getDoctrine()
+            ->getRepository('AppBundle:Voucher')
+            ->findAllFromPage($offset, self::$NUMBER_OF_VOUCHERS_PER_PAGE);
+        $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
+
+        $hasNextPage = true;
+        if ($this->validatePageNumber($page + 1) == 1) {
+            $hasNextPage = false;
+        }
+
+        $hasPreviousPage = true;
+        if ($this->validatePageNumber($page - 1) == 1 && $page != 2) {
+            $hasPreviousPage = false;
+        }
+
+        return $this->render('floathamburg/vouchers.html.twig',[
+            'vouchers' => $vouchers,
+            'shops' => $shops,
+            'hasNextPage' => $hasNextPage,
+            'hasPreviousPage' => $hasPreviousPage,
+            'currentPage' => $page,
+        ]);
+    }
+
+    /**
+     * Validates the page number.
+     *
+     * @param int $page
+     *
+     * @return int  the page number if valid
+     *              1 if it is not valid (the first page)
+     */
+    protected function validatePageNumber(int $page = null) : int
+    {
+        if ($page === null || $page < 1) {
+            return 1;
+        }
+
+        //If the page number is to big compared to voucher database size
+        //First page doesn't count
+        if ($page > 1) {
+            $voucherNumber = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
+            if (($page - 1) * self::$NUMBER_OF_VOUCHERS_PER_PAGE  > $voucherNumber ) {
+                return 1;
+            }
+        }
+
+        return $page;
     }
 }
