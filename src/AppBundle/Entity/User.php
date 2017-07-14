@@ -52,6 +52,26 @@ class User extends BaseUser
     protected $canCreateVouchers;
 
     /**
+     * Bidirectional - One-To-Many (INVERSE SIDE)
+     * One User can create many vouchers
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Voucher", mappedBy="author")
+     */
+    protected $createdVouchers;
+
+    /**
+     * Bidirectional - One-To-Many (INVERSE SIDE)
+     * One User can be designated many vouchers
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Voucher", mappedBy="designatedCustomer")
+     */
+    protected $designatedVouchers;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", length=15)
@@ -65,6 +85,9 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
+
+        $this->createdVouchers = new ArrayCollection();
+        $this->designatedVouchers = new ArrayCollection();
     }
 
     /**
@@ -179,5 +202,69 @@ class User extends BaseUser
     {
         //Username is the same as the email
         return $this->getEmailCanonical();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCreatedVouchers()
+    {
+        return $this->createdVouchers;
+    }
+
+    /**
+     * @param Voucher $voucher
+     *
+     * @return $this
+     */
+    public function addCreatedVoucher($voucher)
+    {
+        $this->createdVouchers->add($voucher);
+
+        return $this;
+    }
+
+    /**
+     * @param Voucher $voucher
+     *
+     * @return $this
+     */
+    public function removeCreatedVoucher($voucher)
+    {
+        $this->createdVouchers->removeElement($voucher);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getDesignatedVouchers()
+    {
+        return $this->designatedVouchers;
+    }
+
+    /**
+     * @param Voucher $voucher
+     *
+     * @return $this
+     */
+    public function addDesignatedVoucher($voucher)
+    {
+        $this->designatedVouchers->add($voucher);
+
+        return $this;
+    }
+
+    /**
+     * @param Voucher $voucher
+     *
+     * @return $this
+     */
+    public function removeDesignatedVoucher($voucher)
+    {
+        $this->designatedVouchers->removeElement($voucher);
+
+        return $this;
     }
 }
