@@ -12,6 +12,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class VoucherController extends Controller
 {
     /**
+     * @Route("/voucher/", name="voucher_homepage")
+     */
+    public function homepageAction()
+    {
+        return $this->render('floathamburg/vouchersearch.html.twig');
+    }
+
+    /**
      * @Route("/voucher/search", name="voucher_search")
      */
     public function searchVoucherAction()
@@ -28,7 +36,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/vouchers", name="voucher_all")
+     * @Route("/voucher/all", name="voucher_all")
      */
     public function vouchersAction()
     {

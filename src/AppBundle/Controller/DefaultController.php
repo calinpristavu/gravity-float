@@ -12,6 +12,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('floathamburg/homepage.html.twig');
+        return $this->redirectToRoute('voucher_homepage');
     }
 }
