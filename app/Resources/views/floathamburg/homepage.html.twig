@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <a href="{{ path('voucher_search') }}">{{ 'search'|trans }}</a> <br />
+    <a href="{{ path('voucher_create') }}">{{ 'create'|trans }}</a> <br />
+    <a href="{{ path('voucher_all') }}">{{ 'all.vouchers'|trans }}</a> <br />
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
