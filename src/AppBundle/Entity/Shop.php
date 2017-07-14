@@ -56,7 +56,7 @@ class Shop
 
     public function __construct()
     {
-        parent::__construct();
+        $this->createdVouchers = new ArrayCollection();
     }
 
     /**
