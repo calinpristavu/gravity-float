@@ -65,16 +65,16 @@ class Voucher
     protected $designatedCustomer;
 
     /**
-     * @var double
+     * @var float
      *
-     * @ORM\Column(type="double")
+     * @ORM\Column(type="float")
      */
     protected $originalValue;
 
     /**
-     * @var double
+     * @var float
      *
-     * @ORM\Column(type="double")
+     * @ORM\Column(type="float")
      */
     protected $partialPayment;
 

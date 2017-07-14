@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    All vouchers <br />
+
+    {% for voucher in vouchers %}
+        <p>
+            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
+            {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
+            {{ 'created.by'|trans }} {{ voucher.author }} <br />
+            {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
+            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
+            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
+            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
+            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
+
+            {{ 'you.can.use.this.voucher.in.shops'|trans }} <br />
+
+            {% for shop in shops %}
+                {{ shop.name }}
+                {{ shop.address }} <br />
+            {% endfor %}
+        </p>
+    {% else %}
+        <p>
+            {{ 'no.vouchers'|trans }}
+        </p>
+    {% endfor %}
+
+    {% if hasPreviousPage %}
+        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
+    {% endif %}
+
+    {% if hasNextPage %}
+        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
+    {% endif %}
+
+    <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
