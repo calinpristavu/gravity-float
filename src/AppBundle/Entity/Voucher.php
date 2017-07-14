@@ -113,6 +113,9 @@ class Voucher
     public function __construct()
     {
         parent::__construct();
+
+        $this->usages = new ArrayCollection();
+        $this->methodsOfPayment = new ArrayCollection();
     }
 
     /**
