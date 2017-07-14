@@ -2,11 +2,11 @@
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: symfony
+    database_name: floathamburg
     database_user: root
-    database_password: null
+    database_password: root
     mailer_transport: smtp
     mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_user: dummy@test.com
+    mailer_password: dummy
     secret: a074162842230db3c07e64520d858e5dc5bbc339
