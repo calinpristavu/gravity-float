@@ -2,6 +2,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -17,11 +24,15 @@
             {{ form_row(form.email) }}
             {{ form_row(form.password) }}
 
+            {{ form_widget(form.canCreateVouchers, {'attr': {'class': 'hidden'}}) }}
+            {{ form_row(form.shops, {'attr': {'class': 'hidden'}}) }}
+            {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
+
             {{ form_row(form.save, { 'label': 'Save' }) }}
         {{ form_end(form) }}
 
         {% if is_granted('ROLE_ADMIN') %}
-            <a href="">{{ 'user.management'|trans }}</a>
+            <a href="{{ path('user_management', {'page': 1}) }}" >{{ 'user.management'|trans }}</a>
         {% endif %}
     {% endif %}
 

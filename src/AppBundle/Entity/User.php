@@ -35,20 +35,19 @@ class User extends BaseUser
     protected $name;
 
     /**
-     * @var string
+     * Bidirectional - Many users are assigned to many shops (OWNING SIDE)
      *
-     * @ORM\Column(type="string", length=30)
-     * @Assert\Length(
-     *     max = 30,
-     *     maxMessage = "shop.too.long"
-     * )
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Shop", inversedBy="assignedUsers")
+     * @ORM\JoinTable(name="users_shops")
      */
-    protected $shop;
+    protected $shops;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean")
      */
     protected $canCreateVouchers;
 
@@ -89,10 +88,11 @@ class User extends BaseUser
 
         $this->createdVouchers = new ArrayCollection();
         $this->designatedVouchers = new ArrayCollection();
+        $this->shops = new ArrayCollection();
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getCanCreateVouchers()
     {
@@ -100,7 +100,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param string $canCreateVouchers
+     * @param boolean $canCreateVouchers
      *
      * @return $this
      */
@@ -140,21 +140,33 @@ class User extends BaseUser
     }
 
     /**
-     * @return string
+     * @return ArrayCollection
      */
-    public function getShop()
+    public function getShops()
     {
-        return $this->shop;
+        return $this->shops;
     }
 
     /**
-     * @param string $shop
+     * @param Shop $shop
      *
      * @return $this
      */
-    public function setShop($shop)
+    public function addShop($shop)
     {
-        $this->shop = $shop;
+        $this->shops->add($shop);
+
+        return $this;
+    }
+
+    /**
+     * @param Shop $shop
+     *
+     * @return $this
+     */
+    public function removeShop($shop)
+    {
+        $this->shops->removeElement($shop);
 
         return $this;
     }
@@ -267,5 +279,25 @@ class User extends BaseUser
         $this->designatedVouchers->removeElement($voucher);
 
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setEmail($email)
+    {
+        parent::setEmail($email);
+
+        $this->setUsername($email);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setEmailCanonical($email)
+    {
+        parent::setEmailCanonical($email);
+
+        $this->setUsernameCanonical($email);
     }
 }
