@@ -5,7 +5,26 @@
 {% endblock %}
 
 {% block body %}
-    User profile
+    {% if submitted %}
+        {{ 'user.successfully.updated'|trans }} <br />
+        <a href="{{ path('user_profile') }}">{{ 'back'|trans }}</a>
+    {% else %}
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+
+            {{ form_row(form.save, { 'label': 'Save' }) }}
+        {{ form_end(form) }}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="">{{ 'user.management'|trans }}</a>
+        {% endif %}
+    {% endif %}
+
 {% endblock %}
 
 {% block javascripts %}
