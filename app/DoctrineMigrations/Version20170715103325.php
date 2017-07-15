@@ -27,6 +27,8 @@ class Version20170715103325 extends AbstractMigration
         $this->addSql('ALTER TABLE vouchers ADD CONSTRAINT FK_93150748F675F31B FOREIGN KEY (author_id) REFERENCES users (id)');
         $this->addSql('ALTER TABLE vouchers ADD CONSTRAINT FK_9315074856C5E2AF FOREIGN KEY (shop_where_created_id) REFERENCES shops (id)');
         $this->addSql('ALTER TABLE vouchers ADD CONSTRAINT FK_93150748D2134560 FOREIGN KEY (designated_customer_id) REFERENCES users (id)');
+        $this->addSql('ALTER TABLE vouchers ADD voucher_code VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_931507487678B020 ON vouchers (voucher_code)');
 
         $this->addSql(
             'INSERT IGNORE INTO shops(id, name, address) VALUES(?,?,?)',
