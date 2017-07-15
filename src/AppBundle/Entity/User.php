@@ -92,7 +92,7 @@ class User extends BaseUser
 
         $this->name = "";
         $this->phone = "";
-        $this->canCreateVouchers = 0;
+        $this->canCreateVouchers = false;
     }
 
     /**
