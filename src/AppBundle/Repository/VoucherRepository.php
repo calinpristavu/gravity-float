@@ -30,11 +30,9 @@ class VoucherRepository extends EntityRepository
      */
     public function countAll()
     {
-        $result = $this->createQueryBuilder('v')
+        return (int)$this->createQueryBuilder('v')
             ->select('count(v.id)')
             ->getQuery()
-            ->getResult();
-
-        return (int)$result[0][1];
+            ->getSingleScalarResult();
     }
 }

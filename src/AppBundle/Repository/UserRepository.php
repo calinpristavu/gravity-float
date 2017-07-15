@@ -30,11 +30,9 @@ class UserRepository extends EntityRepository
      */
     public function countAll()
     {
-        $result = $this->createQueryBuilder('u')
+        return (int)$this->createQueryBuilder('u')
             ->select('count(u.id)')
             ->getQuery()
-            ->getResult();
-
-        return (int)$result[0][1];
+            ->getSingleScalarResult();
     }
 }
