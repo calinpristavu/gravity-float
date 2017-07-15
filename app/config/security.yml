@@ -28,4 +28,4 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/voucher/, role: ROLE_USER }
         - { path: ^/user/, role: ROLE_USER }
-        - { path: ^/user-management/, role: ROLE_ADMIN }
+        - { path: ^/user-management, role: ROLE_ADMIN }

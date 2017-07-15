@@ -46,7 +46,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/user-management", name="user_management")
+     * @Route("/user-management", name="user_management")
      *
      * @param Request $request
      *
@@ -70,7 +70,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/user-management/create-user", name="create_user")
+     * @Route("/user-management/create-user", name="create_user")
      *
      * @param Request $request
      *
@@ -101,7 +101,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/user-management/edit-user/{id}", name="edit_user")
+     * @Route("/user-management/edit-user/{id}", name="edit_user")
      *
      * @param Request $request
      * @param User $user
@@ -135,7 +135,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/user-management/suspend-user/{id}/{value}", name="suspend_user")
+     * @Route("/user-management/suspend-user/{id}/{value}", name="suspend_user")
      *
      * @param User $user
      * @param bool $value
