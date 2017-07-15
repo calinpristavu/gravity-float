@@ -23,6 +23,13 @@ class Voucher
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", unique=true)
+     */
+    protected $voucherCode;
+
+    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
@@ -352,6 +359,26 @@ class Voucher
     public function removeUsage($usage)
     {
         $this->usages->removeElement($usage);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVoucherCode()
+    {
+        return $this->voucherCode;
+    }
+
+    /**
+     * @param string $voucherCode
+     *
+     * @return $this
+     */
+    public function setVoucherCode($voucherCode)
+    {
+        $this->voucherCode = $voucherCode;
 
         return $this;
     }

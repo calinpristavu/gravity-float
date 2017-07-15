@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\Type\SearchVoucherType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +25,37 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/search", name="voucher_search")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchVoucherAction()
+    public function searchVoucherAction(Request $request)
     {
-        return $this->render('floathamburg/vouchersearch.html.twig');
+        $searchForm = $this->createForm(SearchVoucherType::class);
+
+        $searchForm->handleRequest($request);
+        if ($searchForm->isValid()) {
+            $voucherCode = $searchForm->getData()['vouchercode'];
+            $voucher = $this->getDoctrine()
+                ->getRepository('AppBundle:Voucher')
+                ->findOneBy(['voucherCode' => $voucherCode]);
+            $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
+
+            return $this->render('floathamburg/vouchersearch.html.twig', [
+                'searchForm' => $searchForm->createView(),
+                'voucher' => $voucher,
+                'submitted' => true,
+                'shops' => $shops,
+            ]);
+        }
+
+        return $this->render('floathamburg/vouchersearch.html.twig', [
+            'searchForm' => $searchForm->createView(),
+            'voucher' => null,
+            'submitted' => false,
+            'shops' => null,
+        ]);
     }
 
     /**
