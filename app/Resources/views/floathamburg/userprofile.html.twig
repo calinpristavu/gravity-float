@@ -28,6 +28,22 @@
             {{ form_row(form.shops, {'attr': {'class': 'hidden'}}) }}
             {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
 
+            {% if app.user.canCreateVouchers %}
+                {{ 'can.create.online.vouchers'|trans }}
+            {% else %}
+                {{ 'cannot.create.online.vouchers'|trans }}
+            {% endif %}
+
+            <br />
+
+            {{ 'Assigned to '|trans }}
+            {% for shop in app.user.shops %}
+                {{ shop.name }}
+            {% else %}
+                {{ 'no.shops'|trans }}
+            {% endfor %}
+            <br />
+
             {{ form_row(form.save, { 'label': 'Save' }) }}
         {{ form_end(form) }}
 

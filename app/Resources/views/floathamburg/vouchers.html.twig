@@ -9,21 +9,15 @@
 
     {% for voucher in vouchers %}
         <p>
-            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
+            {{ 'vouhcer.code'|trans }} {{ voucher.voucherCode }} <br />
+            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }}
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
+            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
+            {{ 'postal.charge'|trans }} NO DATA HERE YET <br />
+            {{ 'amount.used'|trans }} {{ voucher.partialPayment }} <br />
+            {{ 'amount.remaining'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
             {{ 'created.by'|trans }} {{ voucher.author }} <br />
             {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
-            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
-            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
-            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
-
-            {{ 'you.can.use.this.voucher.in.shops'|trans }} <br />
-
-            {% for shop in shops %}
-                {{ shop.name }}
-                {{ shop.address }} <br />
-            {% endfor %}
         </p>
     {% else %}
         <p>
@@ -38,6 +32,9 @@
     {% if hasNextPage %}
         <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
+
+    <a href="{{ path('print_selected_vouchers') }}">{{ 'print.selected.vouchers'|trans }}</a>
+    <a href="{{ path('export_vouchers') }}">{{ 'export.list'|trans }}</a>
 
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
 {% endblock %}

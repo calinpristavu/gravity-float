@@ -81,11 +81,9 @@ class VoucherController extends Controller
         $vouchers = $this->getDoctrine()
             ->getRepository('AppBundle:Voucher')
             ->findAllFromPage($offset, self::$NUMBER_OF_VOUCHERS_PER_PAGE);
-        $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
 
         return $this->render('floathamburg/vouchers.html.twig',[
             'vouchers' => $vouchers,
-            'shops' => $shops,
             'hasNextPage' => $this->validatePageNumber($page + 1) == 1 ? false : true,
             'hasPreviousPage' => ($this->validatePageNumber($page - 1) == 1 && $page != 2) ? false : true,
             'currentPage' => $page,
