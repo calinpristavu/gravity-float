@@ -25,13 +25,13 @@ class UserController extends Controller
      */
     public function profileAction(Request $request)
     {
-        $form = $this->createForm(UserType::class, $this->getUser());
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($this->getUser());
-            $em->flush();
+            $userManager = $this->container->get('fos_user.user_manager');
+            $userManager->updateUser($user, true);
 
             return $this->render('floathamburg/userprofile.html.twig', [
                 'form' => null,
