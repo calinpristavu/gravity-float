@@ -54,9 +54,19 @@ class Shop
      */
     protected $createdVouchers;
 
+    /**
+     * Bidirectional - Many shops have many users assigned (INVERSE SIDE)
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="shops")
+     */
+    protected $assignedUsers;
+
     public function __construct()
     {
         $this->createdVouchers = new ArrayCollection();
+        $this->assignedUsers = new ArrayCollection();
     }
 
     /**
@@ -135,6 +145,38 @@ class Shop
     public function removeCreatedVoucher($voucher)
     {
         $this->createdVouchers->removeElement($voucher);
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAssignedUsers()
+    {
+        return $this->assignedUsers;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function addAssignedUser($user)
+    {
+        $this->assignedUsers->add($user);
+
+        return $this;
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return $this
+     */
+    public function removeAssignedUser($user)
+    {
+        $this->assignedUsers->removeElement($user);
 
         return $this;
     }

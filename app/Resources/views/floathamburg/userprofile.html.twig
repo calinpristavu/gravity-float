@@ -2,10 +2,42 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
-    User profile
+    {% if submitted %}
+        {{ 'user.successfully.updated'|trans }} <br />
+        <a href="{{ path('user_profile') }}">{{ 'back'|trans }}</a>
+    {% else %}
+        {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.name) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.password) }}
+
+            {{ form_widget(form.canCreateVouchers, {'attr': {'class': 'hidden'}}) }}
+            {{ form_row(form.shops, {'attr': {'class': 'hidden'}}) }}
+            {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
+
+            {{ form_row(form.save, { 'label': 'Save' }) }}
+        {{ form_end(form) }}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('user_management', {'page': 1}) }}" >{{ 'user.management'|trans }}</a>
+        {% endif %}
+    {% endif %}
+
+    <a href="{{ path('voucher_homepage') }}" >{{ 'back'|trans }}</a>
+
 {% endblock %}
 
 {% block javascripts %}
