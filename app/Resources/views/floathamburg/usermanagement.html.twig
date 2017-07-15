@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ 'all.users'|trans }} <br />
+
+    {% for user in users %}
+        <p>
+            {{ 'name'|trans }}: {{ user.name }} <br />
+            {{ 'email'|trans }}: {{ user.email }} <br />
+            {{ 'shops'|trans }}:
+            {% for shop in user.shops %}
+                {{ shop.name }}
+            {% else %}
+                {{ 'no.shops'|trans }}
+            {% endfor %}
+            <br />
+            {{ 'vouchers.created'|trans }}:
+            {% for voucher in user.createdVouchers %}
+                {{ voucher.voucherCode }}
+            {% else %}
+                {{ 'no.vouchers.created'|trans }}
+            {% endfor %}
+            <br />
+            {{ 'user.type'|trans }}:
+            {% if 'ROLE_ADMIN' in user.roles %}
+                {{ 'administrator'|trans }}
+            {% else %}
+                {{ 'employee'|trans }}
+            {% endif %}
+            <br />
+            <a href="{{ path('edit_user', {'id': user.id}) }}">{{ 'edit.user'|trans }}</a>
+            <br />
+            {% if user.enabled %}
+                <a href="{{ path('suspend_user', {'id': user.id, 'value':0 }) }}">{{ 'suspend.user'|trans }}</a>
+            {% else %}
+                <a href="{{ path('suspend_user', {'id': user.id, 'value':1 }) }}">{{ 'unsuspend.user'|trans }}</a>
+            {% endif %}
+            <br />
+        </p>
+    {% else %}
+        <p>
+            {{ 'no.users'|trans }}
+        </p>
+    {% endfor %}
+
+    {% if hasPreviousPage %}
+        <a href="{{ path('user_management', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
+    {% endif %}
+
+    {% if hasNextPage %}
+        <a href="{{ path('user_management', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
+    {% endif %}
+
+    <a href="{{ path('create_user') }}">{{ 'create.user'|trans }}</a>
+    <a href="{{ path('user_profile') }}">{{ 'back'|trans }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
