@@ -18,12 +18,7 @@
                 {{ 'no.shops'|trans }}
             {% endfor %}
             <br />
-            {{ 'vouchers.created'|trans }}:
-            {% for voucher in user.createdVouchers %}
-                {{ voucher.voucherCode }}
-            {% else %}
-                {{ 'no.vouchers.created'|trans }}
-            {% endfor %}
+            {{ 'vouchers.created'|trans }}: {{ user.createdVouchers|length }}
             <br />
             {{ 'user.type'|trans }}:
             {% if 'ROLE_ADMIN' in user.roles %}
@@ -47,11 +42,11 @@
         </p>
     {% endfor %}
 
-    {% if hasPreviousPage %}
+    {% if currentPage > 1 %}
         <a href="{{ path('user_management', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
     {% endif %}
 
-    {% if hasNextPage %}
+    {% if currentPage < numberOfPages %}
         <a href="{{ path('user_management', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
 

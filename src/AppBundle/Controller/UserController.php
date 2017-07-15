@@ -54,18 +54,26 @@ class UserController extends Controller
      */
     public function userManagementAction(Request $request)
     {
-        $page = $this->validatePageNumber($request->get('page'));
-        $offset = self::$NUMBER_OF_USERS_PER_PAGE*($page - 1);
+        if (!$request->get('page')) {
+            $request->request->set('page', 1);
+        }
 
-        $users = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findAllFromPage($offset, self::$NUMBER_OF_USERS_PER_PAGE);
+        $filters = [
+            'page' => (int)$request->get('page'),
+            'items_per_page' => self::$NUMBER_OF_USERS_PER_PAGE,
+        ];
+
+        $users = $this->get('user.finder')->setFilters($filters)->getUsers();
+        $allUsersCount = $this->getDoctrine()->getRepository('AppBundle:User')->countAll();
+        $nrOfPages = (int)($allUsersCount / self::$NUMBER_OF_USERS_PER_PAGE) + 1;
+        if ($allUsersCount % self::$NUMBER_OF_USERS_PER_PAGE == 0) {
+            $nrOfPages = $allUsersCount / self::$NUMBER_OF_USERS_PER_PAGE;
+        }
 
         return $this->render('floathamburg/usermanagement.html.twig',[
             'users' => $users,
-            'hasNextPage' => $this->validatePageNumber($page + 1) == 1 ? false : true,
-            'hasPreviousPage' => ($this->validatePageNumber($page - 1) == 1 && $page != 2) ? false : true,
-            'currentPage' => $page,
+            'numberOfPages' => $nrOfPages,
+            'currentPage' => $request->get('page'),
         ]);
     }
 
@@ -155,31 +163,5 @@ class UserController extends Controller
         $em->flush();
 
         return $this->redirectToRoute('user_management');
-    }
-
-    /**
-     * Validates the page number.
-     *
-     * @param int $page
-     *
-     * @return int  the page number if valid
-     *              1 if it is not valid (the first page)
-     */
-    protected function validatePageNumber(int $page = null) : int
-    {
-        if ($page === null || $page < 1) {
-            return 1;
-        }
-
-        //If the page number is to big compared to voucher database size
-        //First page doesn't count
-        if ($page > 1) {
-            $userNumber = $this->getDoctrine()->getRepository('AppBundle:User')->countAll();
-            if (($page - 1) * self::$NUMBER_OF_USERS_PER_PAGE  > $userNumber ) {
-                return 1;
-            }
-        }
-
-        return $page;
     }
 }

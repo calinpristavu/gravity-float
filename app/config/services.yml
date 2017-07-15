@@ -27,3 +27,7 @@ services:
     voucher.finder:
         class: AppBundle\Service\VoucherFinder
         autowire: true
+
+    user.finder:
+        class: AppBundle\Service\UserFinder
+        autowire: true
