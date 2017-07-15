@@ -33,8 +33,8 @@
         <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
 
-    <a href="{{ path('print_selected_vouchers') }}">{{ 'print.selected.vouchers'|trans }}</a>
-    <a href="{{ path('export_vouchers') }}">{{ 'export.list'|trans }}</a>
+    <a href="#">{{ 'print.selected.vouchers'|trans }}</a>
+    <a href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br />
 
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
 {% endblock %}
