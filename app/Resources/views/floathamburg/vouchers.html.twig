@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    All vouchers <br />
+    {{ 'all.vouchers'|trans }} <br />
 
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -15,7 +15,7 @@
     {{ form_row(form.search, { 'label': 'Search' }) }}
     {{ form_end(form) }}
 
-    <a href="{{ path('voucher_all') }}">{{ 'reset.filter'|trans }}</a> <br />
+    <a href="{{ path('voucher_all_reset_filters') }}">{{ 'reset.filter'|trans }}</a> <br />
 
     {% for voucher in vouchers %}
         <p>
@@ -35,15 +35,15 @@
         </p>
     {% endfor %}
 
-    {% if hasPreviousPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage - 1, 'created_at': app.request.get('created_at')}) }}">{{ 'previous.page'|trans }}</a>
+    {% if currentPage > 1 %}
+        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
     {% endif %}
 
-    {% if hasNextPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage + 1, 'created_at': app.request.get('created_at')}) }}">{{ 'next.page'|trans }}</a>
+    {% if currentPage < numberOfPages %}
+        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}" > {{ 'next.page'|trans }} </a>
     {% endif %}
 
-    <a href="#">{{ 'print.selected.vouchers'|trans }}</a>
+    <a href="#"> {{ 'print.selected.vouchers'|trans }} </a>
     <a href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br />
 
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>

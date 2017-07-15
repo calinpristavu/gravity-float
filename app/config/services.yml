@@ -14,6 +14,16 @@ services:
         arguments:
             - AppBundle\Entity\User
 
+    voucher.repository:
+        class: AppBundle\Repository\VoucherRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\Voucher
+
     csv.writer:
         class: AppBundle\Service\CsvWriter
+        autowire: true
+
+    voucher.finder:
+        class: AppBundle\Service\VoucherFinder
         autowire: true
