@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {{ 'voucher.saved.successfully'|trans }} <br />
+    <a href="{{ path('voucher_homepage') }}" >{{ 'back'|trans }}</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

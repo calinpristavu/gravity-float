@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -102,7 +101,7 @@ class Voucher
     /**
      * Array of string representing methods of payment
      *
-     * @var ArrayCollection
+     * @var array
      *
      * @ORM\Column(type="array")
      */
@@ -111,7 +110,7 @@ class Voucher
     /**
      * Array of string representing the facilities it can be used for
      *
-     * @var ArrayCollection
+     * @var array
      *
      * @ORM\Column(type="array")
      */
@@ -119,8 +118,10 @@ class Voucher
 
     public function __construct()
     {
-        $this->usages = new ArrayCollection();
-        $this->methodsOfPayment = new ArrayCollection();
+        $this->usages = array();
+        $this->methodsOfPayment = array();
+
+        $this->partialPayment = 0;
     }
 
     /**
@@ -300,7 +301,7 @@ class Voucher
     }
 
     /**
-     * @return ArrayCollection
+     * @return array
      */
     public function getMethodsOfPayment()
     {
@@ -308,31 +309,7 @@ class Voucher
     }
 
     /**
-     * @param string $methodOfPayment
-     *
-     * @return $this
-     */
-    public function addMethodOfPayment($methodOfPayment)
-    {
-        $this->methodsOfPayment->add($methodOfPayment);
-
-        return $this;
-    }
-
-    /**
-     * @param string $methodOfPayment
-     *
-     * @return $this
-     */
-    public function removeMethodOfPayment($methodOfPayment)
-    {
-        $this->methodsOfPayment->removeElement($methodOfPayment);
-
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection
+     * @return array
      */
     public function getUsages()
     {
@@ -340,25 +317,25 @@ class Voucher
     }
 
     /**
-     * @param string $usage
+     * @param array $methodsOfPayment
      *
      * @return $this
      */
-    public function addUsage($usage)
+    public function setMethodsOfPayment($methodsOfPayment)
     {
-        $this->usages->add($usage);
+        $this->methodsOfPayment = $methodsOfPayment;
 
         return $this;
     }
 
     /**
-     * @param string $usage
+     * @param array $usages
      *
      * @return $this
      */
-    public function removeUsage($usage)
+    public function setUsages($usages)
     {
-        $this->usages->removeElement($usage);
+        $this->usages = $usages;
 
         return $this;
     }
@@ -379,6 +356,18 @@ class Voucher
     public function setVoucherCode($voucherCode)
     {
         $this->voucherCode = $voucherCode;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $creationDate
+     *
+     * @return $this
+     */
+    public function setCreationDate(\DateTime $creationDate)
+    {
+        $this->creationDate = $creationDate;
 
         return $this;
     }
