@@ -25,13 +25,13 @@ class UserController extends Controller
      */
     public function profileAction(Request $request)
     {
-        $form = $this->createForm(UserType::class, $this->getUser());
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($this->getUser());
-            $em->flush();
+            $userManager = $this->container->get('fos_user.user_manager');
+            $userManager->updateUser($user, true);
 
             return $this->render('floathamburg/userprofile.html.twig', [
                 'form' => null,
@@ -78,15 +78,14 @@ class UserController extends Controller
      */
     public function createUserAction(Request $request)
     {
-        $newUser = new User();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $newUser = $userManager->createUser();
         $form = $this->createForm(UserType::class, $newUser);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
             $newUser->setEnabled(true);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($newUser);
-            $em->flush();
+            $userManager->updateUser($newUser, true);
 
             return $this->render('floathamburg/createuser.html.twig', [
                 'form' => null,
@@ -118,9 +117,8 @@ class UserController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $userManager = $this->container->get('fos_user.user_manager');
+            $userManager->updateUser($user, true);
 
             return $this->render('floathamburg/edituser.html.twig', [
                 'form' => null,
@@ -149,10 +147,8 @@ class UserController extends Controller
         }
 
         $user->setEnabled($value);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager->updateUser($user, true);
 
         return $this->redirectToRoute('user_management');
     }

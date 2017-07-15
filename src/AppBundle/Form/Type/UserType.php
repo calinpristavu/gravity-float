@@ -32,7 +32,7 @@ class UserType extends AbstractType
             ->add('name')
             ->add('phone')
             ->add('email', EmailType::class)
-            ->add('password', RepeatedType::class, array(
+            ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'passwords.must.match',
                 'required' => true,

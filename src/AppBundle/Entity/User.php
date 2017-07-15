@@ -89,6 +89,10 @@ class User extends BaseUser
         $this->createdVouchers = new ArrayCollection();
         $this->designatedVouchers = new ArrayCollection();
         $this->shops = new ArrayCollection();
+
+        $this->name = "";
+        $this->phone = "";
+        $this->canCreateVouchers = false;
     }
 
     /**
