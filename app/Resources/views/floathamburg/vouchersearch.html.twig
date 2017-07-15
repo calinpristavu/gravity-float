@@ -28,7 +28,10 @@
                 {{ shop.name }}
                 {{ shop.address }} <br />
             {% endfor %}
-            
+            <br />
+            <a href="">{{ 'use.voucher'|trans }}</a> <br />
+            <a href="">{{ 'print.voucher'|trans }}</a>
+            <br />
         {% else %}
             {{ 'voucher.with.code.doesnt.exist'|trans }}
         {% endif %}
