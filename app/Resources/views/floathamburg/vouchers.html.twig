@@ -7,9 +7,19 @@
 {% block body %}
     All vouchers <br />
 
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.created_at) }}
+
+    {{ form_row(form.search, { 'label': 'Search' }) }}
+    {{ form_end(form) }}
+
+    <a href="{{ path('voucher_all') }}">{{ 'reset.filter'|trans }}</a> <br />
+
     {% for voucher in vouchers %}
         <p>
-            {{ 'vouhcer.code'|trans }} {{ voucher.voucherCode }} <br />
+            {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
             {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }}
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
             {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
@@ -26,11 +36,11 @@
     {% endfor %}
 
     {% if hasPreviousPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
+        <a href="{{ path('voucher_all', {'page': currentPage - 1, 'created_at': app.request.get('created_at')}) }}">{{ 'previous.page'|trans }}</a>
     {% endif %}
 
     {% if hasNextPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
+        <a href="{{ path('voucher_all', {'page': currentPage + 1, 'created_at': app.request.get('created_at')}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
 
     <a href="#">{{ 'print.selected.vouchers'|trans }}</a>
