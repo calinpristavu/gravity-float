@@ -55,7 +55,6 @@ class VoucherType extends AbstractType
                 'choices' => array(
                     'Massage' => 'massage',
                     'Floating' => 'floating',
-                    'Value Voucher' => 'valueVoucher',
                 ),
                 'expanded' => true,
                 'multiple' => true,
