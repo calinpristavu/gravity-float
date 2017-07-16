@@ -101,11 +101,11 @@ class Voucher
     /**
      * Array of string representing methods of payment
      *
-     * @var array
+     * @var string
      *
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="string")
      */
-    protected $methodsOfPayment;
+    protected $methodOfPayment;
 
     /**
      * Array of string representing the facilities it can be used for
@@ -119,7 +119,7 @@ class Voucher
     public function __construct()
     {
         $this->usages = array();
-        $this->methodsOfPayment = array();
+        $this->numberOfUsers = array();
 
         $this->partialPayment = 0;
     }
@@ -301,11 +301,11 @@ class Voucher
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getMethodsOfPayment()
+    public function getMethodOfPayment()
     {
-        return $this->methodsOfPayment;
+        return $this->methodOfPayment;
     }
 
     /**
@@ -317,13 +317,13 @@ class Voucher
     }
 
     /**
-     * @param array $methodsOfPayment
+     * @param string $methodOfPayment
      *
      * @return $this
      */
-    public function setMethodsOfPayment($methodsOfPayment)
+    public function setMethodOfPayment($methodOfPayment)
     {
-        $this->methodsOfPayment = $methodsOfPayment;
+        $this->methodOfPayment = $methodOfPayment;
 
         return $this;
     }

@@ -91,14 +91,14 @@ class VoucherType extends AbstractType
                 'required' => false,
                 'placeholder' => false,
             ))
-            ->add('methodsOfPayment', ChoiceType::class, array(
+            ->add('methodOfPayment', ChoiceType::class, array(
                 'choices' => array(
                     'Card' => 'card',
                     'Cash' => 'cash',
                     'Paypal' => 'paypal',
                 ),
                 'expanded' => true,
-                'multiple' => true,
+                'multiple' => false,
             ))
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text"
