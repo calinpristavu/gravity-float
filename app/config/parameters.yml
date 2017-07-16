@@ -5,8 +5,8 @@ parameters:
     database_name: floathamburg
     database_user: root
     database_password: root
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: dummy@test.com
-    mailer_password: dummy
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: mydummytestingemail@gmail.com
+    mailer_password: areallycomplexpassword
     secret: a074162842230db3c07e64520d858e5dc5bbc339
