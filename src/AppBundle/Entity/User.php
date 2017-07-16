@@ -48,7 +48,7 @@ class User extends BaseUser
      *
      * @ORM\Column(type="boolean")
      */
-    protected $canCreateVouchers;
+    protected $canCreateOnlineVouchers;
 
     /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
@@ -90,15 +90,15 @@ class User extends BaseUser
 
         $this->name = "";
         $this->phone = "";
-        $this->canCreateVouchers = false;
+        $this->canCreateOnlineVouchers = false;
     }
 
     /**
      * @return boolean
      */
-    public function getCanCreateVouchers()
+    public function getCanCreateOnlineVouchers()
     {
-        return $this->canCreateVouchers;
+        return $this->canCreateOnlineVouchers;
     }
 
     /**
@@ -106,9 +106,9 @@ class User extends BaseUser
      *
      * @return $this
      */
-    public function setCanCreateVouchers($canCreateVouchers)
+    public function setCanCreateOnlineVouchers($canCreateVouchers)
     {
-        $this->canCreateVouchers = $canCreateVouchers;
+        $this->canCreateOnlineVouchers = $canCreateVouchers;
 
         return $this;
     }

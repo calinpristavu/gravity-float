@@ -23,11 +23,11 @@
             {{ form_row(form.email) }}
             {{ form_row(form.plainPassword) }}
 
-            {{ form_widget(form.canCreateVouchers, {'attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.canCreateOnlineVouchers, {'attr': {'class': 'hidden'}}) }}
             {{ form_row(form.shop, {'attr': {'class': 'hidden'}}) }}
             {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
 
-            {% if app.user.canCreateVouchers %}
+            {% if app.user.canCreateOnlineVouchers %}
                 {{ 'can.create.online.vouchers'|trans }}
             {% else %}
                 {{ 'cannot.create.online.vouchers'|trans }}

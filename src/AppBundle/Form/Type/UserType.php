@@ -39,7 +39,7 @@ class UserType extends AbstractType
                 'first_options'  => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
             ))
-            ->add('canCreateVouchers', CheckboxType::class, array(
+            ->add('canCreateOnlineVouchers', CheckboxType::class, array(
                 'required' => false,
             ))
             ->add('shop', EntityType::class, array(
