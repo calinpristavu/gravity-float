@@ -41,16 +41,18 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
-        {{ form_row(form.onlineVoucher) }}
-            {{ form_label(form.orderNumber, null, {'label_attr': {'class': 'hidden'}}) }}
-            {{ form_widget(form.orderNumber, {'attr': {'class': 'hidden'}}) }}
-            <br />
-            {{ form_label(form.invoiceNumber, null, {'label_attr': {'class': 'hidden'}}) }}
-            {{ form_widget(form.invoiceNumber, {'attr': {'class': 'hidden'}}) }}
-            <br />
-            {{ form_label(form.includedPostalCharges, null, {'label_attr': {'class': 'hidden'}}) }}
-            {{ form_widget(form.includedPostalCharges, {'attr': {'class': 'hidden'}}) }}
-            <br />
+        {% if app.user.canCreateOnlineVouchers %}
+            {{ form_row(form.onlineVoucher) }}
+                {{ form_label(form.orderNumber, null, {'label_attr': {'class': 'hidden'}}) }}
+                {{ form_widget(form.orderNumber, {'attr': {'class': 'hidden'}}) }}
+                <br />
+                {{ form_label(form.invoiceNumber, null, {'label_attr': {'class': 'hidden'}}) }}
+                {{ form_widget(form.invoiceNumber, {'attr': {'class': 'hidden'}}) }}
+                <br />
+                {{ form_label(form.includedPostalCharges, null, {'label_attr': {'class': 'hidden'}}) }}
+                {{ form_widget(form.includedPostalCharges, {'attr': {'class': 'hidden'}}) }}
+                <br />
+        {% endif %}
 
         {{ form_row(form.originalValue) }}
         {{ form_row(form.numberOfUsers) }}
