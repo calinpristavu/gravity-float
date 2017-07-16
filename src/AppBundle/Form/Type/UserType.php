@@ -39,17 +39,17 @@ class UserType extends AbstractType
                 'first_options'  => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
             ))
-            ->add('canCreateVouchers', CheckboxType::class, array(
+            ->add('canCreateOnlineVouchers', CheckboxType::class, array(
                 'required' => false,
             ))
-            ->add('shops', EntityType::class, array(
+            ->add('shop', EntityType::class, array(
                 'class' => 'AppBundle:Shop',
                 'query_builder' => function (ShopRepository $shopRepository) {
                     return $shopRepository->createQueryBuilder('s');
                 },
                 'choice_label' => 'name',
                 'expanded' => true,
-                'multiple' => true,
+                'multiple' => false,
                 'label' => false,
             ))
             ->add('roles', ChoiceType::class, array(

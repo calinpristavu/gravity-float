@@ -44,7 +44,7 @@ class Voucher
     protected $expirationDate;
 
     /**
-     * Bidirectional - Many ideas are authored by one user (OWNING SIDE)
+     * Bidirectional - Many vouchers are authored by one user (OWNING SIDE)
      *
      * @var User
      *
@@ -85,27 +85,27 @@ class Voucher
     protected $partialPayment;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="array")
      */
     protected $numberOfUsers;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", length=50)
+     * @ORM\Column(type="boolean")
      */
     protected $onlineVoucher;
 
     /**
      * Array of string representing methods of payment
      *
-     * @var array
+     * @var string
      *
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="string")
      */
-    protected $methodsOfPayment;
+    protected $methodOfPayment;
 
     /**
      * Array of string representing the facilities it can be used for
@@ -116,10 +116,31 @@ class Voucher
      */
     protected $usages;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $orderNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $invoiceNumber;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $includedPostalCharges;
+
     public function __construct()
     {
         $this->usages = array();
-        $this->methodsOfPayment = array();
+        $this->numberOfUsers = array();
 
         $this->partialPayment = 0;
     }
@@ -261,7 +282,7 @@ class Voucher
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getNumberOfUsers()
     {
@@ -269,7 +290,7 @@ class Voucher
     }
 
     /**
-     * @param string $numberOfUsers
+     * @param array $numberOfUsers
      *
      * @return $this
      */
@@ -301,11 +322,11 @@ class Voucher
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getMethodsOfPayment()
+    public function getMethodOfPayment()
     {
-        return $this->methodsOfPayment;
+        return $this->methodOfPayment;
     }
 
     /**
@@ -317,13 +338,13 @@ class Voucher
     }
 
     /**
-     * @param array $methodsOfPayment
+     * @param string $methodOfPayment
      *
      * @return $this
      */
-    public function setMethodsOfPayment($methodsOfPayment)
+    public function setMethodOfPayment($methodOfPayment)
     {
-        $this->methodsOfPayment = $methodsOfPayment;
+        $this->methodOfPayment = $methodOfPayment;
 
         return $this;
     }
@@ -365,10 +386,58 @@ class Voucher
      *
      * @return $this
      */
-    public function setCreationDate(\DateTime $creationDate)
+    public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param string $orderNumber
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceNumber()
+    {
+        return $this->invoiceNumber;
+    }
+
+    /**
+     * @param string $invoiceNumber
+     */
+    public function setInvoiceNumber($invoiceNumber)
+    {
+        $this->invoiceNumber = $invoiceNumber;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIncludedPostalCharges()
+    {
+        return $this->includedPostalCharges;
+    }
+
+    /**
+     * @param boolean $includedPostalCharges
+     */
+    public function setIncludedPostalCharges($includedPostalCharges)
+    {
+        $this->includedPostalCharges = $includedPostalCharges;
     }
 }

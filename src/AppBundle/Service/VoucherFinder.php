@@ -75,21 +75,16 @@ class VoucherFinder
     private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
         if (isset($this->filters['created_at'])) {
-            switch ($this->filters['created_at']) {
-                case 'CURRENT_YEAR':
-                    $queryBuilder->andWhere($queryBuilder->expr()->eq(
-                        'YEAR(v.creationDate)',
-                        date("Y")
-                    ));
-                    break;
-                case 'LAST_YEAR':
-                    $queryBuilder->andWhere($queryBuilder->expr()->eq(
-                        'YEAR(v.creationDate)',
-                        date("Y", strtotime("-1 year"))
-                    ));
-                    break;
-                default:
-                    break;
+            $years = $this->filters['created_at'];
+            $queryBuilder->andWhere($queryBuilder->expr()->eq(
+                'YEAR(v.creationDate)',
+                array_pop($years)
+            ));
+            foreach ($years as $year) {
+                $queryBuilder->orWhere($queryBuilder->expr()->eq(
+                    'YEAR(v.creationDate)',
+                    $year
+                ));
             }
         }
 
