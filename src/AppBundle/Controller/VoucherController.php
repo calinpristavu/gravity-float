@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Form\Type\SearchVoucherType;
+use AppBundle\Form\Type\VoucherDateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,46 +76,48 @@ class VoucherController extends Controller
      */
     public function vouchersAction(Request $request)
     {
-        $page = $this->validatePageNumber($request->get('page'));
-        $offset = self::$NUMBER_OF_VOUCHERS_PER_PAGE*($page - 1);
+        if (!$request->get('page')) {
+            $request->request->set('page', 1);
+        }
 
-        $vouchers = $this->getDoctrine()
-            ->getRepository('AppBundle:Voucher')
-            ->findAllFromPage($offset, self::$NUMBER_OF_VOUCHERS_PER_PAGE);
-        $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
+        $form = $this->createForm(VoucherDateType::class);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $request->request->set('searchField', $form->getData()['created_at']);
+        }
+
+        $filters = [
+            'page' => (int)$request->get('page'),
+            'items_per_page' => self::$NUMBER_OF_VOUCHERS_PER_PAGE,
+        ];
+
+        $voucherFinder = $this->get('voucher.finder');
+        if ($request->get('searchField') !== null) {
+            $filters['created_at'] = $request->get('searchField');
+        }
+
+        $vouchers = $voucherFinder->setFilters($filters)->getVouchers();
+        $allVouchersCount = $voucher = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
+        $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
+        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0) {
+            $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
+        }
 
         return $this->render('floathamburg/vouchers.html.twig',[
             'vouchers' => $vouchers,
-            'shops' => $shops,
-            'hasNextPage' => $this->validatePageNumber($page + 1) == 1 ? false : true,
-            'hasPreviousPage' => ($this->validatePageNumber($page - 1) == 1 && $page != 2) ? false : true,
-            'currentPage' => $page,
+            'numberOfPages' => $nrOfPages,
+            'currentPage' => $request->get('page'),
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * Validates the page number.
+     * @Route("/voucher/all/reset-filters", name="voucher_all_reset_filters")
      *
-     * @param int $page
-     *
-     * @return int  the page number if valid
-     *              1 if it is not valid (the first page)
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    protected function validatePageNumber(int $page = null) : int
+    public function resetFiltersAction()
     {
-        if ($page === null || $page < 1) {
-            return 1;
-        }
-
-        //If the page number is to big compared to voucher database size
-        //First page doesn't count
-        if ($page > 1) {
-            $voucherNumber = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
-            if (($page - 1) * self::$NUMBER_OF_VOUCHERS_PER_PAGE  > $voucherNumber ) {
-                return 1;
-            }
-        }
-
-        return $page;
+        return $this->redirectToRoute('voucher_all', ['page' => 1]);
     }
 }

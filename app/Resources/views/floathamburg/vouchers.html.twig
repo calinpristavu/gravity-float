@@ -5,25 +5,29 @@
 {% endblock %}
 
 {% block body %}
-    All vouchers <br />
+    {{ 'all.vouchers'|trans }} <br />
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    {{ form_row(form.created_at) }}
+
+    {{ form_row(form.search, { 'label': 'Search' }) }}
+    {{ form_end(form) }}
+
+    <a href="{{ path('voucher_all_reset_filters') }}">{{ 'reset.filter'|trans }}</a> <br />
 
     {% for voucher in vouchers %}
         <p>
-            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
+            {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
+            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }}
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
+            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
+            {{ 'postal.charge'|trans }} NO DATA HERE YET <br />
+            {{ 'amount.used'|trans }} {{ voucher.partialPayment }} <br />
+            {{ 'amount.remaining'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
             {{ 'created.by'|trans }} {{ voucher.author }} <br />
             {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
-            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
-            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
-            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
-
-            {{ 'you.can.use.this.voucher.in.shops'|trans }} <br />
-
-            {% for shop in shops %}
-                {{ shop.name }}
-                {{ shop.address }} <br />
-            {% endfor %}
         </p>
     {% else %}
         <p>
@@ -31,13 +35,16 @@
         </p>
     {% endfor %}
 
-    {% if hasPreviousPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
+    {% if currentPage > 1 %}
+        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
     {% endif %}
 
-    {% if hasNextPage %}
-        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
+    {% if currentPage < numberOfPages %}
+        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}" > {{ 'next.page'|trans }} </a>
     {% endif %}
+
+    <a href="#"> {{ 'print.selected.vouchers'|trans }} </a>
+    <a href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br />
 
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
 {% endblock %}

@@ -11,21 +11,6 @@ use Doctrine\ORM\EntityRepository;
 class VoucherRepository extends EntityRepository
 {
     /**
-     * @param int $offset
-     * @param int $numberOfResults
-     *
-     * @return array
-     */
-    public function findAllFromPage(int $offset, int $numberOfResults)
-    {
-        return $this->createQueryBuilder('v')
-            ->setFirstResult($offset)
-            ->setMaxResults($numberOfResults)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
      * @return int
      */
     public function countAll()
