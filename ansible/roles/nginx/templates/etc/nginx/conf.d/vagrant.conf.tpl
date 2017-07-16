@@ -1,5 +1,5 @@
 upstream app {
-    server 127.0.0.1:9000;
+    server unix:/run/php/php7.0-fpm.sock;
 }
 
 server {

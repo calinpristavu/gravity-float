@@ -39,6 +39,6 @@ Vagrant.configure("2") do |config|
         ansible.verbose         = "v"
         ansible.playbook        = "ansible/site.yml"
         ansible.limit           = "all"
-        ansible.inventory_path  = hostsFile
+        ansible.inventory_path  = "ansible/inventories/local"
     end
 end

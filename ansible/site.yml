@@ -1,7 +1,7 @@
 ---
 - hosts: local
   become: yes
-  become_user: calinpristavu
+  become_method: sudo
   gather_facts: no
   pre_tasks:
     - name: 'install python'
