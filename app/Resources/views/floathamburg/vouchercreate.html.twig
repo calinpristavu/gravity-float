@@ -2,12 +2,83 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
-    Create
+    {% if submitted %}
+        {{ 'voucher.preview'|trans }} <br /><br />
+
+        {{ 'creation.date'|trans }} {{ voucher.creationDate|date("m/d/Y") }} <br />
+        {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br />
+        {{ 'voucher.value'|trans }} {{ voucher.originalValue }} <br />
+        {{ 'can.be.used.for'|trans }}
+        {% for usage in voucher.usages %}
+            {{ usage }}
+        {% else %}
+            {{ 'no.usages.set'|trans }}
+        {% endfor %}
+        <br />
+        {{ 'you.can.use.voucher.in.any.shop'|trans }}: <br />
+        {% for shop in shops %}
+            {{ shop.name }} {{ shop.address }} <br />
+        {% else %}
+            {{ 'no.shops'|trans }}
+        {% endfor %}
+        <br />
+
+        <a href="{{ path('voucher_save') }}">{{ 'save.voucher'|trans }}</a> <br />
+        <a href="{{ path('voucher_create') }}">{{ 'edit'|trans }}</a> <br />
+        <a href="">{{ 'print'|trans }}</a> <br />
+    {% else %}
+        {{ 'create.voucher'|trans }}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.onlineVoucher, {'attr': {'onclick': 'handleHiddenFields()'}}) }}
+            {{ form_label(form.ordernumber, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.ordernumber, {'attr': {'class': 'hidden'}}) }}
+            <br />
+            {{ form_label(form.invoicenumber, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.invoicenumber, {'attr': {'class': 'hidden'}}) }}
+            <br />
+            {{ form_label(form.includepostalcharges, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.includepostalcharges, {'attr': {'class': 'hidden'}}) }}
+            <br />
+
+        {{ form_row(form.originalValue) }}
+        {{ form_row(form.numberOfUsers) }}
+        {{ form_row(form.usages) }}
+            {{ form_label(form.massage_type, null, {'label_attr': {'class': 'hidden', 'for': 'massage_type_label'}}) }}
+            {{ form_widget(form.massage_type, {'attr': {'class': 'hidden'}}) }}
+            <br />
+                {{ form_label(form.time_for_massage, null, {'label_attr': {'class': 'hidden', 'for': 'time_for_massage'}}) }}
+                {{ form_widget(form.time_for_massage, {'attr': {'class': 'hidden'}}) }}
+                <br />
+            {{ form_label(form.time_for_floating, null, {'label_attr': {'class': 'hidden', 'for': 'time_for_floating'}}) }}
+            {{ form_widget(form.time_for_floating, {'attr': {'class': 'hidden'}}) }}
+            <br />
+        {{ form_row(form.methodsOfPayment) }}
+        {{ form_row(form.expirationDate) }}
+
+        {{ form_row(form.create, { 'label': 'Create Voucher' }) }}
+        {{ form_end(form) }}
+    {% endif %}
+
+    <br />
+    <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
+
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
 {% endblock %}
