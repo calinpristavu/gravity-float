@@ -24,7 +24,7 @@
             {{ form_row(form.plainPassword) }}
 
             {{ form_widget(form.canCreateVouchers, {'attr': {'class': 'hidden'}}) }}
-            {{ form_row(form.shops, {'attr': {'class': 'hidden'}}) }}
+            {{ form_row(form.shop, {'attr': {'class': 'hidden'}}) }}
             {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
 
             {% if app.user.canCreateVouchers %}
@@ -35,12 +35,7 @@
 
             <br />
 
-            {{ 'Assigned to '|trans }}
-            {% for shop in app.user.shops %}
-                {{ shop.name }}
-            {% else %}
-                {{ 'no.shops'|trans }}
-            {% endfor %}
+            {{ 'Assigned to '|trans }} {{ app.user.shop.name }}
             <br />
 
             {{ form_row(form.save, { 'label': 'Save' }) }}

@@ -44,7 +44,7 @@ class Voucher
     protected $expirationDate;
 
     /**
-     * Bidirectional - Many ideas are authored by one user (OWNING SIDE)
+     * Bidirectional - Many vouchers are authored by one user (OWNING SIDE)
      *
      * @var User
      *

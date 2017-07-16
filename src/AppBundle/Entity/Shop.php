@@ -55,11 +55,12 @@ class Shop
     protected $createdVouchers;
 
     /**
-     * Bidirectional - Many shops have many users assigned (INVERSE SIDE)
+     * Bidirectional - One-To-Many (INVERSE SIDE)
+     * One Shop can have assigned many users
      *
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="shops")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="shop")
      */
     protected $assignedUsers;
 
