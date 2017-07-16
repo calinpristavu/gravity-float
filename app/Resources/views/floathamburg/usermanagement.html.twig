@@ -11,12 +11,10 @@
         <p>
             {{ 'name'|trans }}: {{ user.name }} <br />
             {{ 'email'|trans }}: {{ user.email }} <br />
-            {{ 'shops'|trans }}:
-            {% for shop in user.shops %}
-                {{ shop.name }}
-            {% else %}
-                {{ 'no.shops'|trans }}
-            {% endfor %}
+            {{ 'shop'|trans }}: {{ user.shop.name }}
+            {% if user.canCreateOnlineVouchers %}
+                ; {{ user.shop.name }}-{{ 'online'|trans }}
+            {% endif %}
             <br />
             {{ 'vouchers.created'|trans }}: {{ user.createdVouchers|length }}
             <br />

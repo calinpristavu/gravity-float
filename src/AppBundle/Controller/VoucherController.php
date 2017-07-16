@@ -108,10 +108,16 @@ class VoucherController extends Controller
     {
         $voucher = unserialize($this->get('session')->get('voucher'));
 
-        $voucher->setShopWhereCreated($this->getUser()->getShops()[0]);
+        $voucher->setShopWhereCreated($this->getUser()->getShop());
         $voucher->setAuthor($this->getUser());
         $voucher->setVoucherCode('111AAA');
         $voucher->setCreationDate(new DateTime());
+
+        if ($voucher->isIncludedPostalCharges()) {
+            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
+        }
+
+        var_dump($voucher);die;
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
@@ -139,7 +145,7 @@ class VoucherController extends Controller
         $form = $this->createForm(VoucherDateType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $request->request->set('searchField', $form->getData()['created_at']);
+            $request->request->set('searchField', serialize($form->getData()['created_at']));
         }
 
         $filters = [
@@ -149,7 +155,7 @@ class VoucherController extends Controller
 
         $voucherFinder = $this->get('voucher.finder');
         if ($request->get('searchField') !== null) {
-            $filters['created_at'] = $request->get('searchField');
+            $filters['created_at'] = unserialize($request->get('searchField'));
         }
 
         $vouchers = $voucherFinder->setFilters($filters)->getVouchers();

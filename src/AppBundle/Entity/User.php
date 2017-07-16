@@ -35,21 +35,20 @@ class User extends BaseUser
     protected $name;
 
     /**
-     * Bidirectional - Many users are assigned to many shops (OWNING SIDE)
+     * Bidirectional - Many users are assigned to one shop (OWNING SIDE)
      *
-     * @var ArrayCollection
+     * @var Shop
      *
-     * @ORM\ManyToMany(targetEntity="Shop", inversedBy="assignedUsers")
-     * @ORM\JoinTable(name="users_shops")
+     * @ORM\ManyToOne(targetEntity="Shop", inversedBy="assignedUsers")
      */
-    protected $shops;
+    protected $shop;
 
     /**
      * @var boolean
      *
      * @ORM\Column(type="boolean")
      */
-    protected $canCreateVouchers;
+    protected $canCreateOnlineVouchers;
 
     /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
@@ -88,19 +87,18 @@ class User extends BaseUser
 
         $this->createdVouchers = new ArrayCollection();
         $this->designatedVouchers = new ArrayCollection();
-        $this->shops = new ArrayCollection();
 
         $this->name = "";
         $this->phone = "";
-        $this->canCreateVouchers = false;
+        $this->canCreateOnlineVouchers = false;
     }
 
     /**
      * @return boolean
      */
-    public function getCanCreateVouchers()
+    public function getCanCreateOnlineVouchers()
     {
-        return $this->canCreateVouchers;
+        return $this->canCreateOnlineVouchers;
     }
 
     /**
@@ -108,9 +106,9 @@ class User extends BaseUser
      *
      * @return $this
      */
-    public function setCanCreateVouchers($canCreateVouchers)
+    public function setCanCreateOnlineVouchers($canCreateVouchers)
     {
-        $this->canCreateVouchers = $canCreateVouchers;
+        $this->canCreateOnlineVouchers = $canCreateVouchers;
 
         return $this;
     }
@@ -144,11 +142,11 @@ class User extends BaseUser
     }
 
     /**
-     * @return ArrayCollection
+     * @return Shop
      */
-    public function getShops()
+    public function getShop()
     {
-        return $this->shops;
+        return $this->shop;
     }
 
     /**
@@ -156,21 +154,9 @@ class User extends BaseUser
      *
      * @return $this
      */
-    public function addShop($shop)
+    public function setShop($shop)
     {
-        $this->shops->add($shop);
-
-        return $this;
-    }
-
-    /**
-     * @param Shop $shop
-     *
-     * @return $this
-     */
-    public function removeShop($shop)
-    {
-        $this->shops->removeElement($shop);
+        $this->shop = $shop;
 
         return $this;
     }
