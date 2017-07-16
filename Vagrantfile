@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.box = "ubuntu/xenial64"
 
-    config.vm.network "private_network", ip: "10.0.11.44"
+    config.vm.network "private_network", ip: "10.0.12.44"
     config.ssh.forward_agent = true
     config.vm.boot_timeout = 600
 
