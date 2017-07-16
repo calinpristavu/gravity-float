@@ -139,7 +139,7 @@ class VoucherController extends Controller
         $form = $this->createForm(VoucherDateType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $request->request->set('searchField', $form->getData()['created_at']);
+            $request->request->set('searchField', serialize($form->getData()['created_at']));
         }
 
         $filters = [
@@ -149,7 +149,7 @@ class VoucherController extends Controller
 
         $voucherFinder = $this->get('voucher.finder');
         if ($request->get('searchField') !== null) {
-            $filters['created_at'] = $request->get('searchField');
+            $filters['created_at'] = unserialize($request->get('searchField'));
         }
 
         $vouchers = $voucherFinder->setFilters($filters)->getVouchers();
