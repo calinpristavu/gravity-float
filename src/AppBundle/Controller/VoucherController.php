@@ -113,6 +113,13 @@ class VoucherController extends Controller
         $voucher->setVoucherCode('111AAA');
         $voucher->setCreationDate(new DateTime());
 
+<<<<<<< Updated upstream
+=======
+        if ($voucher->isIncludedPostalCharges()) {
+            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
+        }
+
+>>>>>>> Stashed changes
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
         $em->flush();
