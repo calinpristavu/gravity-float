@@ -30,17 +30,14 @@ class VoucherType extends AbstractType
             ->add('onlineVoucher', CheckboxType::class, array(
                 'required' => false,
             ))
-            ->add('ordernumber', TextType::class ,array(
+            ->add('orderNumber', TextType::class ,array(
                 'required' => false,
-                'mapped' => false,
             ))
-            ->add('invoicenumber', TextType::class, array(
+            ->add('invoiceNumber', TextType::class, array(
                 'required' => false,
-                'mapped' => false,
             ))
-            ->add('includepostalcharges', CheckboxType::class, array(
+            ->add('includedPostalCharges', CheckboxType::class, array(
                 'required' => false,
-                'mapped' => false,
             ))
             ->add('originalValue', NumberType::class)
             ->add('numberOfUsers', ChoiceType::class, array(

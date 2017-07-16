@@ -94,7 +94,7 @@ class Voucher
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", length=50)
+     * @ORM\Column(type="boolean")
      */
     protected $onlineVoucher;
 
@@ -115,6 +115,27 @@ class Voucher
      * @ORM\Column(type="array")
      */
     protected $usages;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $orderNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $invoiceNumber;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $includedPostalCharges;
 
     public function __construct()
     {
@@ -365,10 +386,58 @@ class Voucher
      *
      * @return $this
      */
-    public function setCreationDate(\DateTime $creationDate)
+    public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param string $orderNumber
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceNumber()
+    {
+        return $this->invoiceNumber;
+    }
+
+    /**
+     * @param string $invoiceNumber
+     */
+    public function setInvoiceNumber($invoiceNumber)
+    {
+        $this->invoiceNumber = $invoiceNumber;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIncludedPostalCharges()
+    {
+        return $this->includedPostalCharges;
+    }
+
+    /**
+     * @param boolean $includedPostalCharges
+     */
+    public function setIncludedPostalCharges($includedPostalCharges)
+    {
+        $this->includedPostalCharges = $includedPostalCharges;
     }
 }

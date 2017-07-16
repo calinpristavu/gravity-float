@@ -108,10 +108,16 @@ class VoucherController extends Controller
     {
         $voucher = unserialize($this->get('session')->get('voucher'));
 
-        $voucher->setShopWhereCreated($this->getUser()->getShops()[0]);
+        $voucher->setShopWhereCreated($this->getUser()->getShop());
         $voucher->setAuthor($this->getUser());
         $voucher->setVoucherCode('111AAA');
         $voucher->setCreationDate(new DateTime());
+
+        if ($voucher->isIncludedPostalCharges()) {
+            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
+        }
+
+        var_dump($voucher);die;
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
