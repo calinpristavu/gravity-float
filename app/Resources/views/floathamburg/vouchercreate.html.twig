@@ -2,6 +2,13 @@
 
 {% block stylesheets %}
     {{ parent() }}
+
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+
 {% endblock %}
 
 {% block body %}
@@ -34,10 +41,29 @@
         {{ form_start(form) }}
         {{ form_errors(form) }}
 
-        {{ form_row(form.onlineVoucher) }}
+        {{ form_row(form.onlineVoucher, {'attr': {'onclick': 'handleHiddenFields()'}}) }}
+            {{ form_label(form.ordernumber, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.ordernumber, {'attr': {'class': 'hidden'}}) }}
+            <br />
+            {{ form_label(form.invoicenumber, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.invoicenumber, {'attr': {'class': 'hidden'}}) }}
+            <br />
+            {{ form_label(form.includepostalcharges, null, {'label_attr': {'class': 'hidden'}}) }}
+            {{ form_widget(form.includepostalcharges, {'attr': {'class': 'hidden'}}) }}
+            <br />
+
         {{ form_row(form.originalValue) }}
         {{ form_row(form.numberOfUsers) }}
         {{ form_row(form.usages) }}
+            {{ form_label(form.massage_type, null, {'label_attr': {'class': 'hidden', 'for': 'massage_type_label'}}) }}
+            {{ form_widget(form.massage_type, {'attr': {'class': 'hidden'}}) }}
+            <br />
+                {{ form_label(form.time_for_massage, null, {'label_attr': {'class': 'hidden', 'for': 'time_for_massage'}}) }}
+                {{ form_widget(form.time_for_massage, {'attr': {'class': 'hidden'}}) }}
+                <br />
+            {{ form_label(form.time_for_floating, null, {'label_attr': {'class': 'hidden', 'for': 'time_for_floating'}}) }}
+            {{ form_widget(form.time_for_floating, {'attr': {'class': 'hidden'}}) }}
+            <br />
         {{ form_row(form.methodsOfPayment) }}
         {{ form_row(form.expirationDate) }}
 
@@ -47,8 +73,12 @@
 
     <br />
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
+
+
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/jquery.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
 {% endblock %}

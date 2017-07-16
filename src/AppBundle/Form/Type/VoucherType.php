@@ -8,9 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Validator\Constraints\Choice;
 
 /**
  * Class VoucherType
@@ -27,6 +29,18 @@ class VoucherType extends AbstractType
         $builder
             ->add('onlineVoucher', CheckboxType::class, array(
                 'required' => false,
+            ))
+            ->add('ordernumber', TextType::class ,array(
+                'required' => false,
+                'mapped' => false,
+            ))
+            ->add('invoicenumber', TextType::class, array(
+                'required' => false,
+                'mapped' => false,
+            ))
+            ->add('includepostalcharges', CheckboxType::class, array(
+                'required' => false,
+                'mapped' => false,
             ))
             ->add('originalValue', NumberType::class)
             ->add('numberOfUsers', ChoiceType::class, array(
@@ -45,6 +59,38 @@ class VoucherType extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => true,
+            ))
+            ->add('massage_type', ChoiceType::class, array(
+                'choices' => array(
+                    'Classic' => 'classic',
+                    'Deep Relax' => 'deeprelax',
+                ),
+                'mapped' => false,
+                'expanded' => true,
+                'required' => false,
+                'placeholder' => false,
+            ))
+            ->add('time_for_massage', ChoiceType::class, array(
+                'choices' => array(
+                    '30 Minutes' => '30_minutes',
+                    '45 Minutes' => '45_minutes',
+                    '60 Minutes' => '60_minutes',
+                    '90 Minutes' => '90_minutes',
+                ),
+                'mapped' => false,
+                'required' => false,
+                'placeholder' => false,
+            ))
+            ->add('time_for_floating', ChoiceType::class, array(
+                'choices' => array(
+                    '30 Minutes' => '30_minutes',
+                    '45 Minutes' => '45_minutes',
+                    '60 Minutes' => '60_minutes',
+                    '90 Minutes' => '90_minutes',
+                ),
+                'mapped' => false,
+                'required' => false,
+                'placeholder' => false,
             ))
             ->add('methodsOfPayment', ChoiceType::class, array(
                 'choices' => array(
