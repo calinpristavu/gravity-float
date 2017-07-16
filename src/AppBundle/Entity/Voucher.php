@@ -85,9 +85,9 @@ class Voucher
     protected $partialPayment;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="array")
      */
     protected $numberOfUsers;
 
@@ -261,7 +261,7 @@ class Voucher
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getNumberOfUsers()
     {
@@ -269,7 +269,7 @@ class Voucher
     }
 
     /**
-     * @param string $numberOfUsers
+     * @param array $numberOfUsers
      *
      * @return $this
      */

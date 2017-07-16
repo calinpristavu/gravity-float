@@ -49,7 +49,7 @@ class VoucherType extends AbstractType
                     'Couple' => 'couple',
                 ),
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
             ))
             ->add('usages', ChoiceType::class, array(
                 'choices' => array(
