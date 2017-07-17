@@ -108,10 +108,10 @@ class CsvWriter
                 $row['voucher_code'],
                 $row['creation_date'],
                 $row['expiration_date'],
-                $row['original_value'],
-                'POSTAL CHARGE NOT YET IMPLEMENTED',
+                $row['original_value'] + $row['partial_payment'],
+                $row['included_postal_charges'] == 1 ? 'Yes' : 'No',
                 $row['partial_payment'],
-                $row['original_value'] - $row['partial_payment'],
+                $row['original_value'],
                 $this->userRepository->find($row['author_id'])->getName(),
                 $this->shopRepository->find($row['shop_where_created_id'])->getName(),
             ], ';');
@@ -128,6 +128,7 @@ class CsvWriter
             creation_date,
             expiration_date,
             original_value,
+            included_postal_charges,
             partial_payment,
             author_id,
             shop_where_created_id
