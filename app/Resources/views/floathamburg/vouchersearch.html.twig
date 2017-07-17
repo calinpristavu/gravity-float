@@ -22,12 +22,9 @@
             {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
             {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
 
-            {{ 'you.can.use.this.voucher.in.shops'|trans }} <br />
-
-            {% for shop in shops %}
-                {{ shop.name }}
-                {{ shop.address }} <br />
-            {% endfor %}
+            {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
+            {{ voucher.shopWhereCreated.name }}
+            {{ voucher.shopWhereCreated.address }} <br />
             <br />
             <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'use.voucher'|trans }}</a> <br />
             <a href="">{{ 'print.voucher'|trans }}</a>
