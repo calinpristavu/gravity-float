@@ -8,3 +8,11 @@ nginx_index: app.php
 
 app_deploy_user: calinpristavu
 app_deploy_group: opsworks
+
+mailer_transport: gmail
+mailer_host: smtp.gmail.com
+mailer_user: mydummytestingemail@gmail.com
+mailer_password: areallycomplexpassword
+mailer_port: 25
+mailer_address: 'calinpristavu@gmail.com'
+mailer_sender_name: 'FLOAT_HAMBURG Dev'
