@@ -22,31 +22,6 @@
     - "web/uploads"
     - "web/media"
 
-- name: hook | Install bower globally
-  npm: name=bower global=yes state=present
-  become: yes
-
-- name: hook | Install gulp-cli globally
-  npm: name=gulp-cli global=yes state=present
-  become: yes
-
-- name: hook | Run npm install
-  npm: path={{ symfony_current_release_dir }}
-  become: yes
-  become_user: "{{ app_deploy_user }}"
-
-- name: hook | Run bower install
-  bower: path={{ symfony_current_release_dir }}
-  become: yes
-  become_user: "{{ app_deploy_user }}"
-
-- name: hook | Run gulp build
-  command: gulp build
-  become: yes
-  become_user: "{{ app_deploy_user }}"
-  args:
-    chdir: "{{ symfony_current_release_dir }}"
-
 - name: hook | Configure php-fpm www.conf pool
   become: yes
   copy: src=files/php/7.0/fpm/pool.d/www.conf dest=/etc/php/7.0/fpm/pool.d/www.conf backup=yes
