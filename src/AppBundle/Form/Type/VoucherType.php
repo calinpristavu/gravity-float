@@ -30,17 +30,14 @@ class VoucherType extends AbstractType
             ->add('onlineVoucher', CheckboxType::class, array(
                 'required' => false,
             ))
-            ->add('ordernumber', TextType::class ,array(
+            ->add('orderNumber', TextType::class ,array(
                 'required' => false,
-                'mapped' => false,
             ))
-            ->add('invoicenumber', TextType::class, array(
+            ->add('invoiceNumber', TextType::class, array(
                 'required' => false,
-                'mapped' => false,
             ))
-            ->add('includepostalcharges', CheckboxType::class, array(
+            ->add('includedPostalCharges', CheckboxType::class, array(
                 'required' => false,
-                'mapped' => false,
             ))
             ->add('originalValue', NumberType::class)
             ->add('numberOfUsers', ChoiceType::class, array(
@@ -49,13 +46,12 @@ class VoucherType extends AbstractType
                     'Couple' => 'couple',
                 ),
                 'expanded' => true,
-                'multiple' => false,
+                'multiple' => true,
             ))
             ->add('usages', ChoiceType::class, array(
                 'choices' => array(
                     'Massage' => 'massage',
                     'Floating' => 'floating',
-                    'Value Voucher' => 'valueVoucher',
                 ),
                 'expanded' => true,
                 'multiple' => true,
@@ -92,14 +88,14 @@ class VoucherType extends AbstractType
                 'required' => false,
                 'placeholder' => false,
             ))
-            ->add('methodsOfPayment', ChoiceType::class, array(
+            ->add('methodOfPayment', ChoiceType::class, array(
                 'choices' => array(
                     'Card' => 'card',
                     'Cash' => 'cash',
                     'Paypal' => 'paypal',
                 ),
                 'expanded' => true,
-                'multiple' => true,
+                'multiple' => false,
             ))
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text"

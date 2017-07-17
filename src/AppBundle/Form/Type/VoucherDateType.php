@@ -22,9 +22,12 @@ class VoucherDateType extends AbstractType
         $builder
             ->add('created_at', ChoiceType::class, array (
                 'choices' => array (
-                    'This year' => 'CURRENT_YEAR',
-                    'Last year' => 'LAST_YEAR',
-                )
+                    date("Y") => date("Y"),
+                    date("Y", strtotime("-1 year")) => date("Y", strtotime("-1 year")),
+                    date("Y", strtotime("-2 year")) => date("Y", strtotime("-2 year")),
+                ),
+                'multiple' => true,
+                'expanded' => true,
             ))
             ->add('search', SubmitType::class, array('label' => "button.search"))
         ;
