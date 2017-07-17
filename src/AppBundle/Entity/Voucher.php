@@ -119,21 +119,21 @@ class Voucher
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable = true)
      */
     protected $orderNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable = true)
      */
     protected $invoiceNumber;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable = true)
      */
     protected $includedPostalCharges;
 
@@ -143,6 +143,9 @@ class Voucher
         $this->numberOfUsers = array();
 
         $this->partialPayment = 0;
+        $this->orderNumber = "";
+        $this->invoiceNumber = "";
+        $this->includedPostalCharges = false;
     }
 
     /**
