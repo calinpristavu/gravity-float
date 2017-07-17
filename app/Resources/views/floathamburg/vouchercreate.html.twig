@@ -53,9 +53,9 @@
 
             {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
             <div class="interactive hidden" data-managed-by="voucher_onlineVoucher">
-                {{ form_row(form.ordernumber) }}
-                {{ form_row(form.invoicenumber) }}
-                {{ form_row(form.includepostalcharges) }}
+                {{ form_row(form.orderNumber) }}
+                {{ form_row(form.invoiceNumber) }}
+                {{ form_row(form.includedPostalCharges) }}
             </div>
             {{ form_row(form.originalValue) }}
             {{ form_row(form.numberOfUsers) }}
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </div>
-            {{ form_row(form.methodsOfPayment) }}
+            {{ form_row(form.methodOfPayment) }}
             {{ form_row(form.expirationDate) }}
         </div>
         <br />
