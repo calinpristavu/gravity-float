@@ -16,7 +16,7 @@
                     <th></th>
                     <th>{% trans %}name{% endtrans %}</th>
                     <th>{% trans %}email{% endtrans %}</th>
-                    <th>{% trans %}shops{% endtrans %}</th>
+                    <th>{% trans %}shop{% endtrans %}</th>
                     <th>{% trans %}vouchers.created{% endtrans %}</th>
                     <th>{% trans %}user.type{% endtrans %}</th>
                     <th></th>
@@ -28,7 +28,12 @@
                         <td></td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.shops|join("; ") }}</td>
+                        {% if user.canCreateOnlineVouchers %}
+                            <td>{{ user.shop }};{{ user.shop }}-Online</td>
+                        {% else %}
+                            <td>{{ user.shop }}</td>
+                        {% endif %}
+
                         <td>{{ user.createdVouchers|length }}</td>
                         <td>
                             {% if 'ROLE_ADMIN' in user.roles %}
