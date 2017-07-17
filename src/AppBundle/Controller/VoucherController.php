@@ -71,19 +71,49 @@ class VoucherController extends Controller
      */
     public function createVoucherAction(Request $request)
     {
-        $voucher = new Voucher();
-        //If I have it in session, it means I got back from preview
-        if ($this->get('session')->get('voucher') !== null) {
-            $voucher = unserialize($this->get('session')->get('voucher'));
+        if ($this->get('session')->get('voucher')) {
+            $this->get('session')->remove('voucher');
         }
 
+        $voucher = new Voucher();
+        $form = $this->createForm(VoucherType::class, $voucher);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->get('session')->set('voucher', $voucher);
+            return $this->render('floathamburg/vouchercreate.html.twig', array(
+                'form' => null,
+                'submitted' => true,
+                'voucher' => $voucher,
+                'shops' => $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll(),
+            ));
+        }
+
+        return $this->render('floathamburg/vouchercreate.html.twig', array(
+            'form' => $form->createView(),
+            'submitted' => false,
+            'voucher' => null,
+        ));
+    }
+
+    /**
+     * @Route("/voucher/create/edit", name="voucher_edit")
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editVoucherAction(Request $request)
+    {
+        if (!$this->get('session')->get('voucher')) {
+            return $this->redirectToRoute('voucher_create');
+        }
+
+        $voucher = $this->get('session')->get('voucher');
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            //save it in case I get back from preview
-            $this->get('session')->set('voucher', serialize($voucher));
-
+            $this->get('session')->set('voucher', $voucher);
             return $this->render('floathamburg/vouchercreate.html.twig', array(
                 'form' => null,
                 'submitted' => true,
@@ -106,23 +136,29 @@ class VoucherController extends Controller
      */
     public function saveVoucherAction()
     {
-        $voucher = unserialize($this->get('session')->get('voucher'));
+        if (!$this->get('session')->get('voucher')) {
+            return $this->redirectToRoute('voucher_create');
+        }
+
+        /** @var Voucher $voucher */
+        $voucher = $this->get('session')->get('voucher');
 
         $voucher->setShopWhereCreated($this->getUser()->getShop());
         $voucher->setAuthor($this->getUser());
-        $voucher->setVoucherCode('111AAA');
+        $voucher->setVoucherCode(
+            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
+        );
         $voucher->setCreationDate(new DateTime());
 
         if ($voucher->isIncludedPostalCharges()) {
             $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
         }
 
+        $this->get('session')->remove('voucher');
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
         $em->flush();
-
-        //Delete from session after I've added
-        $this->get('session')->remove('voucher');
 
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
     }
