@@ -17,20 +17,17 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    {{ 'voucher.value'|trans }} {{ voucher.originalValue }}
+                    {{ 'voucher.value'|trans }} {{ voucher.originalValue }} <br />
                     {{ 'can.be.used.for'|trans }}
                     {% for usage in voucher.usages %}
                         {{ usage }}
                     {% else %}
                         {{ 'no.usages.set'|trans }}
                     {% endfor %}
-
-                    {{ 'you.can.use.voucher.in.any.shop'|trans }}: <br/>
-                    {% for shop in shops %}
-                        {{ shop.name }} {{ shop.address }} <br/>
-                    {% else %}
-                        {{ 'no.shops'|trans }}
-                    {% endfor %}
+                    <br /><br />
+                    {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
+                    {{ voucher.shopWhereCreated.name }}
+                    {{ voucher.shopWhereCreated.address }} <br />
                 </div>
             </div>
         </div>

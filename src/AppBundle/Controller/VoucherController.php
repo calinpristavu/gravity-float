@@ -77,6 +77,15 @@ class VoucherController extends Controller
         }
 
         $voucher = new Voucher();
+        $voucher->setShopWhereCreated($this->getUser()->getShop());
+        $voucher->setAuthor($this->getUser());
+        $voucher->setVoucherCode(
+            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
+        );
+        $voucher->setCreationDate(new DateTime());
+        if ($voucher->isIncludedPostalCharges()) {
+            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
+        }
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -141,25 +150,11 @@ class VoucherController extends Controller
             return $this->redirectToRoute('voucher_create');
         }
 
-        /** @var Voucher $voucher */
-        $voucher = $this->get('session')->get('voucher');
-
-        $voucher->setShopWhereCreated($this->getUser()->getShop());
-        $voucher->setAuthor($this->getUser());
-        $voucher->setVoucherCode(
-            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
-        );
-        $voucher->setCreationDate(new DateTime());
-
-        if ($voucher->isIncludedPostalCharges()) {
-            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
-        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($this->get('session')->get('voucher'));
+        $em->flush();
 
         $this->get('session')->remove('voucher');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($voucher);
-        $em->flush();
 
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
     }
