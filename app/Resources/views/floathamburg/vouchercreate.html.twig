@@ -67,8 +67,10 @@
                     <div class="interactive hidden" data-managed-by="voucher_usages_0">
                         {{ form_row(form.massage_type) }}
                     </div>
-                    <div class="interactive hidden" data-managed-by="voucher_massage_type" data-manager-val="0">
-                        {{ form_row(form.time_for_massage) }}
+                    <div class="row">
+                        <div class="interactive hidden col-md-offset-1 col-md-11" data-managed-by="voucher_massage_type" data-manager-val="0">
+                            {{ form_row(form.time_for_massage) }}
+                        </div>
                     </div>
                     <div class="interactive hidden" data-managed-by="voucher_usages_1">
                         {{ form_row(form.time_for_floating, {'form_group_class': {'class': 'hidden'}}) }}
