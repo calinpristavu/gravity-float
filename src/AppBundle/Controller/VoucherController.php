@@ -77,15 +77,15 @@ class VoucherController extends Controller
         }
 
         $voucher = new Voucher();
-        $voucher->setShopWhereCreated($this->getUser()->getShop());
-        $voucher->setAuthor($this->getUser());
-        $voucher->setVoucherCode(
-            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
-        );
+        $this->fillVoucherDetails($voucher);
         $voucher->setCreationDate(new DateTime());
         if ($voucher->isIncludedPostalCharges()) {
             $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
         }
+        $voucher->setVoucherCode(
+            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
+        );
+
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -119,9 +119,9 @@ class VoucherController extends Controller
         }
 
         $voucher = $this->get('session')->get('voucher');
+        $this->fillVoucherDetails($voucher);
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $this->get('session')->set('voucher', $voucher);
             return $this->render('floathamburg/vouchercreate.html.twig', array(
@@ -150,8 +150,11 @@ class VoucherController extends Controller
             return $this->redirectToRoute('voucher_create');
         }
 
+        $voucher = $this->get('session')->get('voucher');
+        $this->fillVoucherDetails($voucher);
+
         $em = $this->getDoctrine()->getManager();
-        $em->persist($this->get('session')->get('voucher'));
+        $em->persist($voucher);
         $em->flush();
 
         $this->get('session')->remove('voucher');
@@ -253,5 +256,16 @@ class VoucherController extends Controller
             'form' => $form->createView(),
             'submitted' => false,
         ]);
+    }
+
+    /**
+     * Fill voucher details
+     *
+     * @param Voucher $voucher
+     */
+    protected function fillVoucherDetails(Voucher $voucher)
+    {
+        $voucher->setShopWhereCreated($this->getUser()->getShop());
+        $voucher->setAuthor($this->getUser());
     }
 }
