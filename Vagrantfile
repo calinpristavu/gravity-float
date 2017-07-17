@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
 
     if provisioner == "ansible"
 
-    	config.vm.synced_folder "/var/www/gravity-float", "/var/www/gravity-float"
+    	config.vm.synced_folder "/var/www/gravity-float", "/var/www/gravity-float", type: "nfs"
 
     end
 

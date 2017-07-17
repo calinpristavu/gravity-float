@@ -1,61 +1,23 @@
-(function () {
-    $(document).ready(function() {
-        $('#voucher_usages_0').click(function() {
-            if ($(this).is(':checked')) {
-                $('label[for="massage_type_label"]').removeClass('hidden');
-                $('#voucher_massage_type').removeClass('hidden');
-                if ($('#voucher_massage_type_0').is(':checked') || $('#voucher_massage_type_1').is(':checked')) {
-                    $('label[for="time_for_massage"]').removeClass('hidden');
-                    $('#voucher_time_for_massage').removeClass('hidden');
-                }
+$(function () {
+    $('#voucher_usages').find('input[type="checkbox"]').addClass('manager');
+    $('#voucher_massage_type').find('input[type="radio"]').addClass('manager');
+
+    $('.manager').on('change', function () {
+        if (!$(this).is(':radio')) {
+            $(".interactive[data-managed-by='" + this.id + "']").toggleClass("hidden");
+            return;
+        }
+
+        var listeners = this.id.slice(0, -2);
+        var that = this;
+        $(".interactive[data-managed-by='" + listeners + "']").each(function () {
+            if (that.id === $(this).attr('data-managed-by') + '_' + $(this).attr('data-manager-val')) {
+                $(this).removeClass('hidden');
             } else {
-                $('label[for="massage_type_label"]').addClass('hidden');
-                $('#voucher_massage_type').addClass('hidden');
-                $('label[for="time_for_massage"]').addClass('hidden');
-                $('#voucher_time_for_massage').addClass('hidden');
-                $('label[for="time_for_massage"]').addClass('hidden');
-                $('#voucher_time_for_massage').addClass('hidden');
+                $(this).addClass('hidden');
             }
-        });
-
-        $('#voucher_massage_type_0').click(function() {
-            $('label[for="time_for_massage"]').removeClass('hidden');
-            $('#voucher_time_for_massage').removeClass('hidden');
-        });
-
-        $('#voucher_massage_type_1').click(function() {
-            $('label[for="time_for_massage"]').removeClass('hidden');
-            $('#voucher_time_for_massage').removeClass('hidden');
-        });
-
-        $('#voucher_usages_1').click(function() {
-            if ($(this).is(':checked')) {
-                $('label[for="voucher_time_for_floating"]').removeClass('hidden');
-                $('#voucher_time_for_floating').removeClass('hidden');
-            } else {
-                $('label[for="voucher_time_for_floating"]').addClass('hidden');
-                $('#voucher_time_for_floating').addClass('hidden');
-                $('label[for="time_for_massage"]').addClass('hidden');
-                $('#voucher_time_for_massage').addClass('hidden');
-            }
-        });
-
-        $('#voucher_onlineVoucher').click(function() {
-            if ($(this).is(':checked')) {
-                $('#voucher_orderNumber').removeClass('hidden');
-                $('#voucher_invoiceNumber').removeClass('hidden');
-                $('#voucher_includedPostalCharges').removeClass('hidden');
-                $('label[for="voucher_orderNumber"]').removeClass('hidden');
-                $('label[for="voucher_invoiceNumber"]').removeClass('hidden');
-                $('label[for="voucher_includedPostalCharges"]').removeClass('hidden');
-            } else {
-                $('#voucher_orderNumber').addClass('hidden');
-                $('#voucher_invoiceNumber').addClass('hidden');
-                $('#voucher_includedPostalCharges').addClass('hidden');
-                $('label[for="voucher_orderNumber"]').addClass('hidden');
-                $('label[for="voucher_invoiceNumber"]').addClass('hidden');
-                $('label[for="voucher_includedPostalCharges"]').addClass('hidden');
-            }
-        });
+        })
     });
-})();
+
+    JsBarcode("#barcode", $('#barcode').attr('data-code'), {});
+});

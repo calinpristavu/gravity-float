@@ -1,18 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block body %}
-    <a href="{{ path('voucher_search') }}">{{ 'search'|trans }}</a> <br />
-    <a href="{{ path('voucher_create') }}">{{ 'create'|trans }}</a> <br />
-    <a href="{{ path('voucher_all', {'page': 1}) }}">{{ 'all.vouchers'|trans }}</a> <br />
-    <br />
-    <a href="{{ path('user_profile') }}">{{ 'my.account'|trans }}</a> <br />
-    <a href="{{ path('fos_user_security_logout') }}">{{ 'logout'|trans }}</a> <br />
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
+    Homepage
 {% endblock %}

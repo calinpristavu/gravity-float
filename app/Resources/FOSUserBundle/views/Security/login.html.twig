@@ -1,5 +1,9 @@
-{% extends "@FOSUser/layout.html.twig" %}
+{% extends "base_no_header.html.twig" %}
 
-{% block fos_user_content %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+{% endblock %}
+
+{% block page %}
     {{ include('@FOSUser/Security/login_content.html.twig') }}
-{% endblock fos_user_content %}
+{% endblock %}

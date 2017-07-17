@@ -5,40 +5,52 @@
 {% endblock %}
 
 {% block body %}
-    {{ 'all.users'|trans }} <br />
+    <h1>
+        {{ 'all.users'|trans }}
+    </h1>
 
-    {% for user in users %}
-        <p>
-            {{ 'name'|trans }}: {{ user.name }} <br />
-            {{ 'email'|trans }}: {{ user.email }} <br />
-            {{ 'shop'|trans }}: {{ user.shop.name }}
-            {% if user.canCreateOnlineVouchers %}
-                ; {{ user.shop.name }}-{{ 'online'|trans }}
-            {% endif %}
-            <br />
-            {{ 'vouchers.created'|trans }}: {{ user.createdVouchers|length }}
-            <br />
-            {{ 'user.type'|trans }}:
-            {% if 'ROLE_ADMIN' in user.roles %}
-                {{ 'administrator'|trans }}
-            {% else %}
-                {{ 'employee'|trans }}
-            {% endif %}
-            <br />
-            <a href="{{ path('edit_user', {'id': user.id}) }}">{{ 'edit.user'|trans }}</a>
-            <br />
-            {% if user.enabled %}
-                <a href="{{ path('suspend_user', {'id': user.id, 'value':0 }) }}">{{ 'suspend.user'|trans }}</a>
-            {% else %}
-                <a href="{{ path('suspend_user', {'id': user.id, 'value':1 }) }}">{{ 'unsuspend.user'|trans }}</a>
-            {% endif %}
-            <br />
-        </p>
-    {% else %}
-        <p>
-            {{ 'no.users'|trans }}
-        </p>
-    {% endfor %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans %}name{% endtrans %}</th>
+                    <th>{% trans %}email{% endtrans %}</th>
+                    <th>{% trans %}shops{% endtrans %}</th>
+                    <th>{% trans %}vouchers.created{% endtrans %}</th>
+                    <th>{% trans %}user.type{% endtrans %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td></td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.shops|join("; ") }}</td>
+                        <td>{{ user.createdVouchers|length }}</td>
+                        <td>
+                            {% if 'ROLE_ADMIN' in user.roles %}
+                                {{ 'administrator'|trans }}
+                            {% else %}
+                                {{ 'employee'|trans }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('edit_user', {'id': user.id}) }}">{{ 'edit.user'|trans }}</a>
+                            |
+                            {% if user.enabled %}
+                                <a href="{{ path('suspend_user', {'id': user.id, 'value':0 }) }}">{{ 'suspend.user'|trans }}</a>
+                            {% else %}
+                                <a href="{{ path('suspend_user', {'id': user.id, 'value':1 }) }}">{{ 'unsuspend.user'|trans }}</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     {% if currentPage > 1 %}
         <a href="{{ path('user_management', {'page': currentPage - 1}) }}">{{ 'previous.page'|trans }}</a>
@@ -48,8 +60,7 @@
         <a href="{{ path('user_management', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
 
-    <a href="{{ path('create_user') }}">{{ 'create.user'|trans }}</a>
-    <a href="{{ path('user_profile') }}">{{ 'back'|trans }}</a>
+    <a href="{{ path('create_user') }}" class="btn btn-success">{{ 'create.user'|trans }}</a>
 {% endblock %}
 
 {% block javascripts %}

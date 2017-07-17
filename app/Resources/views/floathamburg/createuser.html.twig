@@ -1,9 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block body %}
     {% if submitted %}
         {{ 'user.successfully.created'|trans }} <br />
@@ -20,14 +16,8 @@
         {{ form_row(form.roles) }}
 
         {{ form_row(form.save, { 'label': 'Create' }) }}
+        <a href="{{ path('user_management') }}">{{ 'back'|trans }}</a>
         {{ form_end(form) }}
     {% endif %}
 
-    <br />
-    <a href="{{ path('user_management') }}">{{ 'back'|trans }}</a>
-
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
 {% endblock %}
