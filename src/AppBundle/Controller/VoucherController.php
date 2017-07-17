@@ -6,6 +6,7 @@ use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
+use AppBundle\Form\Type\VoucherUseType;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -215,5 +216,47 @@ class VoucherController extends Controller
     public function resetFiltersAction()
     {
         return $this->redirectToRoute('voucher_all', ['page' => 1]);
+    }
+
+    /**
+     * @Route("/voucher/use/{id}", name="voucher_use")
+     *
+     * @param Request $request
+     * @param Voucher $voucher
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function useVoucherAction(Request $request, Voucher $voucher = null)
+    {
+        if ($voucher == null) {
+            return $this->redirectToRoute('voucher_homepage');
+        }
+
+        $form = $this->createForm(VoucherUseType::class);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $formData = $form->getData();
+            if ($formData['usage'] === 'COMPLETE_USE') {
+                $voucher->setPartialPayment($voucher->getOriginalValue());
+                $voucher->setOriginalValue(0);
+            } else if ($formData['usage'] === 'PARTIAL_USE') {
+                $voucher->setPartialPayment($voucher->getPartialPayment() + $formData['partial_amount']);
+                $voucher->setOriginalValue($voucher->getOriginalValue() - $formData['partial_amount']);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->render('floathamburg/voucheruse.html.twig', [
+                'form' => null,
+                'submitted' => true,
+            ]);
+        }
+
+        return $this->render('floathamburg/voucheruse.html.twig', [
+            'form' => $form->createView(),
+            'submitted' => false,
+        ]);
     }
 }
