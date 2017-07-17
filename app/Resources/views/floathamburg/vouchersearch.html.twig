@@ -29,7 +29,7 @@
                 {{ shop.address }} <br />
             {% endfor %}
             <br />
-            <a href="">{{ 'use.voucher'|trans }}</a> <br />
+            <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'use.voucher'|trans }}</a> <br />
             <a href="">{{ 'print.voucher'|trans }}</a>
             <br />
         {% else %}
