@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        <script src="{{ asset('assets/js/jquery.js') }}"></script>
+
+        {% block page '' %}
+
+        <script src="{{ asset('assets/js/jquery_ui.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/scripts.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

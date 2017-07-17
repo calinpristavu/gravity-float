@@ -70,6 +70,11 @@ class Shop
         $this->assignedUsers = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
+
     /**
      * @return int
      */

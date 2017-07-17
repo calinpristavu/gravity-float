@@ -100,7 +100,6 @@ class VoucherType extends AbstractType
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text"
             ])
-            ->add('create', SubmitType::class, array('label' => "button.create"))
         ;
     }
 
