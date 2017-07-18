@@ -95,7 +95,8 @@ class VoucherType extends AbstractType
                 'multiple' => false,
             ))
             ->add("expirationDate", DateTimeType::class, [
-                'widget' => "single_text"
+                'widget' => "single_text",
+                'data' => new \DateTime("+3 year")
             ])
         ;
     }
