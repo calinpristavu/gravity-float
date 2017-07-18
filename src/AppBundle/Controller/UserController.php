@@ -26,8 +26,10 @@ class UserController extends Controller
     public function profileAction(Request $request)
     {
         $user = $this->getUser();
-        $form = $this->createForm(UserType::class, $user);
 
+        $form = $this->createForm(UserType::class, $user, [
+            'isPasswordRequired' => false,
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $userManager = $this->container->get('fos_user.user_manager');
@@ -88,8 +90,10 @@ class UserController extends Controller
     {
         $userManager = $this->container->get('fos_user.user_manager');
         $newUser = $userManager->createUser();
-        $form = $this->createForm(UserType::class, $newUser);
 
+        $form = $this->createForm(UserType::class, $newUser, [
+            'isPasswordRequired' => true,
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $newUser->setEnabled(true);
@@ -121,8 +125,9 @@ class UserController extends Controller
             throw new \UnexpectedValueException("Cannot edit user. User is invalid!");
         }
 
-        $form = $this->createForm(UserType::class, $user);
-
+        $form = $this->createForm(UserType::class, $user, [
+            'isPasswordRequired' => false,
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $userManager = $this->container->get('fos_user.user_manager');
