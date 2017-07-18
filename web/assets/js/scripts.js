@@ -1,5 +1,7 @@
 /* BIND DATEPICKERS */
 
 $(function () {
-    $("input[type='datetime']").datepicker();
+    $("input[type='datetime']").datepicker({
+        minDate: 0
+    });
 });

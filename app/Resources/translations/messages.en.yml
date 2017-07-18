@@ -33,7 +33,7 @@ can.be.used.for: Can be used for
 no.usages.set: No usages set
 you.can.use.voucher.in.any.shop: You can use this voucher in any shop.
 save.voucher: Save
-edit: Save
+edit: Edit
 print: Print
 create.voucher: Create new Voucher
 button.voucher.create: Create Voucher
@@ -60,5 +60,5 @@ user.successfully.created: User successfully created
 voucher.saved.successfully: Voucher Saved!
 included: Included
 not.included: Not Included
-details: details
+details: Details
 voucher.details: Voucher details

@@ -6,10 +6,10 @@
     <div class="create-voucher">
         <div class="row">
             <div class="col-md-8 col-xs-8">
-                {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br/>
-                {{ 'creation.date'|trans }} {{ voucher.creationDate|date("m/d/Y") }} <br/>
-                {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br/>
-                {{ 'created.by'|trans }} {{ voucher.author }}
+                {{ 'voucher.code' | trans }} {{ voucher.voucherCode }} <br/>
+                {{ 'creation.date' | trans }} {{ voucher.creationDate|date("m/d/Y") }} <br/>
+                {{ 'expiration.date' | trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br/>
+                {{ 'created.by' | trans }} {{ voucher.author }}
             </div>
             <div class="col-md-4 col-xs-4">
                 <svg id="barcode" data-code="{{ voucher.voucherCode }}"></svg>
@@ -17,9 +17,9 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                {{ 'voucher.value'|trans }} {{ voucher.originalValue }} <br/>
-                {{ 'can.be.used.for'|trans }} {{ voucher.usages | join(', ') | default('') }}<br/>
-                {{ 'you.can.use.this.voucher.in.shop'|trans }} <br/>
+                {{ 'voucher.value' | trans }} {{ voucher.originalValue }} &euro; <br/>
+                {{ 'can.be.used.for' | trans }} {{ voucher.usages | join(', ') | default('') }}<br/>
+                {{ 'you.can.use.voucher.in.any.shop' | trans }} <br/>
                 {{ voucher.shopWhereCreated.name }}<br/>
                 {{ voucher.shopWhereCreated.address }} <br/>
             </div>
