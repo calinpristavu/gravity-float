@@ -11,29 +11,38 @@
         {{ form_row(searchForm.search, { 'label': 'Search' }) }}
     {{ form_end(searchForm) }}
 
-    {% if submitted == true %}
-        {% if voucher != null %}
-            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
-            {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
-            {{ 'created.by'|trans }} {{ voucher.author }} <br />
-            {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
-            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
-            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
-            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
+    {% for voucher in matchedVouchers %}
+        {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
+        {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
+        {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
+        {{ 'created.by'|trans }} {{ voucher.author }} <br />
+        {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
+        {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
+        {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
+        {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
+        {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
 
-            {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
-            {{ voucher.shopWhereCreated.name }}
-            {{ voucher.shopWhereCreated.address }} <br />
-            <br />
-            <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'use.voucher'|trans }}</a> <br />
-            <a href="">{{ 'print.voucher'|trans }}</a>
-            <br />
-        {% else %}
+        {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
+        {{ voucher.shopWhereCreated.name }}
+        {{ voucher.shopWhereCreated.address }}
+        <br />
+        <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'use.voucher'|trans }}</a> <br />
+        <a href="">{{ 'print.voucher'|trans }}</a>
+        <br />
+        <br />
+    {% else %}
+        {% if searchedCode %}
             {{ 'voucher.with.code.doesnt.exist'|trans }}
         {% endif %}
+    {% endfor %}
+
+    {% if currentPage > 1 and searchedCode %}
+        <a href="{{ path('voucher_search', {'page': currentPage - 1, 'voucherCode':searchedCode}) }}"> {{ 'previous.page'|trans }} </a>
     {% endif %}
 
+    {% if currentPage < numberOfPages and searchedCode %}
+        <a href="{{ path('voucher_search', {'page': currentPage + 1, 'voucherCode':searchedCode}) }}" > {{ 'next.page'|trans }} </a>
+    {% endif %}
     <br />
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
 

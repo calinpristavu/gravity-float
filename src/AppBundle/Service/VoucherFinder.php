@@ -97,6 +97,13 @@ class VoucherFinder
             $queryBuilder->setFirstResult(($page - 1)*self::$NUMBER_OF_VOUCHERS_PER_PAGE);
         }
 
+        if (isset($this->filters['voucherCode'])) {
+            $queryBuilder->andWhere($queryBuilder->expr()->like(
+                'v.voucherCode',
+                $queryBuilder->expr()->literal('%' . $this->filters['voucherCode'] . '%')
+            ));
+        }
+
         if (isset($this->filters['items_per_page'])) {
             $queryBuilder->setMaxResults($this->filters['items_per_page']);
         }
