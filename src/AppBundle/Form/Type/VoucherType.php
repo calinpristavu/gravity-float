@@ -79,10 +79,7 @@ class VoucherType extends AbstractType
             ))
             ->add('time_for_floating', ChoiceType::class, array(
                 'choices' => array(
-                    '30 Minutes' => '30_minutes',
-                    '45 Minutes' => '45_minutes',
                     '60 Minutes' => '60_minutes',
-                    '90 Minutes' => '90_minutes',
                 ),
                 'mapped' => false,
                 'required' => false,
@@ -98,7 +95,8 @@ class VoucherType extends AbstractType
                 'multiple' => false,
             ))
             ->add("expirationDate", DateTimeType::class, [
-                'widget' => "single_text"
+                'widget' => "single_text",
+                'data' => new \DateTime("+3 year")
             ])
         ;
     }
