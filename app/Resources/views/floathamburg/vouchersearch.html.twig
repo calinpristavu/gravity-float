@@ -30,10 +30,10 @@
                         <td>{{ voucher.voucherCode }}</td>
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
-                        <td>{{ voucher.originalValue }} &euro;</td>
+                        <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.includedPostalCharges ? 'included'|trans : 'not.included'|trans }}</td>
                         <td>{{ voucher.partialPayment }} &euro;</td>
-                        <td>{{ voucher.originalValue - voucher.partialPayment }} &euro;</td>
+                        <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
                         <td>{{ voucher.shopWhereCreated.name }}</td>
                         <td>

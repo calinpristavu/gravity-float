@@ -6,7 +6,7 @@ use AppBundle\Entity\Voucher;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -37,11 +37,13 @@ class VoucherType extends AbstractType
             ->add('includedPostalCharges', CheckboxType::class, array(
                 'required' => false,
             ))
-            ->add('originalValue', MoneyType::class)
+            ->add('remainingValue', NumberType::class, array(
+                'label' => 'Value'
+            ))
             ->add('numberOfUsers', ChoiceType::class, array(
                 'choices' => array(
-                    'Single' => 'single',
-                    'Couple' => 'couple',
+                    'Single' => 'Single',
+                    'Couple' => 'Couple',
                 ),
                 'expanded' => true,
                 'multiple' => true,
@@ -56,8 +58,8 @@ class VoucherType extends AbstractType
             ))
             ->add('massage_type', ChoiceType::class, array(
                 'choices' => array(
-                    'Classic' => 'classic',
-                    'Deep Relax' => 'deeprelax',
+                    'Classic' => 'Classic',
+                    'Deep Relax' => 'Deep Relax',
                 ),
                 'mapped' => false,
                 'expanded' => true,
@@ -66,10 +68,10 @@ class VoucherType extends AbstractType
             ))
             ->add('time_for_massage', ChoiceType::class, array(
                 'choices' => array(
-                    '30 Minutes' => '30_minutes',
-                    '45 Minutes' => '45_minutes',
-                    '60 Minutes' => '60_minutes',
-                    '90 Minutes' => '90_minutes',
+                    '30 Minutes' => '30 minutes',
+                    '45 Minutes' => '45 minutes',
+                    '60 Minutes' => '60 minutes',
+                    '90 Minutes' => '90 minutes',
                 ),
                 'mapped' => false,
                 'required' => false,
@@ -85,9 +87,9 @@ class VoucherType extends AbstractType
             ))
             ->add('methodOfPayment', ChoiceType::class, array(
                 'choices' => array(
-                    'Card' => 'card',
-                    'Cash' => 'cash',
-                    'Paypal' => 'paypal',
+                    'Card' => 'Card',
+                    'Cash' => 'Cash',
+                    'Paypal' => 'Paypal',
                 ),
                 'expanded' => true,
                 'multiple' => false,

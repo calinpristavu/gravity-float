@@ -2,12 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherUseType;
 use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -94,7 +96,7 @@ class VoucherController extends Controller
         $this->fillVoucherDetails($voucher);
         $voucher->setCreationDate(new DateTime());
         if ($voucher->isIncludedPostalCharges()) {
-            $voucher->setOriginalValue($voucher->getOriginalValue() - 1.5);
+            $voucher->setRemainingValue($voucher->getRemainingValue() - 1.5);
         }
         $voucher->setVoucherCode(
             $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
@@ -104,6 +106,16 @@ class VoucherController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->get('session')->set('voucher', $voucher);
+            $usages = $voucher->getUsages();
+            foreach ($usages as $key=>$usage) {
+                if ($usage === 'massage') {
+                    $usages[$key] .= ' '.$form['massage_type']->getData().' '.$form['time_for_massage']->getData();
+                } else if ($usage === 'floating') {
+                    $usages[$key] .= ' '.$form['time_for_floating']->getData();
+                }
+            }
+            $voucher->setUsages($usages);
+
             return $this->render('floathamburg/vouchercreate.html.twig', array(
                 'form' => null,
                 'submitted' => true,
@@ -234,6 +246,8 @@ class VoucherController extends Controller
      * @Route("/voucher/{id}", name="voucher_details")
      * @ParamConverter("voucher", class="AppBundle:Voucher")
      * @Template("floathamburg/voucher_details.html.twig")
+     * @param Voucher $voucher
+     * @return array
      */
     public function voucherAction(Voucher $voucher)
     {
@@ -257,16 +271,8 @@ class VoucherController extends Controller
         $form = $this->createForm(VoucherUseType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $formData = $form->getData();
-            if ($formData['usage'] === 'COMPLETE_USE') {
-                $voucher->setPartialPayment($voucher->getOriginalValue());
-                $voucher->setOriginalValue(0);
-            } else if ($formData['usage'] === 'PARTIAL_USE') {
-                $voucher->setPartialPayment($voucher->getPartialPayment() + $formData['partial_amount']);
-                $voucher->setOriginalValue($voucher->getOriginalValue() - $formData['partial_amount']);
-            }
-
             $em = $this->getDoctrine()->getManager();
+            $this->savePaymentDetails($voucher, $em, $form->getData());
             $em->persist($voucher);
             $em->flush();
 
@@ -280,6 +286,37 @@ class VoucherController extends Controller
             'form' => $form->createView(),
             'submitted' => false,
         ]);
+    }
+
+    /**
+     * @param Voucher $voucher
+     * @param ObjectManager $em
+     * @param array $formData
+     */
+    protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, array $formData)
+    {
+        $payment = new Payment();
+        $product = '';
+        foreach ($formData['used_for'] as $usage) {
+            if ($usage == 'USE_FOR_MASSAGE') {
+                $product .= 'Massage ';
+            }
+            if ($usage == 'USE_FOR_FLOAT') {
+                $product .= 'Floating ';
+            }
+        }
+
+        $payment->setProduct($product);
+        $payment->setVoucherBought($voucher);
+        $payment->setAmount($formData['partial_amount']);
+        $payment->setEmployee($this->getUser());
+        $payment->setPaymentDate(new \DateTime());
+
+        $voucher->setPartialPayment($voucher->getPartialPayment() + $payment->getAmount());
+        $voucher->setRemainingValue($voucher->getRemainingValue() - $payment->getAmount());
+
+        $em->persist($payment);
+        $em->flush();
     }
 
     /**
