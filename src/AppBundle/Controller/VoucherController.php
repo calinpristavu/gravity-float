@@ -2,15 +2,20 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherUseType;
 use DateTime;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 /**
  * Class VoucherController
@@ -245,6 +250,7 @@ class VoucherController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
+            $this->savePaymentDetails($voucher, $em, $formData);
 
             return $this->render('floathamburg/voucheruse.html.twig', [
                 'form' => null,
@@ -256,6 +262,38 @@ class VoucherController extends Controller
             'form' => $form->createView(),
             'submitted' => false,
         ]);
+    }
+
+    /**
+     * @param Voucher $voucher
+     * @param ObjectManager $em
+     * @param array $formData
+     */
+    protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, array $formData)
+    {
+        $payment = new Payment();
+        $product = '';
+        if ($formData['usages'] === 'massage') {
+            if (!isset($formData['massage_type']) || !isset($formData['time_for_massage'])) {
+                throw new UndefinedOptionsException("Massage type or duration not set");
+            }
+
+            $product = 'Massage ' . $formData['massage_type'] . ' ' . $formData['time_for_massage'];
+        } else if ($formData['usages'] === 'floating') {
+            if (!isset($formData['time_for_floating'])) {
+                throw new UndefinedOptionsException("Floating duration not set");
+            }
+
+            $product = 'Floating ' . $formData['time_for_floating'];
+        }
+
+        $payment->setProduct($product);
+        $payment->setVoucherBought($voucher);
+        $payment->setAmount($formData['']);
+        $payment->setEmployee($this->getUser());
+
+        $em->persist($payment);
+        $em->flush();
     }
 
     /**
