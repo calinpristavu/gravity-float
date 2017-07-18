@@ -23,7 +23,12 @@
             {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }}
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
             {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'postal.charge'|trans }} NO DATA HERE YET <br />
+            {{ 'postal.charge'|trans }}
+            {% if voucher.includedPostalCharges %}
+                {{ 'included'|trans }}
+            {% else %}
+                {{ 'not.included'|trans }}
+            {% endif %}<br />
             {{ 'amount.used'|trans }} {{ voucher.partialPayment }} <br />
             {{ 'amount.remaining'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
             {{ 'created.by'|trans }} {{ voucher.author }} <br />
