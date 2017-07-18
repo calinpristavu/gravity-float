@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -137,8 +138,19 @@ class Voucher
      */
     protected $includedPostalCharges;
 
+    /**
+     * Bidirectional - One-To-Many (INVERSE SIDE)
+     * One Voucher can have many payments
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="voucherBought")
+     */
+    protected $payments;
+
     public function __construct()
     {
+        $this->payments = new ArrayCollection();
         $this->usages = array();
         $this->numberOfUsers = array();
 
@@ -442,5 +454,37 @@ class Voucher
     public function setIncludedPostalCharges($includedPostalCharges)
     {
         $this->includedPostalCharges = $includedPostalCharges;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPayments()
+    {
+        return $this->payments;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function addPayment($payment)
+    {
+        $this->payments->add($payment);
+
+        return $this;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function removePayment($payment)
+    {
+        $this->payments->removeElement($payment);
+
+        return $this;
     }
 }

@@ -62,6 +62,16 @@ class User extends BaseUser
 
     /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
+     * One User can create many payments
+     *
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Payment", mappedBy="employee")
+     */
+    protected $createdPayments;
+
+    /**
+     * Bidirectional - One-To-Many (INVERSE SIDE)
      * One User can be designated many vouchers
      *
      * @var ArrayCollection
@@ -87,6 +97,7 @@ class User extends BaseUser
 
         $this->createdVouchers = new ArrayCollection();
         $this->designatedVouchers = new ArrayCollection();
+        $this->createdPayments = new ArrayCollection();
 
         $this->name = "";
         $this->phone = "";
@@ -289,5 +300,37 @@ class User extends BaseUser
         parent::setEmailCanonical($email);
 
         $this->setUsernameCanonical($email);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCreatedPayments()
+    {
+        return $this->createdPayments;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function addCreatedPayment($payment)
+    {
+        $this->createdPayments->add($payment);
+
+        return $this;
+    }
+
+    /**
+     * @param Payment $payment
+     *
+     * @return $this
+     */
+    public function removeCreatedPayment($payment)
+    {
+        $this->createdPayments->removeElement($payment);
+
+        return $this;
     }
 }
