@@ -37,28 +37,41 @@ class VoucherController extends Controller
      */
     public function searchVoucherAction(Request $request)
     {
-        $searchForm = $this->createForm(SearchVoucherType::class);
+        if (!$request->get('page')) {
+            $request->request->set('page', 1);
+        }
 
+        $searchForm = $this->createForm(SearchVoucherType::class);
         $searchForm->handleRequest($request);
         if ($searchForm->isValid()) {
-            $matchedVouchers = $this->getDoctrine()
-                ->getRepository('AppBundle:Voucher')
-                ->getAllWithCode($searchForm->getData()['vouchercode']);
-            $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
+            $request->request->set('voucherCode', $searchForm->getData()['vouchercode']);
+        }
 
-            return $this->render('floathamburg/vouchersearch.html.twig', [
-                'searchForm' => $searchForm->createView(),
-                'matchedVouchers' => $matchedVouchers,
-                'submitted' => true,
-                'shops' => $shops,
-            ]);
+        $filters = [
+            'page' => (int)$request->get('page'),
+            'items_per_page' => self::$NUMBER_OF_VOUCHERS_PER_PAGE,
+            'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
+        ];
+
+        $allVouchersCount = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
+        if ($request->get('voucherCode') !== null) {
+            $allVouchersCount = $this->getDoctrine()
+                ->getRepository('AppBundle:Voucher')
+                ->countAllWithCode($request->get('voucherCode'));
+        }
+
+        $vouchers = $this->get('voucher.finder')->setFilters($filters)->getVouchers();
+        $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
+        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0) {
+            $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
         }
 
         return $this->render('floathamburg/vouchersearch.html.twig', [
             'searchForm' => $searchForm->createView(),
-            'voucher' => null,
-            'submitted' => false,
-            'shops' => null,
+            'matchedVouchers' => $vouchers,
+            'numberOfPages' => $nrOfPages,
+            'currentPage' => $request->get('page'),
+            'searchedCode' => $request->get('voucherCode'),
         ]);
     }
 
