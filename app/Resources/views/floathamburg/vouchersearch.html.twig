@@ -12,7 +12,8 @@
     {{ form_end(searchForm) }}
 
     {% if submitted == true %}
-        {% if voucher != null %}
+        {% for voucher in matchedVouchers %}
+            {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
             {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
             {{ 'created.by'|trans }} {{ voucher.author }} <br />
@@ -24,14 +25,15 @@
 
             {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
             {{ voucher.shopWhereCreated.name }}
-            {{ voucher.shopWhereCreated.address }} <br />
+            {{ voucher.shopWhereCreated.address }}
             <br />
             <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'use.voucher'|trans }}</a> <br />
             <a href="">{{ 'print.voucher'|trans }}</a>
             <br />
+            <br />
         {% else %}
             {{ 'voucher.with.code.doesnt.exist'|trans }}
-        {% endif %}
+        {% endfor %}
     {% endif %}
 
     <br />

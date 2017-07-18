@@ -41,15 +41,14 @@ class VoucherController extends Controller
 
         $searchForm->handleRequest($request);
         if ($searchForm->isValid()) {
-            $voucherCode = $searchForm->getData()['vouchercode'];
-            $voucher = $this->getDoctrine()
+            $matchedVouchers = $this->getDoctrine()
                 ->getRepository('AppBundle:Voucher')
-                ->findOneBy(['voucherCode' => $voucherCode]);
+                ->getAllWithCode($searchForm->getData()['vouchercode']);
             $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
 
             return $this->render('floathamburg/vouchersearch.html.twig', [
                 'searchForm' => $searchForm->createView(),
-                'voucher' => $voucher,
+                'matchedVouchers' => $matchedVouchers,
                 'submitted' => true,
                 'shops' => $shops,
             ]);

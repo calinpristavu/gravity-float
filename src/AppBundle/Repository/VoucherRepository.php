@@ -20,4 +20,18 @@ class VoucherRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    public function getAllWithCode(string $code)
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.voucherCode LIKE :code')
+            ->setParameter('code', '%' . $code . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }
