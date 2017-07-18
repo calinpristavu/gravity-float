@@ -79,10 +79,7 @@ class VoucherType extends AbstractType
             ))
             ->add('time_for_floating', ChoiceType::class, array(
                 'choices' => array(
-                    '30 Minutes' => '30_minutes',
-                    '45 Minutes' => '45_minutes',
                     '60 Minutes' => '60_minutes',
-                    '90 Minutes' => '90_minutes',
                 ),
                 'mapped' => false,
                 'required' => false,
