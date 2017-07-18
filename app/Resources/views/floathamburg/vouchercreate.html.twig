@@ -66,12 +66,15 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
 
-            {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
-            <div class="interactive hidden" data-managed-by="voucher_onlineVoucher">
-                {{ form_row(form.orderNumber) }}
-                {{ form_row(form.invoiceNumber) }}
-                {{ form_row(form.includedPostalCharges) }}
-            </div>
+            {% if app.user.canCreateOnlineVouchers %}
+                {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
+                <div class="interactive hidden" data-managed-by="voucher_onlineVoucher">
+                    {{ form_row(form.orderNumber) }}
+                    {{ form_row(form.invoiceNumber) }}
+                    {{ form_row(form.includedPostalCharges) }}
+                    <hr>
+                </div>
+            {% endif %}
             {{ form_row(form.remainingValue) }}
             {{ form_row(form.numberOfUsers) }}
             <div class="row">

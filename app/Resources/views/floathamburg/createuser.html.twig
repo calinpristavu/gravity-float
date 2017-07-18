@@ -3,6 +3,7 @@
 {% block body %}
     {% if submitted %}
         {{ 'user.successfully.created'|trans }} <br />
+        <a href="{{ path('user_management') }}">{{ 'back'|trans }}</a>
     {% else %}
         {{ form_start(form) }}
         {{ form_errors(form) }}

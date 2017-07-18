@@ -2,7 +2,7 @@ all.users: All users
 name: Name
 email: Email
 shops: Shops
-no.shops: __no.shops
+no.shops: No shops
 vouchers.created: Vouchers created
 user.type: User type
 administrator: Administrator
@@ -26,14 +26,14 @@ remaining.sum: Remaining ammount
 you.can.use.this.voucher.in.shops: You can use this voucher in shops
 use.voucher: Use voucher
 print.voucher: Print
-voucher.with.code.doesnt.exist: __voucher.with.code.doesnt.exist
+voucher.with.code.doesnt.exist: No vouchers matching that code.
 voucher.preview: Preview
 voucher.value: Value
 can.be.used.for: Can be used for
 no.usages.set: No usages set
-you.can.use.voucher.in.any.shop: __you.can.use.voucher.in.any.shop
+you.can.use.voucher.in.any.shop: You can use this voucher in any shop.
 save.voucher: Save
-edit: Save
+edit: Edit
 print: Print
 create.voucher: Create new Voucher
 button.voucher.create: Create Voucher
@@ -58,3 +58,7 @@ user.management: User management
 user.successfully.edited: User successfully edited
 user.successfully.created: User successfully created
 voucher.saved.successfully: Voucher Saved!
+included: Included
+not.included: Not Included
+details: Details
+voucher.details: Voucher details

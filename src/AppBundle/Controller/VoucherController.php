@@ -10,12 +10,11 @@ use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherUseType;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 /**
  * Class VoucherController
@@ -42,29 +41,41 @@ class VoucherController extends Controller
      */
     public function searchVoucherAction(Request $request)
     {
-        $searchForm = $this->createForm(SearchVoucherType::class);
+        if (!$request->get('page')) {
+            $request->request->set('page', 1);
+        }
 
+        $searchForm = $this->createForm(SearchVoucherType::class);
         $searchForm->handleRequest($request);
         if ($searchForm->isValid()) {
-            $voucherCode = $searchForm->getData()['vouchercode'];
-            $voucher = $this->getDoctrine()
-                ->getRepository('AppBundle:Voucher')
-                ->findOneBy(['voucherCode' => $voucherCode]);
-            $shops = $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll();
+            $request->request->set('voucherCode', $searchForm->getData()['vouchercode']);
+        }
 
-            return $this->render('floathamburg/vouchersearch.html.twig', [
-                'searchForm' => $searchForm->createView(),
-                'voucher' => $voucher,
-                'submitted' => true,
-                'shops' => $shops,
-            ]);
+        $filters = [
+            'page' => (int)$request->get('page'),
+            'items_per_page' => self::$NUMBER_OF_VOUCHERS_PER_PAGE,
+            'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
+        ];
+
+        $allVouchersCount = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
+        if ($request->get('voucherCode') !== null) {
+            $allVouchersCount = $this->getDoctrine()
+                ->getRepository('AppBundle:Voucher')
+                ->countAllWithCode($request->get('voucherCode'));
+        }
+
+        $vouchers = $this->get('voucher.finder')->setFilters($filters)->getVouchers();
+        $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
+        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0) {
+            $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
         }
 
         return $this->render('floathamburg/vouchersearch.html.twig', [
             'searchForm' => $searchForm->createView(),
-            'voucher' => null,
-            'submitted' => false,
-            'shops' => null,
+            'matchedVouchers' => $vouchers,
+            'numberOfPages' => $nrOfPages,
+            'currentPage' => $request->get('page'),
+            'searchedCode' => $request->get('voucherCode'),
         ]);
     }
 
@@ -229,6 +240,18 @@ class VoucherController extends Controller
     public function resetFiltersAction()
     {
         return $this->redirectToRoute('voucher_all', ['page' => 1]);
+    }
+
+    /**
+     * @Route("/voucher/{id}", name="voucher_details")
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
+     * @Template("floathamburg/voucher_details.html.twig")
+     * @param Voucher $voucher
+     * @return array
+     */
+    public function voucherAction(Voucher $voucher)
+    {
+        return ['voucher' => $voucher];
     }
 
     /**

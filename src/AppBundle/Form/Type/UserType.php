@@ -35,7 +35,7 @@ class UserType extends AbstractType
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
                 'invalid_message' => 'passwords.must.match',
-                'required' => true,
+                'required' => $options['isPasswordRequired'],
                 'first_options'  => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password'),
             ))
@@ -73,6 +73,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => User::class,
+            'isPasswordRequired' => true,
         ));
     }
 }

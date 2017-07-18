@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{% trans %}voucher.details{% endtrans %}</h2>
+
+    <div class="create-voucher">
+        <div class="row">
+            <div class="col-md-8 col-xs-8">
+                {{ 'voucher.code' | trans }} {{ voucher.voucherCode }} <br/>
+                {{ 'creation.date' | trans }} {{ voucher.creationDate|date("m/d/Y") }} <br/>
+                {{ 'expiration.date' | trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br/>
+                {{ 'created.by' | trans }} {{ voucher.author }}
+            </div>
+            <div class="col-md-4 col-xs-4">
+                <svg id="barcode" data-code="{{ voucher.voucherCode }}"></svg>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {{ 'voucher.value' | trans }} {{ voucher.originalValue }} &euro; <br/>
+                {{ 'can.be.used.for' | trans }} {{ voucher.usages | join(', ') | default('') }}<br/>
+                {{ 'you.can.use.voucher.in.any.shop' | trans }} <br/>
+                {{ voucher.shopWhereCreated.name }}<br/>
+                {{ voucher.shopWhereCreated.address }} <br/>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row hidden-print">
+        <div class="col-md-12 text-center">
+            <a href="{{ path('voucher_save') }}" class="btn btn-success">
+                {% trans %}button.voucher.create{% endtrans %}
+            </a>
+            <a href="{{ path('voucher_edit') }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
+            <a href="" class="btn btn-default">{{ 'print'|trans }}</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/barcode.js') }}"></script>
+{% endblock %}

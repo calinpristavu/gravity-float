@@ -15,35 +15,39 @@
     {% if submitted %}
         {{ 'user.successfully.updated'|trans }} <br />
     {% else %}
-        {{ form_start(form) }}
-            {{ form_errors(form) }}
+        <div class="row">
+            <div class="col-md-offset-1">
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
 
-            {{ form_row(form.name) }}
-            {{ form_row(form.phone) }}
-            {{ form_row(form.email) }}
-            {{ form_row(form.plainPassword) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword) }}
 
-            {{ form_widget(form.canCreateOnlineVouchers, {'attr': {'class': 'hidden'}}) }}
-            {{ form_row(form.shop, {'attr': {'class': 'hidden'}}) }}
-            {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
+                {{ form_widget(form.canCreateOnlineVouchers, {'attr': {'class': 'hidden'}}) }}
+                {{ form_row(form.shop, {'attr': {'class': 'hidden'}}) }}
+                {{ form_row(form.roles, {'attr': {'class': 'hidden'}}) }}
 
-            {% if app.user.canCreateOnlineVouchers %}
-                {{ 'can.create.online.vouchers'|trans }}
-            {% else %}
-                {{ 'cannot.create.online.vouchers'|trans }}
-            {% endif %}
+                {% if app.user.canCreateOnlineVouchers %}
+                    {{ 'can.create.online.vouchers'|trans }}
+                {% else %}
+                    {{ 'cannot.create.online.vouchers'|trans }}
+                {% endif %}
 
-            <br />
+                <br/>
 
-            {{ 'Assigned to '|trans }} {{ app.user.shop.name }}
-            <br />
+                {{ 'Assigned to '|trans }} {{ app.user.shop.name }}
+                <br/>
 
-            {{ form_row(form.save, { 'label': 'Save' }) }}
-        {{ form_end(form) }}
+                {{ form_row(form.save, { 'label': 'Save' }) }}
+                {{ form_end(form) }}
 
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('user_management', {'page': 1}) }}" >{{ 'user.management'|trans }}</a>
-        {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('user_management', {'page': 1}) }}">{{ 'user.management'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
     {% endif %}
 
     <a href="{{ path('voucher_homepage') }}" >{{ 'back'|trans }}</a>
