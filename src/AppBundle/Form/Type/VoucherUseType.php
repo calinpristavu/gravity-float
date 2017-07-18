@@ -38,7 +38,8 @@ class VoucherUseType extends AbstractType
                 ),
                 'multiple' => true,
                 'expanded' => true,
-                'required' => false,
+                'required' => true,
+                'label' => 'use.for'
             ))
             ->add('partial_amount', MoneyType::class, [
                 'required' => false,

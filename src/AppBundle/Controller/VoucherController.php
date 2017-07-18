@@ -93,18 +93,18 @@ class VoucherController extends Controller
         }
 
         $voucher = new Voucher();
-        $this->fillVoucherDetails($voucher);
-        $voucher->setCreationDate(new DateTime());
-        if ($voucher->isIncludedPostalCharges()) {
-            $voucher->setRemainingValue($voucher->getRemainingValue() - 1.5);
-        }
-        $voucher->setVoucherCode(
-            $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
-        );
 
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $this->fillVoucherDetails($voucher);
+            $voucher->setCreationDate(new DateTime());
+            if ($voucher->isIncludedPostalCharges()) {
+                $voucher->setRemainingValue($voucher->getRemainingValue() - 1.5);
+            }
+            $voucher->setVoucherCode(
+                $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
+            );
             $this->get('session')->set('voucher', $voucher);
             $usages = $voucher->getUsages();
             foreach ($usages as $key=>$usage) {
@@ -308,7 +308,11 @@ class VoucherController extends Controller
 
         $payment->setProduct($product);
         $payment->setVoucherBought($voucher);
-        $payment->setAmount($formData['partial_amount']);
+        if ($formData['usage'] == 'COMPLETE_USE') {
+            $payment->setAmount($voucher->getRemainingValue());
+        } else {
+            $payment->setAmount($formData['partial_amount']);
+        }
         $payment->setEmployee($this->getUser());
         $payment->setPaymentDate(new \DateTime());
 

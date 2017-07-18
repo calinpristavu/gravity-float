@@ -29,6 +29,7 @@ class UserController extends Controller
 
         $form = $this->createForm(UserType::class, $user, [
             'isPasswordRequired' => false,
+            'createOnlineVouchersLabel' => false,
         ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -146,14 +147,15 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user-management/suspend-user/{id}/{value}", name="suspend_user")
+     * @Route("/user-management/suspend-user/{id}/{value}/{page}", name="suspend_user")
      *
      * @param User $user
      * @param bool $value
+     * @param string $page
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function suspendUserAction(User $user, bool $value)
+    public function suspendUserAction(User $user, bool $value, string $page = '1')
     {
         if ($user === null) {
             throw new \UnexpectedValueException("Cannot suspend user. User is invalid!");
@@ -163,6 +165,8 @@ class UserController extends Controller
         $userManager = $this->container->get('fos_user.user_manager');
         $userManager->updateUser($user, true);
 
-        return $this->redirectToRoute('user_management');
+        return $this->redirectToRoute('user_management', [
+            'page' => $page,
+        ]);
     }
 }
