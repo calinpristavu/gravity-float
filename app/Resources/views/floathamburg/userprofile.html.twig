@@ -52,4 +52,10 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script>
+        $( document ).ready(function() {
+            $('#user_plainPassword_first').removeAttr('required');
+            $('#user_plainPassword_second').removeAttr('required');
+        });
+    </script>
 {% endblock %}
