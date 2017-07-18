@@ -8,3 +8,7 @@
 .form-group {
     max-width: 800px;
 }
+
+hr {
+    border-color: #000;
+}

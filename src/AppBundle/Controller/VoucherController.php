@@ -8,7 +8,9 @@ use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherUseType;
 use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -226,6 +228,16 @@ class VoucherController extends Controller
     public function resetFiltersAction()
     {
         return $this->redirectToRoute('voucher_all', ['page' => 1]);
+    }
+
+    /**
+     * @Route("/voucher/{id}", name="voucher_details")
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
+     * @Template("floathamburg/voucher_details.html.twig")
+     */
+    public function voucherAction(Voucher $voucher)
+    {
+        return ['voucher' => $voucher];
     }
 
     /**

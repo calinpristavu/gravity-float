@@ -5,53 +5,64 @@
 {% endblock %}
 
 {% block body %}
-    {{ 'all.vouchers'|trans }} <br />
+    <h2>{{ 'all.vouchers'|trans }}</h2>
 
     {{ form_start(form) }}
-    {{ form_errors(form) }}
-
-    {{ form_row(form.created_at) }}
-
-    {{ form_row(form.search, { 'label': 'Search' }) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.created_at) }}
+        {{ form_row(form.search, { 'label': 'Search' }) }}
     {{ form_end(form) }}
 
-    <a href="{{ path('voucher_all_reset_filters') }}">{{ 'reset.filter'|trans }}</a> <br />
-
-    {% for voucher in vouchers %}
-        <p>
-            {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
-            {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }}
-            {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
-            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'postal.charge'|trans }}
-            {% if voucher.includedPostalCharges %}
-                {{ 'included'|trans }}
-            {% else %}
-                {{ 'not.included'|trans }}
-            {% endif %}<br />
-            {{ 'amount.used'|trans }} {{ voucher.partialPayment }} <br />
-            {{ 'amount.remaining'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
-            {{ 'created.by'|trans }} {{ voucher.author }} <br />
-            {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
-        </p>
-    {% else %}
-        <p>
-            {{ 'no.vouchers'|trans }}
-        </p>
-    {% endfor %}
-
-    {% if currentPage > 1 %}
-        <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
-    {% endif %}
-
-    {% if currentPage < numberOfPages %}
-        <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}" > {{ 'next.page'|trans }} </a>
-    {% endif %}
-
-    <a href="#"> {{ 'print.selected.vouchers'|trans }} </a>
-    <a href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br />
-
     <a href="{{ path('voucher_homepage') }}">{{ 'back'|trans }}</a>
+    <a href="{{ path('voucher_all_reset_filters') }}">{{ 'reset.filter'|trans }}</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>{{ 'voucher.code'|trans }}</th>
+                    <th>{{ 'creation.date'|trans }}</th>
+                    <th>{{ 'expiration.date'|trans }}</th>
+                    <th>{{ 'original.voucher.value'|trans }}</th>
+                    <th>{{ 'postal.charge'|trans }}</th>
+                    <th>{{ 'amount.used'|trans }}</th>
+                    <th>{{ 'amount.remaining'|trans }}</th>
+                    <th>{{ 'created.by'|trans }}</th>
+                    <th>{{ 'created.at'|trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for voucher in vouchers %}
+                    <tr>
+                        <td>{{ voucher.voucherCode }}</td>
+                        <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
+                        <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
+                        <td>{{ voucher.originalValue }}</td>
+                        <td>{{ voucher.includedPostalCharges ? 'included'|trans : 'not.included'|trans }}</td>
+                        <td>{{ voucher.partialPayment }}</td>
+                        <td>{{ voucher.originalValue - voucher.partialPayment }}</td>
+                        <td>{{ voucher.author }}</td>
+                        <td>{{ voucher.shopWhereCreated.name }}</td>
+                        <td>
+                            <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if currentPage > 1 %}
+            <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
+        {% endif %}
+
+        {% if currentPage < numberOfPages %}
+            <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}"> {{ 'next.page'|trans }} </a>
+        {% endif %}
+    </div>
+
+    <a class="btn btn-default" href="#"> {{ 'print.selected.vouchers'|trans }} </a>
+    <a class="btn btn-default" href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br />
 {% endblock %}
 
 {% block javascripts %}
