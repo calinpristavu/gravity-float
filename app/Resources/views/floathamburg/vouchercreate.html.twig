@@ -7,9 +7,26 @@
         <div class="create-voucher">
             <div class="row">
                 <div class="col-md-8">
+                    {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
+                    {% if voucher.onlineVoucher %}
+                        {{ 'is.online.voucher' }} <br />
+                        {{ 'voucher.order.number'|trans }} {{ voucher.orderNumber }} <br />
+                        {{ 'voucher.invoice.number'|trans }} {{ voucher.invoiceNumber }} <br />
+                        {{ 'is.included.postal.charges'|trans }}
+                        {% if voucher.includedPostalCharges %}
+                            {{ 'yes'|trans }} <br />
+                        {% else %}
+                            {{ 'no'|trans }} <br />
+                        {% endif %}
+                    {% endif %}
                     {{ 'creation.date'|trans }} {{ voucher.creationDate|date("m/d/Y") }} <br/>
                     {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br/>
-                    {{ 'created.by'|trans }} {{ voucher.author }}
+                    {{ 'created.by'|trans }} {{ voucher.author }} <br />
+                    {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
+                    {{ 'number.of.users' }}
+                    {% for user in voucher.numberOfUsers %}
+                        {{ user }}
+                    {% endfor %} <br />
                 </div>
                 <div class="col-md-4">
                     <svg id="barcode" data-code="{{ voucher.voucherCode }}"></svg>
@@ -17,7 +34,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    {{ 'voucher.value'|trans }} {{ voucher.originalValue }} <br />
+                    {{ 'voucher.value'|trans }} {{ voucher.remainingValue }} <br />
+                    {{ 'voucher.method.of.payment'|trans }} {{ voucher.methodOfPayment }} <br />
                     {{ 'can.be.used.for'|trans }}
                     {% for usage in voucher.usages %}
                         {{ usage }}
@@ -54,7 +72,7 @@
                 {{ form_row(form.invoiceNumber) }}
                 {{ form_row(form.includedPostalCharges) }}
             </div>
-            {{ form_row(form.originalValue) }}
+            {{ form_row(form.remainingValue) }}
             {{ form_row(form.numberOfUsers) }}
             <div class="row">
                 <div class="col-md-3">

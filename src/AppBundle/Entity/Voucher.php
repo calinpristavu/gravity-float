@@ -76,7 +76,7 @@ class Voucher
      *
      * @ORM\Column(type="float")
      */
-    protected $originalValue;
+    protected $remainingValue;
 
     /**
      * @var float
@@ -259,19 +259,19 @@ class Voucher
     /**
      * @return float
      */
-    public function getOriginalValue()
+    public function getRemainingValue()
     {
-        return $this->originalValue;
+        return $this->remainingValue;
     }
 
     /**
-     * @param float $originalValue
+     * @param float $remainingValue
      *
      * @return $this
      */
-    public function setOriginalValue($originalValue)
+    public function setRemainingValue($remainingValue)
     {
-        $this->originalValue = $originalValue;
+        $this->remainingValue = $remainingValue;
 
         return $this;
     }

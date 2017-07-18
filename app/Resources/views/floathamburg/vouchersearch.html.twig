@@ -13,14 +13,38 @@
 
     {% if submitted == true %}
         {% if voucher != null %}
+            {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
+            {% if voucher.onlineVoucher %}
+                {{ 'is.online.voucher' }} <br />
+                {{ 'voucher.order.number'|trans }} {{ voucher.orderNumber }} <br />
+                {{ 'voucher.invoice.number'|trans }} {{ voucher.invoiceNumber }} <br />
+                {{ 'is.included.postal.charges'|trans }}
+                {% if voucher.includedPostalCharges %}
+                    {{ 'yes'|trans }} <br />
+                {% else %}
+                    {{ 'no'|trans }} <br />
+                {% endif %}
+            {% endif %}
             {{ 'creation.date'|trans }} {{ voucher.creationDate|date("d/m/Y") }} <br />
             {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("d/m/Y") }} <br />
             {{ 'created.by'|trans }} {{ voucher.author }} <br />
             {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
-            {{ 'created.for'|trans }} {{ voucher.designatedCustomer }} <br />
-            {{ 'original.voucher.value'|trans }} {{ voucher.originalValue }} <br />
-            {{ 'partial.payment'|trans }} {{ voucher.partialPayment }} <br />
-            {{ 'remaining.sum'|trans }} {{ voucher.originalValue - voucher.partialPayment }} <br />
+            {{ 'number.of.users' }}
+            {% for user in voucher.numberOfUsers %}
+                {{ user }}
+            {% endfor %} <br />
+            {{ 'usages'|trans }}
+            {% for usage in voucher.usages %}
+                {{ usage }}
+            {% endfor %} <br />
+            {{ 'original.value'|trans }} {{ voucher.remainingValue +  voucher.partialPayment }} <br />
+            {{ 'remaining.value'|trans }} {{ voucher.remainingValue }} <br />
+            {{ 'voucher.method.of.payment'|trans }} {{ voucher.methodOfPayment }} <br />
+            {{ 'partial.payment'|trans }} <br />
+            {% for payment in voucher.payments %}
+                - {{ payment }}
+            {% endfor %} <br />
+            {{ 'remaining.sum'|trans }} {{ voucher.remainingValue }} <br />
 
             {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
             {{ voucher.shopWhereCreated.name }}

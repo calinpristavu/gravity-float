@@ -41,6 +41,8 @@ class Payment
 
     /**
      * @var float
+     *
+     * @ORM\Column(type="float")
      */
     protected $amount;
 
@@ -175,5 +177,16 @@ class Payment
         $this->voucherBought = $voucherBought;
 
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __toString()
+    {
+        return $this->getAmount() . ' ' .
+                $this->getProduct() . ' ' .
+                $this->getPaymentDate()->format('m/d/Y') . ' ' .
+                $this->getEmployee();
     }
 }
