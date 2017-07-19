@@ -4,6 +4,7 @@
     {% if submitted %}
         <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
     {% else %}
+        <h2>Voucher {{ voucher.voucherCode }}</h2>
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.usage, { attr: { class: "manager" } }) }}
