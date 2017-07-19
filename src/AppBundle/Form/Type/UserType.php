@@ -41,6 +41,7 @@ class UserType extends AbstractType
             ))
             ->add('canCreateOnlineVouchers', CheckboxType::class, array(
                 'required' => false,
+                'label' => $options['createOnlineVouchersLabel']
             ))
             ->add('shop', EntityType::class, array(
                 'class' => 'AppBundle:Shop',
@@ -74,6 +75,7 @@ class UserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => User::class,
             'isPasswordRequired' => true,
+            'createOnlineVouchersLabel' => 'Can create online vouchers',
         ));
     }
 }
