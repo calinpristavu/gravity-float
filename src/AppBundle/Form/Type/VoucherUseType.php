@@ -44,7 +44,6 @@ class VoucherUseType extends AbstractType
             ->add('partial_amount', MoneyType::class, [
                 'required' => false,
             ])
-            ->add('use', SubmitType::class, array('label' => "use"))
         ;
     }
 

@@ -1,27 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block body %}
     {% if submitted %}
-        {{ 'you.have.successfully.used.the.voucher'|trans }}
+        <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
     {% else %}
         {{ form_start(form) }}
         {{ form_errors(form) }}
-        {{ form_row(form.usage) }}
+        {{ form_row(form.usage, { attr: { class: "manager" } }) }}
+        <div class="interactive" data-managed-by="voucher_use_usage" data-manager-val="1">
+            {{ form_row(form.partial_amount) }}
+        </div>
         {{ form_row(form.used_for) }}
-        {{ form_row(form.partial_amount) }}
-        {{ form_row(form.use, { 'label': 'Use' }) }}
+        <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
+        <a class="btn btn-default" href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'back'|trans }}</a>
         {{ form_end(form) }}
     {% endif %}
-
-    <br />
-    <a href="{{ path('voucher_search') }}">{{ 'back'|trans }}</a>
-
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/barcode.js') }}"></script>
 {% endblock %}

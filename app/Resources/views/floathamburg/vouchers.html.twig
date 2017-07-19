@@ -45,6 +45,8 @@
                         <td>{{ voucher.author }}</td>
                         <td>{{ voucher.shopWhereCreated.name }}</td>
                         <td>
+                            <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
+                            |
                             <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a>
                         </td>
                     </tr>

@@ -259,8 +259,6 @@ class VoucherController extends Controller
      *
      * @param Request $request
      * @param Voucher $voucher
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function useVoucherAction(Request $request, Voucher $voucher = null)
     {
@@ -285,6 +283,7 @@ class VoucherController extends Controller
         return $this->render('floathamburg/voucheruse.html.twig', [
             'form' => $form->createView(),
             'submitted' => false,
+            'voucher' => $voucher
         ]);
     }
 

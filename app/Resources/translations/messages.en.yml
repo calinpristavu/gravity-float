@@ -62,3 +62,9 @@ included: Included
 not.included: Not Included
 details: Details
 voucher.details: Voucher details
+you.have.successfully.used.the.voucher: You have successfully used the voucher!
+complete.use: Complete use
+partial.use: Partial use
+massage: Massage
+float: Float
+use.for: Use for
