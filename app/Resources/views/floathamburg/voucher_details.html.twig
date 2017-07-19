@@ -17,7 +17,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                {{ 'voucher.value' | trans }} {{ voucher.originalValue }} &euro; <br/>
+                {{ 'voucher.value' | trans }} {{ voucher.remainingValue }} &euro; <br/>
                 {{ 'can.be.used.for' | trans }} {{ voucher.usages | join(', ') | default('') }}<br/>
                 {{ 'you.can.use.voucher.in.any.shop' | trans }} <br/>
                 {{ voucher.shopWhereCreated.name }}<br/>
