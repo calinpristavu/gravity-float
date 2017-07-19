@@ -184,9 +184,9 @@ class Payment
      */
     public function __toString()
     {
-        return $this->getAmount() . ' ' .
-                $this->getProduct() . ' ' .
-                $this->getPaymentDate()->format('m/d/Y') . ' ' .
+        return $this->getAmount() . '€ used on ' .
+                $this->getProduct() . ' on ' .
+                $this->getPaymentDate()->format('m/d/Y') . ' by employee ' .
                 $this->getEmployee();
     }
 }

@@ -46,9 +46,9 @@
                             <a href="{{ path('edit_user', {'id': user.id}) }}">{{ 'edit.user'|trans }}</a>
                             |
                             {% if user.enabled %}
-                                <a href="{{ path('suspend_user', {'id': user.id, 'value':0 }) }}">{{ 'suspend.user'|trans }}</a>
+                                <a href="{{ path('suspend_user', {'id': user.id, 'value':0, 'page': currentPage }) }}">{{ 'suspend.user'|trans }}</a>
                             {% else %}
-                                <a href="{{ path('suspend_user', {'id': user.id, 'value':1 }) }}">{{ 'unsuspend.user'|trans }}</a>
+                                <a href="{{ path('suspend_user', {'id': user.id, 'value':1, 'page': currentPage }) }}">{{ 'unsuspend.user'|trans }}</a>
                             {% endif %}
                         </td>
                     </tr>

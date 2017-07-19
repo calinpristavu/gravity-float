@@ -14,7 +14,7 @@
                         {{ 'voucher.invoice.number'|trans }} {{ voucher.invoiceNumber }} <br />
                         {{ 'is.included.postal.charges'|trans }}
                         {% if voucher.includedPostalCharges %}
-                            {{ 'yes'|trans }} <br />
+                            {{ 'yes'|trans }} {{ '1.5.euros.tax.has.been.applied.to.voucher.value' }} <br />
                         {% else %}
                             {{ 'no'|trans }} <br />
                         {% endif %}
@@ -56,7 +56,6 @@
                     {% trans %}button.voucher.create{% endtrans %}
                 </a>
                 <a href="{{ path('voucher_edit') }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
-                <a href="" class="btn btn-default">{{ 'print'|trans }}</a>
             </div>
         </div>
     {% else %}
@@ -73,6 +72,16 @@
                     {{ form_row(form.invoiceNumber) }}
                     {{ form_row(form.includedPostalCharges) }}
                     <hr>
+                </div>
+            {% else %}
+                <div class="hidden">
+                    {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
+                    <div class="interactive hidden" data-managed-by="voucher_onlineVoucher">
+                        {{ form_row(form.orderNumber) }}
+                        {{ form_row(form.invoiceNumber) }}
+                        {{ form_row(form.includedPostalCharges) }}
+                        <hr>
+                    </div>
                 </div>
             {% endif %}
             {{ form_row(form.remainingValue) }}
