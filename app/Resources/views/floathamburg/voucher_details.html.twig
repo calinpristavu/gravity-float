@@ -58,7 +58,9 @@
     <br>
     <div class="row hidden-print">
         <div class="col-md-12 text-center">
-            <a href="{{ path('voucher_edit') }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('voucher_edit') }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -43,7 +43,12 @@
                         <td>{{ voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
-                        <td>{{ voucher.shopWhereCreated.name }}</td>
+                        <td>
+                            {{ voucher.shopWhereCreated.name }}
+                            {% if voucher.onlineVoucher %}
+                                {{ 'online'|trans }}
+                            {% endif %}
+                        </td>
                         <td>
                             <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
                             |
