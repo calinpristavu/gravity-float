@@ -117,4 +117,25 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
+    <script>
+        $( document ).ready(function() {
+            $( "#voucher_usages_0" ).click(function() {
+                if ($("#voucher_usages_0").is(':checked')) {
+                    $("#voucher_massage_type").attr("required", true);
+                } else {
+                    $("#voucher_massage_type").attr("required", false);
+                }
+            });
+
+            $( "#voucher_onlineVoucher" ).click(function() {
+                if ($("#voucher_onlineVoucher").is(':checked')) {
+                    $("#voucher_orderNumber").attr("required", true);
+                    $("#voucher_invoiceNumber").attr("required", true);
+                } else {
+                    $("#voucher_orderNumber").attr("required", false);
+                    $("#voucher_invoiceNumber").attr("required", false);
+                }
+            });
+        });
+    </script>
 {% endblock %}

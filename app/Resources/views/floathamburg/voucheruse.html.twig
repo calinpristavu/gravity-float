@@ -22,4 +22,15 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
+    <script>
+        $( document ).ready(function() {
+            $( "#voucher_use_usage_1" ).click(function() {
+                $("#voucher_use_partial_amount").attr("required", true);
+            });
+
+            $( "#voucher_use_usage_0" ).click(function() {
+                $("#voucher_use_partial_amount").attr("required", false);
+            });
+        });
+    </script>
 {% endblock %}
