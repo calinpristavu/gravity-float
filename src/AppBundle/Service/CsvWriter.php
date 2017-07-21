@@ -104,6 +104,10 @@ class CsvWriter
     {
         $userData = $this->fetchVoucherData();
         while ($row = $userData->fetch()) {
+            $createdAt = $this->shopRepository->find($row['shop_where_created_id'])->getName();
+            if ($row['online_voucher']) {
+                $createdAt .= ' Online';
+            }
             fputcsv($handle, [
                 $row['voucher_code'],
                 $row['creation_date'],
@@ -113,7 +117,7 @@ class CsvWriter
                 $row['partial_payment'],
                 $row['remaining_value'],
                 $this->userRepository->find($row['author_id'])->getName(),
-                $this->shopRepository->find($row['shop_where_created_id'])->getName(),
+                $createdAt,
             ], ';');
         }
     }
