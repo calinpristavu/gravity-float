@@ -6,24 +6,26 @@
     <div class="create-voucher">
         <div class="row">
             <div class="col-md-8">
-                {{ 'voucher.code'|trans }} {{ voucher.voucherCode }} <br />
-                {% if voucher.onlineVoucher %}
-                    {{ 'is.online.voucher' }} <br />
-                    {{ 'voucher.order.number'|trans }} {{ voucher.orderNumber }} <br />
-                    {{ 'voucher.invoice.number'|trans }} {{ voucher.invoiceNumber }} <br />
-                    {{ 'is.included.postal.charges'|trans }}
-                    {% if voucher.includedPostalCharges %}
-                        {{ 'yes'|trans }} {{ '1.5.euros.tax.has.been.applied.to.original.voucher.value' }} <br />
-                    {% else %}
-                        {{ 'no'|trans }} <br />
-                    {% endif %}
-                {% endif %}
-                {{ 'creation.date'|trans }} {{ voucher.creationDate|date("m/d/Y") }} <br/>
-                {{ 'expiration.date'|trans }} {{ voucher.expirationDate|date("m/d/Y") }} <br/>
-                <div class="hidden-print">{{ 'created.by'|trans }} {{ voucher.author }}</div> <br />
-                {{ 'created.at'|trans }} {{ voucher.shopWhereCreated.name }} <br />
+                {{ 'voucher.code'|trans }}: {{ voucher.voucherCode }} <br />
                 <div class="hidden-print">
-                    {{ 'number.of.users' }}
+                    {% if voucher.onlineVoucher %}
+                        {{ 'online.voucher'|trans }} <br />
+                        {{ 'voucher.order.number'|trans }}: {{ voucher.orderNumber }} <br />
+                        {{ 'voucher.invoice.number'|trans }}: {{ voucher.invoiceNumber }} <br />
+                        {{ 'is.included.postal.charges'|trans }}:
+                        {% if voucher.includedPostalCharges %}
+                            {{ 'yes'|trans }} 1.5€ <br />
+                        {% else %}
+                            {{ 'no'|trans }} <br />
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("m/d/Y") }} <br/>
+                {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }} <br/>
+                <div class="hidden-print">{{ 'created.by'|trans }} {{ voucher.author }}</div> <br />
+                {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br />
+                <div class="hidden-print">
+                    {{ 'number.of.users'|trans }}:
                     {% for user in voucher.numberOfUsers %}
                         {{ user }}
                     {% endfor %} <br />
@@ -35,23 +37,27 @@
         </div>
         <div class="row hidden-print">
             <div class="col-md-12">
-                {{ 'voucher.original.value'|trans }} {{ voucher.remainingValue + voucher.partialPayment}}&#8364 <br />
-                {{ 'voucher.remaining.value'|trans }} {{ voucher.remainingValue }}&#8364 <br />
-                {{ 'voucher.payment'|trans }} <br />
-                {% for payment in voucher.payments %}
-                    - {{ payment }} <br />
-                {% else %}
-                    - {{ 'no.payments.have.been.made'|trans }}
-                {% endfor %}<br />
-                {{ 'voucher.method.of.payment'|trans }} {{ voucher.methodOfPayment }} <br />
-                {{ 'can.be.used.for'|trans }}
-                {% for usage in voucher.usages %}
-                    {{ usage }}
-                {% else %}
-                    {{ 'no.usages.set'|trans }}
-                {% endfor %}
-                <br /><br />
-                {{ 'you.can.use.this.voucher.in.shop'|trans }} <br />
+                <div class="hidden-print">{{ 'voucher.original.value'|trans }}: {{ voucher.remainingValue + voucher.partialPayment}}&#8364 <br /></div>
+                <div class="hidden-print">{{ 'voucher.remaining.value'|trans }}: {{ voucher.remainingValue }}&#8364 <br /></div>
+                <div class="hidden-print">
+                    {{ 'voucher.payment'|trans }}: <br />
+                    {% for payment in voucher.payments %}
+                        - {{ payment }} <br />
+                    {% else %}
+                        - {{ 'no.payments.have.been.made'|trans }}
+                    {% endfor %}<br />
+                </div>
+                <div class="hidden-print">{{ 'voucher.method.of.payment'|trans }}: {{ voucher.methodOfPayment }} <br /></div>
+                <div class="hidden-print">
+                    {{ 'can.be.used.for'|trans }}: <br />
+                    {% for usage in voucher.usages %}
+                        - {{ usage }} <br />
+                    {% else %}
+                        {{ 'no.usages.set'|trans }}
+                    {% endfor %}
+                    <br /><br />
+                </div>
+                {{ 'you.can.use.this.voucher.in.shop'|trans }}: <br />
                 {{ voucher.shopWhereCreated.name }}
                 {{ voucher.shopWhereCreated.address }} <br />
             </div>

@@ -2,18 +2,22 @@
 
 {% block body %}
     {% if submitted %}
-        <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
+        {% if errors %}
+            <h2>{{ errors }}</h2>
+        {% else %}
+            <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
+        {% endif %}
     {% else %}
         <h2>Voucher {{ voucher.voucherCode }}</h2>
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.usage, { attr: { class: "manager" } }) }}
-        <div class="interactive" data-managed-by="voucher_use_usage" data-manager-val="1">
+        <div id="partial_amount_div" class="hidden">
             {{ form_row(form.partial_amount) }}
         </div>
         {{ form_row(form.used_for) }}
         <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
-        <a class="btn btn-default" href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'back'|trans }}</a>
+        <a class="btn btn-default" href="{{ path('voucher_homepage', {id: voucher.id}) }}">{{ 'back'|trans }}</a>
         {{ form_end(form) }}
     {% endif %}
 {% endblock %}
@@ -26,10 +30,12 @@
         $( document ).ready(function() {
             $( "#voucher_use_usage_1" ).click(function() {
                 $("#voucher_use_partial_amount").attr("required", true);
+                $("#partial_amount_div").removeClass("hidden");
             });
 
             $( "#voucher_use_usage_0" ).click(function() {
                 $("#voucher_use_partial_amount").attr("required", false);
+                $("#partial_amount_div").addClass("hidden");
             });
         });
     </script>

@@ -21,6 +21,15 @@ class VoucherUseType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $choices = array();
+        foreach ($options['voucherUsages'] as $usage) {
+            if (strpos(strtolower($usage), 'massage') !== false) {
+                $choices[ucwords($usage)] = 'USE_FOR_MASSAGE';
+            } else {
+                $choices[ucwords($usage)] = 'USE_FOR_FLOAT';
+            }
+        }
+
         $builder
             ->add('usage', ChoiceType::class, array (
                 'choices' => array (
@@ -32,10 +41,7 @@ class VoucherUseType extends AbstractType
                 'required' => true,
             ))
             ->add('used_for', ChoiceType::class, array (
-                'choices' => array (
-                    'massage' => 'USE_FOR_MASSAGE',
-                    'float' => 'USE_FOR_FLOAT',
-                ),
+                'choices' => $choices,
                 'multiple' => true,
                 'expanded' => true,
                 'required' => true,
@@ -54,6 +60,7 @@ class VoucherUseType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => null,
+            'voucherUsages' => null,
         ));
     }
 }

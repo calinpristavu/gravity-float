@@ -35,7 +35,7 @@ you.can.use.voucher.in.any.shop: __you.can.use.voucher.in.any.shop
 save.voucher: __save.voucher
 edit: __edit
 print: __print
-create.voucher: 'Create new Voucher'
+create.voucher: Create new Voucher
 all.vouchers: __all.vouchers
 reset.filter: __reset.filter
 voucher.code: __voucher.code
@@ -57,24 +57,4 @@ user.management: __user.management
 user.successfully.edited: __user.successfully.edited
 user.successfully.created: __user.successfully.created
 voucher.saved.successfully: __voucher.saved.successfully
-login.title: 'Vouchers Management'
-voucher.details: __voucher.details
-voucher.order.number: __voucher.order.number
-voucher.invoice.number: __voucher.invoice.number
-is.included.postal.charges: __is.included.postal.charges
-'yes': __yes
-'no': __no
-voucher.original.value: __voucher.original.value
-voucher.remaining.value: __voucher.remaining.value
-voucher.payment: __voucher.payment
-no.payments.have.been.made: __no.payments.have.been.made
-voucher.method.of.payment: __voucher.method.of.payment
-you.can.use.this.voucher.in.shop: __you.can.use.this.voucher.in.shop
-shop: __shop
-button.voucher.create: __button.voucher.create
-included: __included
-not.included: __not.included
-details: __details
-you.have.successfully.used.the.voucher: __you.have.successfully.used.the.voucher
-not.applicable: __not.applicable
-online: __online
+login.title: Vouchers Management
