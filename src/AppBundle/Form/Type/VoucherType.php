@@ -42,19 +42,23 @@ class VoucherType extends AbstractType
             ))
             ->add('numberOfUsers', ChoiceType::class, array(
                 'choices' => array(
-                    'Single' => 'Single',
+                    'Single (default value)' => 'Single',
                     'Couple' => 'Couple',
                 ),
                 'expanded' => true,
                 'multiple' => true,
+                'required' => true,
+                'empty_data' => 'Single',
             ))
             ->add('usages', ChoiceType::class, array(
                 'choices' => array(
-                    'Massage' => 'massage',
+                    'Massage (default value)' => 'massage',
                     'Floating' => 'floating',
                 ),
                 'expanded' => true,
                 'multiple' => true,
+                'required' => true,
+                'empty_data' => 'massage',
             ))
             ->add('massage_type', ChoiceType::class, array(
                 'choices' => array(
@@ -95,6 +99,7 @@ class VoucherType extends AbstractType
                 ),
                 'expanded' => true,
                 'multiple' => false,
+                'required' => true,
             ))
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text",

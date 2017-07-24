@@ -39,14 +39,27 @@
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>
-                        <td>{{ voucher.includedPostalCharges ? 'included'|trans : 'not.included'|trans }}</td>
+                        <td>
+                            {% if voucher.onlineVoucher %}
+                                {{ voucher.includedPostalCharges ? 'included'|trans : 'not.included'|trans }}
+                            {% else %}
+                                {{ 'not.applicable'|trans }}
+                            {% endif %}
+                        </td>
                         <td>{{ voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
-                        <td>{{ voucher.shopWhereCreated.name }}</td>
                         <td>
-                            <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
-                            |
+                            {{ voucher.shopWhereCreated.name }}
+                            {% if voucher.onlineVoucher %}
+                                {{ 'online'|trans }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if voucher.remainingValue > 0 %}
+                                <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
+                                |
+                            {% endif %}
                             <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a>
                         </td>
                     </tr>

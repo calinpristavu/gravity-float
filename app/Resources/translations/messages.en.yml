@@ -1,70 +1,86 @@
-all.users: All users
-name: Name
-email: Email
-shops: Shops
-no.shops: No shops
-vouchers.created: Vouchers created
-user.type: User type
-administrator: Administrator
-employee: Employee
-edit.user: Edit
-suspend.user: Suspend
-unsuspend.user: Reactivate
-no.users: No users.
-previous.page: Previous
-next.page: Next
-create.user: Create user
-back: Back
-creation.date: Creation date
-expiration.date: Expiration date
-created.by: Created by
-created.at: Created at
-created.for: Created for
-original.voucher.value: Original Voucher value
-partial.payment: Payment
-remaining.sum: Remaining ammount
-you.can.use.this.voucher.in.shops: You can use this voucher in shops
-use.voucher: Use voucher
-print.voucher: Print
-voucher.with.code.doesnt.exist: No vouchers matching that code.
-voucher.preview: Preview
-voucher.value: Value
-can.be.used.for: Can be used for
-no.usages.set: No usages set
-you.can.use.voucher.in.any.shop: You can use this voucher in any shop.
-save.voucher: Save
-edit: Edit
-print: Print
-create.voucher: Create new Voucher
-button.voucher.create: Create Voucher
-all.vouchers: All Vouchers
-reset.filter: Reset filter
-voucher.code: Voucher Code
-postal.charge: Postal charge
-amount.used: Amount used
-amount.remaining: Amount remaining
-no.vouchers: No vouchers
-print.selected.vouchers: Print selected vouchers
-export.list: Export list
-search: Search
-create: Create
-my.account: My account
-logout: Logout
-user.successfully.updated: User successfully updated
-can.create.online.vouchers: Can create online vouchers
-cannot.create.online.vouchers: Cannot create online vouchers
-'Assigned to': Assigned to
-user.management: User management
-user.successfully.edited: User successfully edited
-user.successfully.created: User successfully created
-voucher.saved.successfully: Voucher Saved!
-included: Included
-not.included: Not Included
-details: Details
-voucher.details: Voucher details
-you.have.successfully.used.the.voucher: You have successfully used the voucher!
-complete.use: Complete use
-partial.use: Partial use
-massage: Massage
-float: Float
-use.for: Use for
+all.users: 'All users'
+name: 'Name'
+email: 'Email'
+shops: 'Shops'
+no.shops: 'No shops'
+vouchers.created: 'Vouchers created'
+user.type: 'User type'
+administrator: 'Administrator'
+employee: 'Employee'
+edit.user: 'Edit'
+suspend.user: 'Suspend'
+unsuspend.user: 'Reactivate'
+no.users: 'No users.'
+previous.page: 'Previous'
+next.page: 'Next'
+create.user: 'Create user'
+back: 'Back'
+creation.date: 'Creation date'
+expiration.date: 'Expiration date'
+created.by: 'Created by'
+created.at: 'Created at shop'
+created.for: 'Created for'
+original.voucher.value: 'Original Voucher value'
+partial.payment: 'Payment'
+remaining.sum: 'Remaining ammount'
+you.can.use.this.voucher.in.shops: 'You can use this voucher in shops'
+use.voucher: 'Use voucher'
+print.voucher: 'Print'
+voucher.with.code.doesnt.exist: 'No vouchers matching that code.'
+voucher.preview: 'Preview'
+voucher.value: 'Value'
+can.be.used.for: 'Can be used for'
+no.usages.set: 'No usages set'
+you.can.use.voucher.in.any.shop: 'You can use this voucher in any shop.'
+save.voucher: 'Save'
+edit: 'Edit'
+print: 'Print'
+create.voucher: 'Create new Voucher'
+button.voucher.create: 'Create Voucher'
+all.vouchers: 'All Vouchers'
+reset.filter: 'Reset filter'
+voucher.code: 'Voucher Code'
+postal.charge: 'Postal charge'
+amount.used: 'Amount used'
+amount.remaining: 'Amount remaining'
+no.vouchers: 'No vouchers'
+print.selected.vouchers: 'Print selected vouchers'
+export.list: 'Export list'
+search: 'Search'
+create: 'Create'
+my.account: 'My account'
+logout: 'Logout'
+user.successfully.updated: 'User successfully updated'
+can.create.online.vouchers: 'Can create online vouchers'
+cannot.create.online.vouchers: 'Cannot create online vouchers'
+'Assigned to': 'Assigned to'
+user.management: 'User management'
+user.successfully.edited: 'User successfully edited'
+user.successfully.created: 'User successfully created'
+voucher.saved.successfully: 'Voucher Saved!'
+included: 'Included'
+not.included: 'Not Included'
+details: 'Details'
+voucher.details: 'Voucher details'
+you.have.successfully.used.the.voucher: 'You have successfully used the voucher!'
+complete.use: 'Complete use'
+partial.use: 'Partial use'
+massage: 'Massage'
+float: 'Float'
+use.for: 'Use for'
+voucher.order.number: 'Voucher Order Number'
+voucher.invoice.number: 'Voucher Invoice Number'
+is.included.postal.charges: 'Is included postal charges'
+'yes': 'Yes'
+'no': 'No'
+voucher.original.value: 'Original Value'
+voucher.remaining.value: 'Remaining Value'
+voucher.payment: 'Voucher payment'
+no.payments.have.been.made: 'No payments have been made'
+voucher.method.of.payment: 'Method of payment'
+you.can.use.this.voucher.in.shop: 'You can use this voucher in shop'
+shop: 'Shop'
+not.applicable: 'Not applicable'
+online: 'Online'
+online.voucher: 'Online voucher'
+number.of.users: 'Number of users'

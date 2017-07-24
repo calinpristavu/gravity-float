@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -106,16 +107,7 @@ class VoucherController extends Controller
                 $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
             );
             $this->get('session')->set('voucher', $voucher);
-            $usages = $voucher->getUsages();
-            foreach ($usages as $key=>$usage) {
-                if ($usage === 'massage') {
-                    $usages[$key] .= ' '.$form['massage_type']->getData().' '.$form['time_for_massage']->getData();
-                } else if ($usage === 'floating') {
-                    $usages[$key] .= ' '.$form['time_for_floating']->getData();
-                }
-            }
-            $voucher->setUsages($usages);
-
+            $this->prepareVoucherUsages($voucher, $form);
             return $this->render('floathamburg/vouchercreate.html.twig', array(
                 'form' => null,
                 'submitted' => true,
@@ -150,6 +142,7 @@ class VoucherController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->get('session')->set('voucher', $voucher);
+            $this->prepareVoucherUsages($voucher, $form);
             return $this->render('floathamburg/vouchercreate.html.twig', array(
                 'form' => null,
                 'submitted' => true,
@@ -164,6 +157,24 @@ class VoucherController extends Controller
             'voucher' => null,
         ));
     }
+
+    /**
+     * @param Voucher $voucher
+     * @param Form $form
+     */
+    protected function prepareVoucherUsages(Voucher $voucher, Form $form)
+    {
+        $usages = $voucher->getUsages();
+        foreach ($usages as $key=>$usage) {
+            if ($usage === 'massage') {
+                $usages[$key] .= ' '.$form['massage_type']->getData().' '.$form['time_for_massage']->getData();
+            } else if ($usage === 'floating') {
+                $usages[$key] .= ' '.$form['time_for_floating']->getData();
+            }
+        }
+        $voucher->setUsages($usages);
+    }
+
 
     /**
      * @Route("/voucher/save", name="voucher_save")
@@ -266,9 +277,28 @@ class VoucherController extends Controller
             return $this->redirectToRoute('voucher_homepage');
         }
 
-        $form = $this->createForm(VoucherUseType::class);
+        $form = $this->createForm(VoucherUseType::class, null, ['voucherUsages' => $voucher->getUsages()]);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $errors = '';
+            if (count($form->getData()['used_for']) == 0) {
+                $errors .= 'You must use the voucher for something! ';
+            }
+            if ($form->getData()['usage'] == 'PARTIAL_USE' &&
+                ($form->getData()['partial_amount'] <= 0 ||
+                $form->getData()['partial_amount'] > $voucher->getRemainingValue())
+            ) {
+                $errors .= 'Invalid partial amount value! ';
+            }
+
+            if ($errors !== '') {
+                return $this->render('floathamburg/voucheruse.html.twig', [
+                    'form' => null,
+                    'submitted' => true,
+                    'errors' => $errors,
+                ]);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $this->savePaymentDetails($voucher, $em, $form->getData());
             $em->persist($voucher);
@@ -277,6 +307,7 @@ class VoucherController extends Controller
             return $this->render('floathamburg/voucheruse.html.twig', [
                 'form' => null,
                 'submitted' => true,
+                'errors' => null,
             ]);
         }
 
