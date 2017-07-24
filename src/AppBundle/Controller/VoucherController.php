@@ -26,14 +26,6 @@ class VoucherController extends Controller
     public static $NUMBER_OF_VOUCHERS_PER_PAGE = 5;
 
     /**
-     * @Route("/voucher/", name="voucher_homepage")
-     */
-    public function homepageAction()
-    {
-        return $this->render('floathamburg/homepage.html.twig');
-    }
-
-    /**
      * @Route("/voucher/search", name="voucher_search")
      *
      * @param Request $request
@@ -274,7 +266,7 @@ class VoucherController extends Controller
     public function useVoucherAction(Request $request, Voucher $voucher = null)
     {
         if ($voucher == null) {
-            return $this->redirectToRoute('voucher_homepage');
+            return $this->redirectToRoute('voucher_search');
         }
 
         $form = $this->createForm(VoucherUseType::class, null, ['voucherUsages' => $voucher->getUsages()]);
