@@ -65,7 +65,8 @@
         <a href="{{ path('user_management', {'page': currentPage + 1}) }}">{{ 'next.page'|trans }}</a>
     {% endif %}
 
-    <a href="{{ path('create_user') }}" class="btn btn-success">{{ 'create.user'|trans }}</a>
+    <a href="{{ path('create_user') }}" class="btn btn-success">{{ 'create.user'|trans }}</a> <br /><br />
+    <a href="{{ path('user_profile') }}">{{ 'back'|trans }}</a>
 {% endblock %}
 
 {% block javascripts %}

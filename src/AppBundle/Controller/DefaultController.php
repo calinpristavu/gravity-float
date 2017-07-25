@@ -12,6 +12,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirectToRoute('voucher_homepage');
+        return $this->redirectToRoute('voucher_search');
     }
 }

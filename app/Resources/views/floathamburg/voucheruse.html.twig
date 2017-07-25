@@ -17,7 +17,7 @@
         </div>
         {{ form_row(form.used_for) }}
         <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
-        <a class="btn btn-default" href="{{ path('voucher_homepage', {id: voucher.id}) }}">{{ 'back'|trans }}</a>
+        <a class="btn btn-default" href="{{ path('voucher_search', {id: voucher.id}) }}">{{ 'back'|trans }}</a>
         {{ form_end(form) }}
     {% endif %}
 {% endblock %}
