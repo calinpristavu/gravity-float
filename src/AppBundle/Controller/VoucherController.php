@@ -359,15 +359,17 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/block/{id}/{parentRoute}/{page}", name="voucher_block")
+     * @Route("/voucher/block/{id}/{parentRoute}/{page}/{filterFrom}/{filterTo}", name="voucher_block")
      *
      * @param Voucher $voucher
-     * @param string  $parentRoute
-     * @param string  $page
+     * @param string $parentRoute
+     * @param string $page
+     * @param string $filterFrom
+     * @param string $filterTo
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function blockVoucherAction(Voucher $voucher, string $parentRoute = 'voucher_all', string $page = '1')
+    public function blockVoucherAction(Voucher $voucher, string $parentRoute = 'voucher_all', string $page = '1', string $filterFrom = null, string $filterTo = null)
     {
         if ($voucher === null) {
             throw new \UnexpectedValueException("Cannot block voucher. Voucher is invalid!");
@@ -382,7 +384,11 @@ class VoucherController extends Controller
         $em->persist($voucher);
         $em->flush();
 
-        return $this->redirectToRoute($parentRoute, ['page' => $page]);
+        return $this->redirectToRoute($parentRoute, [
+            'page' => $page,
+            'filterFrom' => $filterFrom,
+            'filterTo'=> $filterTo]
+        );
     }
 
     /**

@@ -57,15 +57,18 @@ class CsvWriter
     }
 
     /**
+     * @param string $filterFrom
+     * @param string $filterTo
+     *
      * @return StreamedResponse
      */
-    public function getCsvVouchers()
+    public function getCsvVouchers(string $filterFrom = null, string $filterTo = null)
     {
         $response = new StreamedResponse();
-        $response->setCallback(function () {
+        $response->setCallback(function () use ($filterFrom, $filterTo) {
             $handle = fopen('php://output', 'w+');
             $this->addVouchersHeader($handle);
-            $this->addVouchersData($handle);
+            $this->addVouchersData($handle, $filterFrom, $filterTo);
             fclose($handle);
         });
 
@@ -100,9 +103,9 @@ class CsvWriter
     /**
      * @param $handle
      */
-    private function addVouchersData($handle)
+    private function addVouchersData($handle, $filterFrom = null, $filterTo = null)
     {
-        $userData = $this->fetchVoucherData();
+        $userData = $this->fetchVoucherData($filterFrom, $filterTo);
         while ($row = $userData->fetch()) {
             $createdAt = $this->shopRepository->find($row['shop_where_created_id'])->getName();
             $postalCharge = 0;
@@ -127,7 +130,7 @@ class CsvWriter
     /**
      * @return \Doctrine\DBAL\Driver\Statement
      */
-    private function fetchVoucherData()
+    private function fetchVoucherData($filterFrom = null, $filterTo = null)
     {
         $sql = "SELECT
             voucher_code,
@@ -139,7 +142,14 @@ class CsvWriter
             partial_payment,
             author_id,
             shop_where_created_id
-        FROM vouchers";
+        FROM vouchers ";
+
+        if ($filterFrom != null && $filterTo != null) {
+            $filterFrom = str_replace('-','',$filterFrom);
+            $filterTo = str_replace('-','',$filterTo);
+            $sql .= "WHERE DATE(creation_date) BETWEEN '$filterFrom' AND '$filterTo'";
+        }
+
         return $this->conn->query($sql);
     }
 }

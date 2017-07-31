@@ -82,3 +82,4 @@ blocked: __blocked
 block: __block
 voucher.is.blocked: __voucher.is.blocked
 remaining.value: __remaining.value
+back.to.homepage: __back.to.homepage

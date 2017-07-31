@@ -58,7 +58,7 @@
                             {% if voucher.blocked %}
                                 {{ 'blocked'|trans }}
                             {% else %}
-                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_all', page: currentPage}) }}">{{ 'block'|trans }}</a>
+                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_all', page: currentPage, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ 'block'|trans }}</a>
                             {% endif %}
                         </td>
                     </tr>
@@ -75,7 +75,7 @@
         {% endif %}
     </div>
 
-    <a class="btn btn-default" href="{{ path('user_export_vouchers') }}">{{ 'export.list'|trans }}</a> <br /> <br />
+    <a class="btn btn-default" href="{{ path('user_export_vouchers', {'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ 'export.list'|trans }}</a> <br /> <br />
     <a href="{{ path('voucher_search') }}">{{ 'back'|trans }}</a>
 {% endblock %}
 
