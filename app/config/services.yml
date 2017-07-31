@@ -31,7 +31,3 @@ services:
     user.finder:
         class: AppBundle\Service\UserFinder
         autowire: true
-
-    voucher.code.generator:
-        class: AppBundle\Service\VoucherCodeGenerator
-        autowire: true

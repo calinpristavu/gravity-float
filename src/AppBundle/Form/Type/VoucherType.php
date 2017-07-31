@@ -101,6 +101,19 @@ class VoucherType extends AbstractType
                 'multiple' => false,
                 'required' => true,
             ))
+            ->add('voucherCodeLetter', ChoiceType::class, array(
+                'choices' => array (
+                    'A' => 'A',
+                    'C' => 'C',
+                    'G' => 'G',
+                    'O' => 'O',
+                ),
+                'expanded' => false,
+                'multiple' => false,
+                'required' => true,
+                'mapped' => false,
+                'label' => 'Voucher Type',
+            ))
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text",
                 'data' => new \DateTime("+3 year")

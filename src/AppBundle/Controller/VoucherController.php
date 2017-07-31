@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Payment;
+use AppBundle\Entity\Shop;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
@@ -92,9 +93,7 @@ class VoucherController extends Controller
         if ($form->isValid()) {
             $this->fillVoucherDetails($voucher);
             $voucher->setCreationDate(new DateTime());
-            $voucher->setVoucherCode(
-                $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
-            );
+            $this->calculateVoucherCode($form['voucherCodeLetter']->getData(), $voucher);
             $this->get('session')->set('voucher', $voucher);
             $this->prepareVoucherUsages($voucher, $form);
             return $this->render('floathamburg/vouchercreate.html.twig', array(
@@ -378,5 +377,22 @@ class VoucherController extends Controller
         $em->flush();
 
         return $this->redirectToRoute($parentRoute, ['page' => $page]);
+    }
+
+    /**
+     * @param string $voucherLetter
+     * @param Voucher $voucher
+     */
+    protected function calculateVoucherCode(string $voucherLetter, Voucher $voucher)
+    {
+        $shopId = $this->getUser()->getShop()->getId();
+        if ($voucher->isOnlineVoucher()) {
+            $shopId = 0;
+        }
+        $voucherCodeInfo = $this->getDoctrine()->getRepository('AppBundle:VoucherCodeInformation')->find($shopId);
+        $voucher->setVoucherCode('201'.$voucherLetter.$voucherCodeInfo->getNextVoucherCode());
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($voucherCodeInfo);
+        $em->flush();
     }
 }
