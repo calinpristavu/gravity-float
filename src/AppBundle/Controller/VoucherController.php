@@ -92,9 +92,6 @@ class VoucherController extends Controller
         if ($form->isValid()) {
             $this->fillVoucherDetails($voucher);
             $voucher->setCreationDate(new DateTime());
-            if ($voucher->isIncludedPostalCharges()) {
-                $voucher->setRemainingValue($voucher->getRemainingValue() - 1.5);
-            }
             $voucher->setVoucherCode(
                 $this->get('voucher.code.generator')->generateCodeForVoucher($voucher)
             );
