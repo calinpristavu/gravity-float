@@ -13,6 +13,7 @@
         {{ form_errors(form) }}
         {{ form_row(form.usage, { attr: { class: "manager" } }) }}
         <div id="partial_amount_div" class="hidden">
+            {{ 'remaining.value'|trans}}: {{  voucher.remainingValue }}€
             {{ form_row(form.partial_amount) }}
         </div>
         {{ form_row(form.used_for) }}
