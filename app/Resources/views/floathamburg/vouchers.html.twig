@@ -9,7 +9,8 @@
 
     {{ form_start(form) }}
         {{ form_errors(form) }}
-        {{ form_row(form.created_at) }}
+        {{ form_row(form.filterFrom) }}
+        {{ form_row(form.filterTo) }}
         {{ form_row(form.search, { 'label': 'Search' }) }}
     {{ form_end(form) }}
 
@@ -66,11 +67,11 @@
         </table>
 
         {% if currentPage > 1 %}
-            <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
+            <a href="{{ path('voucher_all', {'page': currentPage - 1, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}"> {{ 'previous.page'|trans }} </a>
         {% endif %}
 
         {% if currentPage < numberOfPages %}
-            <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}"> {{ 'next.page'|trans }} </a>
+            <a href="{{ path('voucher_all', {'page': currentPage + 1, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}"> {{ 'next.page'|trans }} </a>
         {% endif %}
     </div>
 
