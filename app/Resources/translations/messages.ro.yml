@@ -78,3 +78,6 @@ details: __details
 you.have.successfully.used.the.voucher: __you.have.successfully.used.the.voucher
 not.applicable: __not.applicable
 online: __online
+blocked: __blocked
+block: __block
+voucher.is.blocked: __voucher.is.blocked

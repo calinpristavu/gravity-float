@@ -139,6 +139,13 @@ class Voucher
     protected $includedPostalCharges;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $blocked;
+
+    /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One Voucher can have many payments
      *
@@ -158,6 +165,7 @@ class Voucher
         $this->orderNumber = "";
         $this->invoiceNumber = "";
         $this->includedPostalCharges = false;
+        $this->blocked = false;
     }
 
     /**
@@ -484,6 +492,26 @@ class Voucher
     public function removePayment($payment)
     {
         $this->payments->removeElement($payment);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return $this->blocked;
+    }
+
+    /**
+     * @param bool $blocked
+     *
+     * @return $this
+     */
+    public function setBlocked($blocked)
+    {
+        $this->blocked = $blocked;
 
         return $this;
     }

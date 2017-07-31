@@ -265,7 +265,7 @@ class VoucherController extends Controller
      */
     public function useVoucherAction(Request $request, Voucher $voucher = null)
     {
-        if ($voucher == null) {
+        if ($voucher == null || $voucher->isBlocked()) {
             return $this->redirectToRoute('voucher_search');
         }
 
@@ -354,5 +354,32 @@ class VoucherController extends Controller
     {
         $voucher->setShopWhereCreated($this->getUser()->getShop());
         $voucher->setAuthor($this->getUser());
+    }
+
+    /**
+     * @Route("/voucher/block/{id}/{parentRoute}/{page}", name="voucher_block")
+     *
+     * @param Voucher $voucher
+     * @param string  $parentRoute
+     * @param string  $page
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function blockVoucherAction(Voucher $voucher, string $parentRoute = 'voucher_all', string $page = '1')
+    {
+        if ($voucher === null) {
+            throw new \UnexpectedValueException("Cannot block voucher. Voucher is invalid!");
+        }
+
+        if ($parentRoute !== 'voucher_all' && $parentRoute !== 'voucher_search') {
+            throw new \UnexpectedValueException("Cannot block voucher. Invalid parent route!");
+        }
+
+        $voucher->setBlocked(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($voucher);
+        $em->flush();
+
+        return $this->redirectToRoute($parentRoute, ['page' => $page]);
     }
 }

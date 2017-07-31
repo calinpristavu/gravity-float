@@ -7,6 +7,9 @@
         <div class="row">
             <div class="col-md-8">
                 {{ 'voucher.code'|trans }}: {{ voucher.voucherCode }} <br />
+                {% if voucher.blocked %}
+                    <div class="hidden-print">{{ 'voucher.is.blocked'|trans }}</div>
+                {% endif %}
                 <div class="hidden-print">
                     {% if voucher.onlineVoucher %}
                         {{ 'online.voucher'|trans }} <br />

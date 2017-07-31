@@ -49,11 +49,16 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if voucher.remainingValue > 0 %}
+                            {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
                                 |
                             {% endif %}
-                            <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a>
+                            <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a> |
+                            {% if voucher.blocked %}
+                                {{ 'blocked'|trans }}
+                            {% else %}
+                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_all', page: currentPage}) }}">{{ 'block'|trans }}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
