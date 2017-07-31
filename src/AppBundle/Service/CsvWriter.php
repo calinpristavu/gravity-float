@@ -105,10 +105,10 @@ class CsvWriter
         $userData = $this->fetchVoucherData();
         while ($row = $userData->fetch()) {
             $createdAt = $this->shopRepository->find($row['shop_where_created_id'])->getName();
-            $postalCharge = 'Not applicable';
+            $postalCharge = 0;
             if ($row['online_voucher']) {
                 $createdAt .= ' Online';
-                $postalCharge = $row['included_postal_charges'] == 1 ? 'Yes' : 'No';
+                $postalCharge = $row['included_postal_charges'] == 1 ? 1.5 : 0;
             }
             fputcsv($handle, [
                 $row['voucher_code'],
