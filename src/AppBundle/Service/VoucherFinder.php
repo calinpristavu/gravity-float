@@ -69,9 +69,6 @@ class VoucherFinder
         return $queryBuilder->getQuery()->getResult();
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
     private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
         if (isset($this->filters['filterFrom']) && isset($this->filters['filterTo'])) {

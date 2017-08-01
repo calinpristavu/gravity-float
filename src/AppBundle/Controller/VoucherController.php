@@ -358,22 +358,18 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/block/{id}/{parentRoute}/{page}/{filterFrom}/{filterTo}", name="voucher_block")
+     * @Route("/voucher/block/{id}", name="voucher_block")
      *
-     * @param Voucher $voucher
-     * @param string $parentRoute
-     * @param string $page
-     * @param string $filterFrom
-     * @param string $filterTo
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function blockVoucherAction(Voucher $voucher, string $parentRoute = 'voucher_all', string $page = '1', string $filterFrom = null, string $filterTo = null)
+    public function blockVoucherAction(Voucher $voucher, Request $request)
     {
-        if ($voucher === null) {
-            throw new \UnexpectedValueException("Cannot block voucher. Voucher is invalid!");
-        }
-
+        $parentRoute = $request->query->get('parentRoute', 'voucher_all');
+        $page = $request->query->get('page', 1);
+        $filterFrom = $request->query->get('filterFrom', null);
+        $filterTo = $request->query->get('filterTo', null);
         if ($parentRoute !== 'voucher_all' && $parentRoute !== 'voucher_search') {
             throw new \UnexpectedValueException("Cannot block voucher. Invalid parent route!");
         }
@@ -386,8 +382,8 @@ class VoucherController extends Controller
         return $this->redirectToRoute($parentRoute, [
             'page' => $page,
             'filterFrom' => $filterFrom,
-            'filterTo'=> $filterTo]
-        );
+            'filterTo'=> $filterTo
+        ]);
     }
 
     /**

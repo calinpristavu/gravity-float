@@ -56,13 +56,7 @@ class CsvWriter
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @param string $filterFrom
-     * @param string $filterTo
-     *
-     * @return StreamedResponse
-     */
-    public function getCsvVouchers(string $filterFrom = null, string $filterTo = null)
+    public function getCsvVouchers(\DateTime $filterFrom = null, \DateTime $filterTo = null) : StreamedResponse
     {
         $response = new StreamedResponse();
         $response->setCallback(function () use ($filterFrom, $filterTo) {
@@ -103,7 +97,7 @@ class CsvWriter
     /**
      * @param $handle
      */
-    private function addVouchersData($handle, $filterFrom = null, $filterTo = null)
+    private function addVouchersData($handle, \DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
         $userData = $this->fetchVoucherData($filterFrom, $filterTo);
         while ($row = $userData->fetch()) {
@@ -130,7 +124,7 @@ class CsvWriter
     /**
      * @return \Doctrine\DBAL\Driver\Statement
      */
-    private function fetchVoucherData($filterFrom = null, $filterTo = null)
+    private function fetchVoucherData(\DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
         $sql = "SELECT
             voucher_code,
@@ -145,8 +139,8 @@ class CsvWriter
         FROM vouchers ";
 
         if ($filterFrom != null && $filterTo != null) {
-            $filterFrom = str_replace('-','',$filterFrom);
-            $filterTo = str_replace('-','',$filterTo);
+            $filterFrom = $filterFrom->format('Ymd');
+            $filterTo = $filterTo->format('Ymd');
             $sql .= "WHERE DATE(creation_date) BETWEEN '$filterFrom' AND '$filterTo'";
         }
 

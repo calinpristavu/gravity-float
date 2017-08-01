@@ -19,7 +19,7 @@ class ExportsController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function exportVouchersAction(string $filterFrom = null, string $filterTo = null)
+    public function exportVouchersAction(\DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
         return $this->get('csv.writer')->getCsvVouchers($filterFrom, $filterTo);
     }
