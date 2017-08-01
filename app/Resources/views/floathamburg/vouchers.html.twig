@@ -29,6 +29,7 @@
                     <th>{{ 'amount.remaining'|trans }}</th>
                     <th>{{ 'created.by'|trans }}</th>
                     <th>{{ 'created.at'|trans }}</th>
+                    <th>{{ 'comment'|trans }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -49,6 +50,7 @@
                                 {{ 'online'|trans }}
                             {% endif %}
                         </td>
+                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {'id': voucher.id}) }}">{{ 'edit'|trans }}</a></td>
                         <td>
                             {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>

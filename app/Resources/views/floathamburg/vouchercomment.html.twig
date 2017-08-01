@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if submitted %}
+        {{ 'comment.added.successfully'|trans }}
+        <br />
+        <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
+    {% else %}
+        <h2>{{ 'voucher.code'|trans }}: {{ voucher.voucherCode }}</h2>
+        <br />
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.comment) }}
+        {{ form_row(form.save) }}
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}

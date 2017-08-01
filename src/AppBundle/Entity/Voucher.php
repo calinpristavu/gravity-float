@@ -155,6 +155,13 @@ class Voucher
      */
     protected $payments;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable = true)
+     */
+    protected $comment;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -164,6 +171,7 @@ class Voucher
         $this->partialPayment = 0;
         $this->orderNumber = "";
         $this->invoiceNumber = "";
+        $this->comment = "";
         $this->includedPostalCharges = false;
         $this->blocked = false;
     }
@@ -512,6 +520,26 @@ class Voucher
     public function setBlocked($blocked)
     {
         $this->blocked = $blocked;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     *
+     * @return $this
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
 
         return $this;
     }

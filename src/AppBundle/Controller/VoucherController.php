@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
+use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
@@ -17,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class VoucherController
@@ -366,6 +368,30 @@ class VoucherController extends Controller
             'page' => $page,
             'filterFrom' => $filterFrom,
             'filterTo'=> $filterTo
+        ]);
+    }
+
+    /**
+     * @Route("/voucher/comment/{id}", name="voucher_comment_edit")
+     */
+    public function editVoucherCommentAction(Voucher $voucher, Request $request) : Response
+    {
+        $form = $this->createForm(CommentType::class, $voucher);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+            return $this->render('floathamburg/vouchercomment.html.twig', [
+                'form' => null,
+                'submitted' => true
+            ]);
+        }
+
+        return $this->render('floathamburg/vouchercomment.html.twig', [
+            'form' => $form->createView(),
+            'submitted' => false,
+            'voucher' => $voucher,
         ]);
     }
 
