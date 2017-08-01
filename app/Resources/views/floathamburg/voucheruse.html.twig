@@ -4,8 +4,12 @@
     {% if submitted %}
         {% if errors %}
             <h2>{{ errors }}</h2>
+            <br />
+            <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'back'|trans }}</a>
         {% else %}
             <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
+            <br />
+            <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
         {% endif %}
     {% else %}
         <h2>Voucher {{ voucher.voucherCode }}</h2>

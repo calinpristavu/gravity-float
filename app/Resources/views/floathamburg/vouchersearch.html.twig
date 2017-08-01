@@ -54,11 +54,11 @@
         </table>
 
         {% if currentPage > 1 %}
-            <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
+            <a href="{{ path('voucher_search', {'page': currentPage - 1, 'voucherCode': voucherCode}) }}"> {{ 'previous.page'|trans }} </a>
         {% endif %}
 
         {% if currentPage < numberOfPages %}
-            <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}"> {{ 'next.page'|trans }} </a>
+            <a href="{{ path('voucher_search', {'page': currentPage + 1, 'voucherCode': voucherCode}) }}"> {{ 'next.page'|trans }} </a>
         {% endif %}
     </div>
 {% endblock %}

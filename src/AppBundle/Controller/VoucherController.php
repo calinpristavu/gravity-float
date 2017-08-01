@@ -51,16 +51,13 @@ class VoucherController extends Controller
             'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
         ];
 
-        $allVouchersCount = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll();
-        if ($request->get('voucherCode') !== null) {
-            $allVouchersCount = $this->getDoctrine()
-                ->getRepository('AppBundle:Voucher')
-                ->countAllWithCode($request->get('voucherCode'));
-        }
+        $allVouchersCount = $this->getDoctrine()
+            ->getRepository('AppBundle:Voucher')
+            ->countAllWithCode($request->get('voucherCode'));
 
         $vouchers = $this->get('voucher.finder')->setFilters($filters)->getVouchers();
         $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
-        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0) {
+        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0 || $allVouchersCount == 0) {
             $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
         }
 
@@ -70,6 +67,7 @@ class VoucherController extends Controller
             'numberOfPages' => $nrOfPages,
             'currentPage' => $request->get('page'),
             'searchedCode' => $request->get('voucherCode'),
+            'voucherCode' => $request->get('voucherCode'),
         ]);
     }
 
@@ -223,7 +221,7 @@ class VoucherController extends Controller
             ->getRepository('AppBundle:Voucher')
             ->countAll($request->get('filterFrom'), $request->get('filterTo'));
         $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
-        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0) {
+        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0 || $allVouchersCount == 0) {
             $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
         }
 
@@ -290,6 +288,7 @@ class VoucherController extends Controller
                     'form' => null,
                     'submitted' => true,
                     'errors' => $errors,
+                    'voucher' => $voucher
                 ]);
             }
 
