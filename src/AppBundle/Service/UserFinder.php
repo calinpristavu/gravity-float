@@ -25,13 +25,19 @@ class UserFinder
     private $userRepository;
 
     /**
+     * @var int
+     */
+    private $usersPerPage;
+
+    /**
      * Class constructor.
      *
      * @param UserRepository $userRepository
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, int $usersPerPage)
     {
         $this->userRepository = $userRepository;
+        $this->usersPerPage = $usersPerPage;
     }
 
     /**
@@ -80,7 +86,7 @@ class UserFinder
                 $page = 1;
             }
 
-            $queryBuilder->setFirstResult(($page - 1)*self::$NUMBER_OF_USERS_PER_PAGE);
+            $queryBuilder->setFirstResult(($page - 1)*$this->usersPerPage);
         }
 
         if (isset($this->filters['items_per_page'])) {

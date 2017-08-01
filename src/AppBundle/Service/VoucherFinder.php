@@ -7,8 +7,6 @@ use Doctrine\ORM\QueryBuilder;
 
 class VoucherFinder
 {
-    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 5;
-
     /**
      * @var int
      */
@@ -25,13 +23,19 @@ class VoucherFinder
     private $voucherRepository;
 
     /**
+     * @var int
+     */
+    private $vouchersPerPage;
+
+    /**
      * Class constructor.
      *
      * @param VoucherRepository $voucherRepository
      */
-    public function __construct(VoucherRepository $voucherRepository)
+    public function __construct(VoucherRepository $voucherRepository, int $vouchersPerPage)
     {
         $this->voucherRepository = $voucherRepository;
+        $this->vouchersPerPage = $vouchersPerPage;
     }
 
     /**
@@ -88,7 +92,7 @@ class VoucherFinder
                 $page = 1;
             }
 
-            $queryBuilder->setFirstResult(($page - 1)*self::$NUMBER_OF_VOUCHERS_PER_PAGE);
+            $queryBuilder->setFirstResult(($page - 1)*$this->vouchersPerPage);
         }
 
         if (isset($this->filters['voucherCode'])) {

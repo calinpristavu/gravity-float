@@ -26,8 +26,12 @@ services:
 
     voucher.finder:
         class: AppBundle\Service\VoucherFinder
-        autowire: true
+        arguments:
+            - "@=service('doctrine.orm.default_entity_manager').getRepository('AppBundle:Voucher')"
+            - "%vouchers_per_page%"
 
     user.finder:
         class: AppBundle\Service\UserFinder
-        autowire: true
+        arguments:
+            - "@=service('doctrine.orm.default_entity_manager').getRepository('AppBundle:User')"
+            - "%vouchers_per_page%"

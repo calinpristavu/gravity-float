@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Payment;
-use AppBundle\Entity\Shop;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
@@ -16,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class VoucherController extends Controller
 {
-    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 5;
-
     /**
      * @Route("/voucher/search", name="voucher_search")
      *
@@ -47,7 +45,7 @@ class VoucherController extends Controller
 
         $filters = [
             'page' => (int)$request->get('page'),
-            'items_per_page' => self::$NUMBER_OF_VOUCHERS_PER_PAGE,
+            'items_per_page' => $this->getParameter('vouchers_per_page'),
             'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
         ];
 
@@ -56,9 +54,9 @@ class VoucherController extends Controller
             ->countAllWithCode($request->get('voucherCode'));
 
         $vouchers = $this->get('voucher.finder')->setFilters($filters)->getVouchers();
-        $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
-        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0 || $allVouchersCount == 0) {
-            $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
+        $nrOfPages = (int)($allVouchersCount / $this->getParameter('vouchers_per_page')) + 1;
+        if ($allVouchersCount % $this->getParameter('vouchers_per_page') == 0 || $allVouchersCount == 0) {
+            $nrOfPages = $allVouchersCount / $this->getParameter('vouchers_per_page');
         }
 
         return $this->render('floathamburg/vouchersearch.html.twig', [
@@ -207,7 +205,7 @@ class VoucherController extends Controller
 
         $filters = [
             'page' => (int)$request->get('page'),
-            'items_per_page' => self::$NUMBER_OF_VOUCHERS_PER_PAGE,
+            'items_per_page' => $this->getParameter('vouchers_per_page'),
         ];
 
         $voucherFinder = $this->get('voucher.finder');
@@ -220,9 +218,9 @@ class VoucherController extends Controller
         $allVouchersCount = $this->getDoctrine()
             ->getRepository('AppBundle:Voucher')
             ->countAll($request->get('filterFrom'), $request->get('filterTo'));
-        $nrOfPages = (int)($allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE) + 1;
-        if ($allVouchersCount % self::$NUMBER_OF_VOUCHERS_PER_PAGE == 0 || $allVouchersCount == 0) {
-            $nrOfPages = $allVouchersCount / self::$NUMBER_OF_VOUCHERS_PER_PAGE;
+        $nrOfPages = (int)($allVouchersCount / $this->getParameter('vouchers_per_page')) + 1;
+        if ($allVouchersCount % $this->getParameter('vouchers_per_page') == 0 || $allVouchersCount == 0) {
+            $nrOfPages = $allVouchersCount / $this->getParameter('vouchers_per_page');
         }
 
         return $this->render('floathamburg/vouchers.html.twig',[
@@ -259,9 +257,6 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/use/{id}", name="voucher_use")
-     *
-     * @param Request $request
-     * @param Voucher $voucher
      */
     public function useVoucherAction(Request $request, Voucher $voucher = null)
     {
@@ -311,11 +306,6 @@ class VoucherController extends Controller
         ]);
     }
 
-    /**
-     * @param Voucher $voucher
-     * @param ObjectManager $em
-     * @param array $formData
-     */
     protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, array $formData)
     {
         $payment = new Payment();
@@ -346,11 +336,6 @@ class VoucherController extends Controller
         $em->flush();
     }
 
-    /**
-     * Fill voucher details
-     *
-     * @param Voucher $voucher
-     */
     protected function fillVoucherDetails(Voucher $voucher)
     {
         $voucher->setShopWhereCreated($this->getUser()->getShop());
@@ -361,10 +346,8 @@ class VoucherController extends Controller
      * @Route("/voucher/block/{id}", name="voucher_block")
      *
      * @ParamConverter("voucher", class="AppBundle:Voucher")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function blockVoucherAction(Voucher $voucher, Request $request)
+    public function blockVoucherAction(Voucher $voucher, Request $request) : RedirectResponse
     {
         $parentRoute = $request->query->get('parentRoute', 'voucher_all');
         $page = $request->query->get('page', 1);
@@ -386,10 +369,6 @@ class VoucherController extends Controller
         ]);
     }
 
-    /**
-     * @param string $voucherLetter
-     * @param Voucher $voucher
-     */
     protected function calculateVoucherCode(string $voucherLetter, Voucher $voucher)
     {
         $shopId = $this->getUser()->getShop()->getId();

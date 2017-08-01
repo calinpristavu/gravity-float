@@ -63,14 +63,14 @@ class UserController extends Controller
 
         $filters = [
             'page' => (int)$request->get('page'),
-            'items_per_page' => self::$NUMBER_OF_USERS_PER_PAGE,
+            'items_per_page' => $this->getParameter('users_per_page'),
         ];
 
         $users = $this->get('user.finder')->setFilters($filters)->getUsers();
         $allUsersCount = $this->getDoctrine()->getRepository('AppBundle:User')->countAll();
-        $nrOfPages = (int)($allUsersCount / self::$NUMBER_OF_USERS_PER_PAGE) + 1;
-        if ($allUsersCount % self::$NUMBER_OF_USERS_PER_PAGE == 0) {
-            $nrOfPages = $allUsersCount / self::$NUMBER_OF_USERS_PER_PAGE;
+        $nrOfPages = (int)($allUsersCount / $this->getParameter('users_per_page')) + 1;
+        if ($allUsersCount % $this->getParameter('users_per_page') == 0) {
+            $nrOfPages = $allUsersCount / $this->getParameter('users_per_page');
         }
 
         return $this->render('floathamburg/usermanagement.html.twig',[
