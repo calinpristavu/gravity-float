@@ -197,6 +197,8 @@ class VoucherController extends Controller
             if ($filterTo != null) {
                 $filterTo->setTime(23,59);
             }
+            $request->query->remove('page');
+            $request->request->set('page', 1);
         }
 
         $filters = [
