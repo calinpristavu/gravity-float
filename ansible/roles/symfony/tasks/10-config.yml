@@ -17,6 +17,10 @@
   stat: path={{symfony_shared_config_dir}}/{{symfony_project_parameters_file}}
   register: symfony_parameters
 
-- name: Create symlink for parameters file from shared directory.
-  file: state=link src={{symfony_shared_config_dir}}/{{symfony_project_parameters_file}} path={{symfony_config_dir}}/{{symfony_project_parameters_file}}
-  when: symfony_parameters.stat.exists
+- name: hook | Configure parameters.yml
+  template:
+    src=parameters.yml.tpl
+    dest={{config_dir.stat.path}}/{{symfony_project_parameters_file}}
+    mode=0644
+    owner={{ app_deploy_user }}
+    group={{ app_deploy_group }}
