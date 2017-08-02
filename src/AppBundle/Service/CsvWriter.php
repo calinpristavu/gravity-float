@@ -138,10 +138,14 @@ class CsvWriter
             shop_where_created_id
         FROM vouchers ";
 
-        if ($filterFrom != null && $filterTo != null) {
+        if ($filterFrom != null) {
             $filterFrom = $filterFrom->format('Ymd');
+            $sql .= "WHERE DATE(creation_date) >= '$filterFrom'";
+        }
+
+        if ($filterTo != null) {
             $filterTo = $filterTo->format('Ymd');
-            $sql .= "WHERE DATE(creation_date) BETWEEN '$filterFrom' AND '$filterTo'";
+            $sql .= "WHERE DATE(creation_date) <= '$filterTo'";
         }
 
         return $this->conn->query($sql);

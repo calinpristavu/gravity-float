@@ -18,20 +18,22 @@ class VoucherRepository extends EntityRepository
      */
     public function countAll($from = null, $to = null)
     {
-        if ($from != null && $to != null) {
-            $from = new \DateTime($from." 00:00:00");
-            $to   = new \DateTime($to." 23:59:59");
-            return (int)$this->createQueryBuilder('v')
-                ->select('count(v.id)')
-                ->where('v.creationDate BETWEEN :from AND :to')
-                ->setParameter('from', $from)
-                ->setParameter('to', $to)
-                ->getQuery()
-                ->getSingleScalarResult();
+        $queryBuilder = $this->createQueryBuilder('v')
+            ->select('count(v.id)');
+
+        if ($from != null) {
+            $queryBuilder
+                ->andWhere('v.creationDate >= :from')
+                ->setParameter('from', $from);
         }
 
-        return (int)$this->createQueryBuilder('v')
-            ->select('count(v.id)')
+        if ($to != null) {
+            $queryBuilder
+                ->andWhere('v.creationDate <= :to')
+                ->setParameter('to', $to);
+        }
+
+        return (int)$queryBuilder
             ->getQuery()
             ->getSingleScalarResult();
     }

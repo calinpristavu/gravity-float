@@ -75,14 +75,16 @@ class VoucherFinder
 
     private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
-        if (isset($this->filters['filterFrom']) && isset($this->filters['filterTo'])) {
-            $from = new \DateTime($this->filters['filterFrom']." 00:00:00");
-            $to   = new \DateTime($this->filters['filterTo']." 23:59:59");
-
+        if (isset($this->filters['filterFrom'])) {
             $queryBuilder
-                ->andWhere('v.creationDate BETWEEN :from AND :to')
-                ->setParameter('from', $from )
-                ->setParameter('to', $to)
+                ->andWhere('v.creationDate >= :from')
+                ->setParameter('from', $this->filters['filterFrom'] )
+            ;
+        }
+        if (isset($this->filters['filterTo'])) {
+            $queryBuilder
+                ->andWhere('v.creationDate <= :to')
+                ->setParameter('to', $this->filters['filterTo'])
             ;
         }
 

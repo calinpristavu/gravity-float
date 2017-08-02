@@ -23,10 +23,12 @@ class VoucherDateType extends AbstractType
             ->add("filterFrom", DateTimeType::class, [
                 'widget' => "single_text",
                 'label' => 'From',
+                'required' => false,
             ])
             ->add("filterTo", DateTimeType::class, [
                 'widget' => "single_text",
                 'label' => 'To',
+                'required' => false,
             ])
             ->add('search', SubmitType::class, array('label' => "button.search"))
         ;

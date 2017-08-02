@@ -198,28 +198,36 @@ class VoucherController extends Controller
             $request->request->set('page', 1);
         }
 
+        $filterFrom = null;
+        if ($request->get('filterFrom') != null) {
+            $filterFrom = new \DateTime($request->get('filterFrom'));
+        }
+        $filterTo = null;
+        if ($request->get('filterTo') != null) {
+            $filterTo = new \DateTime($request->get('filterTo'));
+        }
+
         $form = $this->createForm(VoucherDateType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $request->request->set('filterFrom', $form->getData()['filterFrom']->format('Y-m-d'));
-            $request->request->set('filterTo', $form->getData()['filterTo']->format('Y-m-d'));
+            $filterFrom = $form->getData()['filterFrom'];
+            $filterTo = $form->getData()['filterTo'];
         }
 
         $filters = [
             'page' => (int)$request->get('page'),
             'items_per_page' => $this->getParameter('vouchers_per_page'),
         ];
-
         $voucherFinder = $this->get('voucher.finder');
-        if ($request->get('filterFrom') !== null && $request->get('filterTo') !== null) {
-            $filters['filterFrom'] = $request->get('filterFrom');
-            $filters['filterTo'] = $request->get('filterTo');
+        if ($filterFrom !== null) {
+            $filters['filterFrom'] = $filterFrom;
+        }
+        if ($filterTo !== null) {
+            $filters['filterTo'] = $filterTo;
         }
 
         $vouchers = $voucherFinder->setFilters($filters)->getVouchers();
-        $allVouchersCount = $this->getDoctrine()
-            ->getRepository('AppBundle:Voucher')
-            ->countAll($request->get('filterFrom'), $request->get('filterTo'));
+        $allVouchersCount = $this->getDoctrine()->getRepository('AppBundle:Voucher')->countAll($filterFrom, $filterTo);
         $nrOfPages = (int)($allVouchersCount / $this->getParameter('vouchers_per_page')) + 1;
         if ($allVouchersCount % $this->getParameter('vouchers_per_page') == 0 || $allVouchersCount == 0) {
             $nrOfPages = $allVouchersCount / $this->getParameter('vouchers_per_page');
@@ -229,8 +237,8 @@ class VoucherController extends Controller
             'vouchers' => $vouchers,
             'numberOfPages' => $nrOfPages,
             'currentPage' => $request->get('page'),
-            'filterFrom' => $request->get('filterFrom'),
-            'filterTo' => $request->get('filterTo'),
+            'filterFrom' => $filterFrom != null ? $filterFrom->format('Y-m-d') : null,
+            'filterTo' => $filterTo != null ? $filterTo->format('Y-m-d') : null,
             'form' => $form->createView(),
         ]);
     }
