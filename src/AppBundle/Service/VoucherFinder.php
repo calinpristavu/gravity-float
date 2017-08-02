@@ -7,11 +7,6 @@ use Doctrine\ORM\QueryBuilder;
 
 class VoucherFinder
 {
-<<<<<<< Updated upstream
-=======
-    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 2;
-
->>>>>>> Stashed changes
     /**
      * @var int
      */
