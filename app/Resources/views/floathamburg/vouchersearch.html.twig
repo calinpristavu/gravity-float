@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(searchForm) }}
-        {{ form_errors(searchForm) }}
-        {{ form_row(searchForm.vouchercode) }}
-        {{ form_row(searchForm.search, { 'label': 'Search' }) }}
-    {{ form_end(searchForm) }}
-
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {{ form_start(searchForm) }}
+            {{ form_errors(searchForm) }}
+            {{ form_row(searchForm.vouchercode) }}
+            {{ form_row(searchForm.search, { 'label': 'Search' }) }}
+            {{ form_end(searchForm) }}
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -21,6 +24,7 @@
                     <th>{{ 'amount.remaining'|trans }}</th>
                     <th>{{ 'created.by'|trans }}</th>
                     <th>{{ 'created.at'|trans }}</th>
+                    <th>{{ 'comment'|trans }}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -31,29 +35,37 @@
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>
-                        <td>{{ voucher.includedPostalCharges ? 'included'|trans : 'not.included'|trans }}</td>
+                        <td>{{ voucher.includedPostalCharges ? 1.5 : 0 }}</td>
                         <td>{{ voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
                         <td>{{ voucher.shopWhereCreated.name }}</td>
+                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {'id': voucher.id}) }}">{{ 'edit'|trans }}</a></td>
                         <td>
-                            {% if voucher.remainingValue > 0 %}
+                            {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
                                 |
                             {% endif %}
-                            <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a>
+                            <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a> |
+                            {% if voucher.blocked %}
+                                {{ 'blocked'|trans }}
+                            {% else %}
+                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage}) }}">{{ 'block'|trans }}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {% if currentPage > 1 %}
-            <a href="{{ path('voucher_all', {'page': currentPage - 1}) }}"> {{ 'previous.page'|trans }} </a>
-        {% endif %}
-
-        {% if currentPage < numberOfPages %}
-            <a href="{{ path('voucher_all', {'page': currentPage + 1}) }}"> {{ 'next.page'|trans }} </a>
+        {% if numberOfPages > 1 %}
+            <ul class="pagination">
+                {% for page in 1..numberOfPages %}
+                    <li {% if page == currentPage %}class="active"{% endif %}>
+                        <a href="{{ path('voucher_search', {'page': page, 'voucherCode': voucherCode}) }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 {% endblock %}

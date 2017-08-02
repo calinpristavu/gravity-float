@@ -56,16 +56,13 @@ class CsvWriter
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * @return StreamedResponse
-     */
-    public function getCsvVouchers()
+    public function getCsvVouchers(\DateTime $filterFrom = null, \DateTime $filterTo = null) : StreamedResponse
     {
         $response = new StreamedResponse();
-        $response->setCallback(function () {
+        $response->setCallback(function () use ($filterFrom, $filterTo) {
             $handle = fopen('php://output', 'w+');
             $this->addVouchersHeader($handle);
-            $this->addVouchersData($handle);
+            $this->addVouchersData($handle, $filterFrom, $filterTo);
             fclose($handle);
         });
 
@@ -100,15 +97,15 @@ class CsvWriter
     /**
      * @param $handle
      */
-    private function addVouchersData($handle)
+    private function addVouchersData($handle, \DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
-        $userData = $this->fetchVoucherData();
+        $userData = $this->fetchVoucherData($filterFrom, $filterTo);
         while ($row = $userData->fetch()) {
             $createdAt = $this->shopRepository->find($row['shop_where_created_id'])->getName();
-            $postalCharge = 'Not applicable';
+            $postalCharge = 0;
             if ($row['online_voucher']) {
                 $createdAt .= ' Online';
-                $postalCharge = $row['included_postal_charges'] == 1 ? 'Yes' : 'No';
+                $postalCharge = $row['included_postal_charges'] == 1 ? 1.5 : 0;
             }
             fputcsv($handle, [
                 $row['voucher_code'],
@@ -127,7 +124,7 @@ class CsvWriter
     /**
      * @return \Doctrine\DBAL\Driver\Statement
      */
-    private function fetchVoucherData()
+    private function fetchVoucherData(\DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
         $sql = "SELECT
             voucher_code,
@@ -139,7 +136,20 @@ class CsvWriter
             partial_payment,
             author_id,
             shop_where_created_id
-        FROM vouchers";
+        FROM vouchers ";
+
+        $tag = ' WHERE';
+        if ($filterFrom != null) {
+            $filterFrom = $filterFrom->format('Ymd');
+            $sql .= "WHERE DATE(creation_date) >= '$filterFrom'";
+            $tag = ' AND';
+        }
+
+        if ($filterTo != null) {
+            $filterTo = $filterTo->format('Ymd');
+            $sql .= $tag . " DATE(creation_date) <= '$filterTo'";
+        }
+
         return $this->conn->query($sql);
     }
 }

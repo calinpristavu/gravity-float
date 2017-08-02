@@ -7,8 +7,11 @@ use Doctrine\ORM\QueryBuilder;
 
 class VoucherFinder
 {
-    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 5;
+<<<<<<< Updated upstream
+=======
+    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 2;
 
+>>>>>>> Stashed changes
     /**
      * @var int
      */
@@ -25,13 +28,19 @@ class VoucherFinder
     private $voucherRepository;
 
     /**
+     * @var int
+     */
+    private $vouchersPerPage;
+
+    /**
      * Class constructor.
      *
      * @param VoucherRepository $voucherRepository
      */
-    public function __construct(VoucherRepository $voucherRepository)
+    public function __construct(VoucherRepository $voucherRepository, int $vouchersPerPage)
     {
         $this->voucherRepository = $voucherRepository;
+        $this->vouchersPerPage = $vouchersPerPage;
     }
 
     /**
@@ -69,23 +78,19 @@ class VoucherFinder
         return $queryBuilder->getQuery()->getResult();
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
     private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
-        if (isset($this->filters['created_at'])) {
-            $years = $this->filters['created_at'];
-            $queryBuilder->andWhere($queryBuilder->expr()->eq(
-                'YEAR(v.creationDate)',
-                array_pop($years)
-            ));
-            foreach ($years as $year) {
-                $queryBuilder->orWhere($queryBuilder->expr()->eq(
-                    'YEAR(v.creationDate)',
-                    $year
-                ));
-            }
+        if (isset($this->filters['filterFrom'])) {
+            $queryBuilder
+                ->andWhere('v.creationDate >= :from')
+                ->setParameter('from', $this->filters['filterFrom'] )
+            ;
+        }
+        if (isset($this->filters['filterTo'])) {
+            $queryBuilder
+                ->andWhere('v.creationDate <= :to')
+                ->setParameter('to', $this->filters['filterTo'])
+            ;
         }
 
         if (isset($this->filters['page'])) {
@@ -94,7 +99,7 @@ class VoucherFinder
                 $page = 1;
             }
 
-            $queryBuilder->setFirstResult(($page - 1)*self::$NUMBER_OF_VOUCHERS_PER_PAGE);
+            $queryBuilder->setFirstResult(($page - 1)*$this->vouchersPerPage);
         }
 
         if (isset($this->filters['voucherCode'])) {

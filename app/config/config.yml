@@ -40,6 +40,8 @@ twig:
     form_themes:
         - 'bootstrap_3_horizontal_layout.html.twig'
         - 'form/datepickers.html.twig'
+    date:
+        format: d/m/Y
 
 # Doctrine Configuration
 doctrine:

@@ -139,6 +139,13 @@ class Voucher
     protected $includedPostalCharges;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean")
+     */
+    protected $blocked;
+
+    /**
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One Voucher can have many payments
      *
@@ -147,6 +154,13 @@ class Voucher
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="voucherBought")
      */
     protected $payments;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable = true)
+     */
+    protected $comment;
 
     public function __construct()
     {
@@ -157,7 +171,9 @@ class Voucher
         $this->partialPayment = 0;
         $this->orderNumber = "";
         $this->invoiceNumber = "";
+        $this->comment = "";
         $this->includedPostalCharges = false;
+        $this->blocked = false;
     }
 
     /**
@@ -484,6 +500,46 @@ class Voucher
     public function removePayment($payment)
     {
         $this->payments->removeElement($payment);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBlocked()
+    {
+        return $this->blocked;
+    }
+
+    /**
+     * @param bool $blocked
+     *
+     * @return $this
+     */
+    public function setBlocked($blocked)
+    {
+        $this->blocked = $blocked;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     *
+     * @return $this
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
 
         return $this;
     }

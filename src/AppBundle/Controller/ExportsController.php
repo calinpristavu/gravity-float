@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class ExportsController
@@ -14,8 +16,10 @@ class ExportsController extends Controller
     /**
      * @Route("/user/export-vouchers", name="user_export_vouchers")
      */
-    public function exportVouchersAction()
+    public function exportVouchersAction(Request $request) : StreamedResponse
     {
-        return $this->get('csv.writer')->getCsvVouchers();
+        $filterFrom = $request->get('filterFrom') != null ? new \DateTime($request->get('filterFrom').' 00:00') : null;
+        $filterTo = $request->get('filterTo') != null ? new \DateTime($request->get('filterTo'). ' 23:59') : null;
+        return $this->get('csv.writer')->getCsvVouchers($filterFrom, $filterTo);
     }
 }
