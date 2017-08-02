@@ -26,6 +26,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VoucherController extends Controller
 {
+<<<<<<< Updated upstream
+=======
+    public static $NUMBER_OF_VOUCHERS_PER_PAGE = 2;
+
+>>>>>>> Stashed changes
     /**
      * @Route("/voucher/search", name="voucher_search")
      */

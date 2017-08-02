@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {{ form_start(searchForm) }}
-        {{ form_errors(searchForm) }}
-        {{ form_row(searchForm.vouchercode) }}
-        {{ form_row(searchForm.search, { 'label': 'Search' }) }}
-    {{ form_end(searchForm) }}
-
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            {{ form_start(searchForm) }}
+            {{ form_errors(searchForm) }}
+            {{ form_row(searchForm.vouchercode) }}
+            {{ form_row(searchForm.search, { 'label': 'Search' }) }}
+            {{ form_end(searchForm) }}
+        </div>
+    </div>
 
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
@@ -55,12 +58,14 @@
             </tbody>
         </table>
 
-        {% if currentPage > 1 %}
-            <a href="{{ path('voucher_search', {'page': currentPage - 1, 'voucherCode': voucherCode}) }}"> {{ 'previous.page'|trans }} </a>
-        {% endif %}
-
-        {% if currentPage < numberOfPages %}
-            <a href="{{ path('voucher_search', {'page': currentPage + 1, 'voucherCode': voucherCode}) }}"> {{ 'next.page'|trans }} </a>
+        {% if numberOfPages > 1 %}
+            <ul class="pagination">
+                {% for page in 1..numberOfPages %}
+                    <li {% if page == currentPage %}class="active"{% endif %}>
+                        <a href="{{ path('voucher_search', {'page': page, 'voucherCode': voucherCode}) }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 {% endblock %}

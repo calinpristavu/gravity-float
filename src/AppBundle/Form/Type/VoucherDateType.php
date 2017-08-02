@@ -22,11 +22,13 @@ class VoucherDateType extends AbstractType
         $builder
             ->add("filterFrom", DateTimeType::class, [
                 'widget' => "single_text",
+                'format' => 'd/m/Y',
                 'label' => 'From',
                 'required' => false,
             ])
             ->add("filterTo", DateTimeType::class, [
                 'widget' => "single_text",
+                'format' => 'd/M/Y',
                 'label' => 'To',
                 'required' => false,
             ])

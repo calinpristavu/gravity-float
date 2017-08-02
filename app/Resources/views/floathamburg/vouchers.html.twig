@@ -68,12 +68,14 @@
             </tbody>
         </table>
 
-        {% if currentPage > 1 %}
-            <a href="{{ path('voucher_all', {'page': currentPage - 1, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}"> {{ 'previous.page'|trans }} </a>
-        {% endif %}
-
-        {% if currentPage < numberOfPages %}
-            <a href="{{ path('voucher_all', {'page': currentPage + 1, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}"> {{ 'next.page'|trans }} </a>
+        {% if numberOfPages > 1 %}
+            <ul class="pagination">
+                {% for page in 1..numberOfPages %}
+                    <li {% if page == currentPage %}class="active"{% endif %}>
+                        <a href="{{ path('voucher_all', {'page': page, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 
