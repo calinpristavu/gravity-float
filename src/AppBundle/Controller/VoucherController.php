@@ -28,12 +28,8 @@ class VoucherController extends Controller
 {
     /**
      * @Route("/voucher/search", name="voucher_search")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchVoucherAction(Request $request)
+    public function searchVoucherAction(Request $request) : Response
     {
         if (!$request->get('page')) {
             $request->request->set('page', 1);
@@ -73,12 +69,8 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/create", name="voucher_create")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createVoucherAction(Request $request)
+    public function createVoucherAction(Request $request) : Response
     {
         if ($this->get('session')->get('voucher')) {
             $this->get('session')->remove('voucher');
@@ -111,12 +103,8 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/create/edit", name="voucher_edit")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editVoucherAction(Request $request)
+    public function editVoucherAction(Request $request) : Response
     {
         if (!$this->get('session')->get('voucher')) {
             return $this->redirectToRoute('voucher_create');
@@ -144,10 +132,6 @@ class VoucherController extends Controller
         ));
     }
 
-    /**
-     * @param Voucher $voucher
-     * @param Form $form
-     */
     protected function prepareVoucherUsages(Voucher $voucher, Form $form)
     {
         $usages = $voucher->getUsages();
@@ -158,16 +142,15 @@ class VoucherController extends Controller
                 $usages[$key] .= ' '.$form['time_for_floating']->getData();
             }
         }
+
         $voucher->setUsages($usages);
     }
 
 
     /**
      * @Route("/voucher/save", name="voucher_save")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function saveVoucherAction()
+    public function saveVoucherAction() : Response
     {
         if (!$this->get('session')->get('voucher')) {
             return $this->redirectToRoute('voucher_create');
@@ -187,12 +170,8 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/all", name="voucher_all")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function vouchersAction(Request $request)
+    public function vouchersAction(Request $request) : Response
     {
         if (!$request->get('page')) {
             $request->request->set('page', 1);
@@ -200,18 +179,24 @@ class VoucherController extends Controller
 
         $filterFrom = null;
         if ($request->get('filterFrom') != null) {
-            $filterFrom = new \DateTime($request->get('filterFrom'));
+            $filterFrom = new \DateTime($request->get('filterFrom'). ' 00:00');
         }
         $filterTo = null;
         if ($request->get('filterTo') != null) {
-            $filterTo = new \DateTime($request->get('filterTo'));
+            $filterTo = new \DateTime($request->get('filterTo').' 23:59');
         }
 
         $form = $this->createForm(VoucherDateType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $filterFrom = $form->getData()['filterFrom'];
+            if ($filterFrom != null) {
+                $filterFrom->setTime(0,0);
+            }
             $filterTo = $form->getData()['filterTo'];
+            if ($filterTo != null) {
+                $filterTo->setTime(23,59);
+            }
         }
 
         $filters = [
@@ -245,10 +230,8 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/all/reset-filters", name="voucher_all_reset_filters")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function resetFiltersAction()
+    public function resetFiltersAction() : RedirectResponse
     {
         return $this->redirectToRoute('voucher_all', ['page' => 1]);
     }
@@ -257,10 +240,8 @@ class VoucherController extends Controller
      * @Route("/voucher/{id}", name="voucher_details")
      * @ParamConverter("voucher", class="AppBundle:Voucher")
      * @Template("floathamburg/voucher_details.html.twig")
-     * @param Voucher $voucher
-     * @return array
      */
-    public function voucherAction(Voucher $voucher)
+    public function voucherAction(Voucher $voucher) : array
     {
         return ['voucher' => $voucher];
     }
@@ -268,7 +249,7 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/use/{id}", name="voucher_use")
      */
-    public function useVoucherAction(Request $request, Voucher $voucher = null)
+    public function useVoucherAction(Request $request, Voucher $voucher = null) : Response
     {
         if ($voucher == null || $voucher->isBlocked()) {
             return $this->redirectToRoute('voucher_search');
@@ -288,24 +269,18 @@ class VoucherController extends Controller
                 $errors .= 'Invalid partial amount value! ';
             }
 
-            if ($errors !== '') {
-                return $this->render('floathamburg/voucheruse.html.twig', [
-                    'form' => null,
-                    'submitted' => true,
-                    'errors' => $errors,
-                    'voucher' => $voucher
-                ]);
+            if ($errors === '') {
+                $em = $this->getDoctrine()->getManager();
+                $this->savePaymentDetails($voucher, $em, $form->getData());
+                $em->persist($voucher);
+                $em->flush();
             }
-
-            $em = $this->getDoctrine()->getManager();
-            $this->savePaymentDetails($voucher, $em, $form->getData());
-            $em->persist($voucher);
-            $em->flush();
 
             return $this->render('floathamburg/voucheruse.html.twig', [
                 'form' => null,
                 'submitted' => true,
-                'errors' => null,
+                'errors' => $errors,
+                'voucher' => $voucher
             ]);
         }
 

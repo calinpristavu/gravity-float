@@ -6,7 +6,9 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class VoucherController
@@ -14,16 +16,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UserController extends Controller
 {
-    public static $NUMBER_OF_USERS_PER_PAGE = 5;
-
     /**
      * @Route("/user/profile", name="user_profile")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function profileAction(Request $request)
+    public function profileAction(Request $request) : Response
     {
         $user = $this->getUser();
 
@@ -50,12 +46,8 @@ class UserController extends Controller
 
     /**
      * @Route("/user-management", name="user_management")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function userManagementAction(Request $request)
+    public function userManagementAction(Request $request) : Response
     {
         if (!$request->get('page')) {
             $request->request->set('page', 1);
@@ -82,12 +74,8 @@ class UserController extends Controller
 
     /**
      * @Route("/user-management/create-user", name="create_user")
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createUserAction(Request $request)
+    public function createUserAction(Request $request) : Response
     {
         $userManager = $this->container->get('fos_user.user_manager');
         $newUser = $userManager->createUser();
@@ -114,25 +102,17 @@ class UserController extends Controller
 
     /**
      * @Route("/user-management/edit-user/{id}", name="edit_user")
-     *
-     * @param Request $request
-     * @param User $user
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editUserAction(Request $request, User $user)
+    public function editUserAction(Request $request, User $user) : Response
     {
         if ($user === null) {
             throw new \UnexpectedValueException("Cannot edit user. User is invalid!");
         }
 
-        $form = $this->createForm(UserType::class, $user, [
-            'isPasswordRequired' => false,
-        ]);
+        $form = $this->createForm(UserType::class, $user, ['isPasswordRequired' => false]);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $userManager = $this->container->get('fos_user.user_manager');
-            $userManager->updateUser($user, true);
+            $this->container->get('fos_user.user_manager')->updateUser($user, true);
 
             return $this->render('floathamburg/edituser.html.twig', [
                 'form' => null,
@@ -148,22 +128,15 @@ class UserController extends Controller
 
     /**
      * @Route("/user-management/suspend-user/{id}/{value}/{page}", name="suspend_user")
-     *
-     * @param User $user
-     * @param bool $value
-     * @param string $page
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function suspendUserAction(User $user, bool $value, string $page = '1')
+    public function suspendUserAction(User $user, bool $value, string $page = '1') : RedirectResponse
     {
         if ($user === null) {
             throw new \UnexpectedValueException("Cannot suspend user. User is invalid!");
         }
 
         $user->setEnabled($value);
-        $userManager = $this->container->get('fos_user.user_manager');
-        $userManager->updateUser($user, true);
+        $this->container->get('fos_user.user_manager')->updateUser($user, true);
 
         return $this->redirectToRoute('user_management', [
             'page' => $page,
