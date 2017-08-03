@@ -45,6 +45,7 @@ class VoucherController extends Controller
             'page' => (int)$request->get('page'),
             'items_per_page' => $this->getParameter('vouchers_per_page'),
             'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
+            'decreasing' => true,
         ];
 
         $allVouchersCount = $this->getDoctrine()
@@ -204,6 +205,7 @@ class VoucherController extends Controller
         $filters = [
             'page' => (int)$request->get('page'),
             'items_per_page' => $this->getParameter('vouchers_per_page'),
+            'decreasing' => true,
         ];
         $voucherFinder = $this->get('voucher.finder');
         if ($filterFrom !== null) {

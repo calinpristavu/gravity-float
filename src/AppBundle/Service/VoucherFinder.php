@@ -75,6 +75,10 @@ class VoucherFinder
 
     private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
+        if (isset($this->filters['decreasing'])) {
+            $queryBuilder->addOrderBy('v.creationDate', 'DESC');
+        }
+
         if (isset($this->filters['filterFrom'])) {
             $queryBuilder
                 ->andWhere('v.creationDate >= :from')
