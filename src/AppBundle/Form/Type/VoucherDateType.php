@@ -24,12 +24,18 @@ class VoucherDateType extends AbstractType
                 'widget' => "single_text",
                 'format' => 'd/m/Y',
                 'label' => 'From',
+                'attr' => [
+                    'class' => 'datepicker'
+                ],
                 'required' => false,
             ])
             ->add("filterTo", DateTimeType::class, [
                 'widget' => "single_text",
                 'format' => 'd/M/Y',
                 'label' => 'To',
+                'attr' => [
+                    'class' => 'datepicker'
+                ],
                 'required' => false,
             ])
             ->add('search', SubmitType::class, array('label' => "button.search"))
