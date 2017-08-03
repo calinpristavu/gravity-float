@@ -45,6 +45,7 @@ class VoucherController extends Controller
             'page' => (int)$request->get('page'),
             'items_per_page' => $this->getParameter('vouchers_per_page'),
             'voucherCode' => $request->get('voucherCode') === null ? '-1' : $request->get('voucherCode'),
+            'decreasing' => true,
         ];
 
         $allVouchersCount = $this->getDoctrine()
@@ -204,6 +205,7 @@ class VoucherController extends Controller
         $filters = [
             'page' => (int)$request->get('page'),
             'items_per_page' => $this->getParameter('vouchers_per_page'),
+            'decreasing' => true,
         ];
         $voucherFinder = $this->get('voucher.finder');
         if ($filterFrom !== null) {
@@ -336,23 +338,17 @@ class VoucherController extends Controller
      */
     public function blockVoucherAction(Voucher $voucher, Request $request) : RedirectResponse
     {
-        $parentRoute = $request->query->get('parentRoute', 'voucher_all');
-        $page = $request->query->get('page', 1);
-        $filterFrom = $request->query->get('filterFrom', null);
-        $filterTo = $request->query->get('filterTo', null);
-        if ($parentRoute !== 'voucher_all' && $parentRoute !== 'voucher_search') {
-            throw new \UnexpectedValueException("Cannot block voucher. Invalid parent route!");
-        }
-
+        $parent = $this->getParentData($request);
         $voucher->setBlocked(true);
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
         $em->flush();
 
-        return $this->redirectToRoute($parentRoute, [
-            'page' => $page,
-            'filterFrom' => $filterFrom,
-            'filterTo'=> $filterTo
+        return $this->redirectToRoute($parent['parentRoute'], [
+            'page' => $parent['page'],
+            'filterFrom' => $parent['filterFrom'],
+            'filterTo' => $parent['filterTo'],
+            'voucherCode' => $parent['voucherCode'],
         ]);
     }
 
@@ -361,15 +357,19 @@ class VoucherController extends Controller
      */
     public function editVoucherCommentAction(Voucher $voucher, Request $request) : Response
     {
+        $parent = $this->getParentData($request);
         $form = $this->createForm(CommentType::class, $voucher);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
-            return $this->render('floathamburg/vouchercomment.html.twig', [
-                'form' => null,
-                'submitted' => true
+
+            return $this->redirectToRoute($parent['parentRoute'], [
+                'page' => $parent['page'],
+                'filterFrom' => $parent['filterFrom'],
+                'filterTo' => $parent['filterTo'],
+                'voucherCode' => $parent['voucherCode'],
             ]);
         }
 
@@ -391,5 +391,16 @@ class VoucherController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucherCodeInfo);
         $em->flush();
+    }
+
+    protected function getParentData(Request $request) : array
+    {
+        return [
+            'parentRoute' => $request->query->get('parentRoute', 'voucher_search'),
+            'page' => $request->query->get('page', null),
+            'filterFrom' => $request->query->get('filterFrom', null),
+            'filterTo' => $request->query->get('filterTo', null),
+            'voucherCode' => $request->query->get('voucherCode', null)
+        ];
     }
 }
