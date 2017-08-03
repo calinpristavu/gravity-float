@@ -50,7 +50,7 @@
                                 {{ 'online'|trans }}
                             {% endif %}
                         </td>
-                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {'id': voucher.id}) }}">{{ 'add.comment'|trans }}</a></td>
+                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {id: voucher.id, parentRoute: 'voucher_all', filterFrom: filterFrom, filterTo: filterTo, page: currentPage}) }}">{{ 'add.comment'|trans }}</a></td>
                         <td>
                             {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
@@ -60,7 +60,7 @@
                             {% if voucher.blocked %}
                                 {{ 'blocked'|trans }}
                             {% else %}
-                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_all', page: currentPage, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ 'block'|trans }}</a>
+                                <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_all', page: currentPage, filterFrom: filterFrom, filterTo: filterTo}) }}">{{ 'block'|trans }}</a>
                             {% endif %}
                         </td>
                     </tr>
