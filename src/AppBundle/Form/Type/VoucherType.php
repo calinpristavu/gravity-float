@@ -116,7 +116,7 @@ class VoucherType extends AbstractType
             ))
             ->add("expirationDate", DateTimeType::class, [
                 'widget' => "single_text",
-                'format' => 'd/M/Y',
+                'format' => 'dd/MM/yyyy',
                 'attr' => [
                     'class' => 'datepicker'
                 ],

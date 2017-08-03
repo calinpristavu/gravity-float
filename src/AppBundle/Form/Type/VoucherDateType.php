@@ -3,7 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,18 +20,18 @@ class VoucherDateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add("filterFrom", DateTimeType::class, [
+            ->add("filterFrom", DateType::class, [
                 'widget' => "single_text",
-                'format' => 'd/m/Y',
+                'format' => 'dd/MM/yyyy',
                 'label' => 'From',
                 'attr' => [
                     'class' => 'datepicker'
                 ],
                 'required' => false,
             ])
-            ->add("filterTo", DateTimeType::class, [
+            ->add("filterTo", DateType::class, [
                 'widget' => "single_text",
-                'format' => 'd/M/Y',
+                'format' => 'dd/MM/yyyy',
                 'label' => 'To',
                 'attr' => [
                     'class' => 'datepicker'
