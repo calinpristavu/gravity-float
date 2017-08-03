@@ -1,3 +1,4 @@
 login.title: 'Vouchers Management'
 security.forgot.password: 'Forgot password?'
 resetting.request.username: 'Email'
+registration.check_email: 'An email has been sent. Please check your email for a guide to reset your password.'

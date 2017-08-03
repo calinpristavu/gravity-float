@@ -1,0 +1,9 @@
+{% extends "base_no_header.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+{% endblock %}
+
+{% block page %}
+{% include "@FOSUser/Resetting/request_content.html.twig" %}
+{% endblock %}

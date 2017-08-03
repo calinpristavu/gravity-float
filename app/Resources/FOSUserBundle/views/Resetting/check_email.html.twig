@@ -1,0 +1,22 @@
+{% extends "base_no_header.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+{% endblock %}
+
+{% block page %}
+    <div class="form-signin text-center">
+        <div>
+            <img class="center-block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
+            <h1 class="title text-center">{% trans %}login.title{% endtrans %}</h1>
+        </div>
+
+        <br/>
+
+        <p>{{ 'registration.check_email'|trans }}</p>
+
+        <a href="{{ path('fos_user_security_login') }}" class="btn btn-success">Login</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request form-signin text-center">
+    <div>
+        <img class="center-block" src="{{ asset('assets/img/logo.png') }}" alt="logo">
+        <h1 class="title text-center">{% trans %}login.title{% endtrans %}</h1>
+    </div>
+
+    <br/>
+    <label for="username">{{ 'resetting.request.username'|trans }}</label>
+    <input id="username" name="username" class="form-control" autofocus required/>
+    <br />
+    <div class="text-center">
+        <input type="submit" class="btn btn-success" value="{{ 'resetting.request.submit'|trans }}" />
+    </div>
+</form>
