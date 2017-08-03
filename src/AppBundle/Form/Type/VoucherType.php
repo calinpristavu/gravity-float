@@ -120,7 +120,7 @@ class VoucherType extends AbstractType
                 'attr' => [
                     'class' => 'datepicker'
                 ],
-                'data' => (new \DateTime(date('Y-m-d', strtotime('Dec 25'))))->add(new \DateInterval('P4Y'))
+                'data' => (new \DateTime(date('Y-m-d', strtotime('Dec 25'))))->add(new \DateInterval('P3Y'))
             ])
         ;
     }
