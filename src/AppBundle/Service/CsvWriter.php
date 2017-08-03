@@ -112,7 +112,7 @@ class CsvWriter
                 $row['creation_date'],
                 $row['expiration_date'],
                 $row['remaining_value'] + $row['partial_payment'],
-                $postalCharge,
+                $postalCharge . '€',
                 $row['partial_payment'],
                 $row['remaining_value'],
                 $this->userRepository->find($row['author_id'])->getName(),
