@@ -89,6 +89,8 @@ class CsvWriter
                 "Amount Remaining",
                 "Created by",
                 "Created at",
+                "Comment",
+                "Blocked"
             ],
             ';'
         );
@@ -117,6 +119,8 @@ class CsvWriter
                 $row['remaining_value'],
                 $this->userRepository->find($row['author_id'])->getName(),
                 $createdAt,
+                $row['comment'],
+                $row['blocked'] ? 'Yes' : 'No',
             ], ';');
         }
     }
@@ -135,7 +139,9 @@ class CsvWriter
             included_postal_charges,
             partial_payment,
             author_id,
-            shop_where_created_id
+            shop_where_created_id,
+            comment,
+            blocked
         FROM vouchers ";
 
         $tag = ' WHERE';
