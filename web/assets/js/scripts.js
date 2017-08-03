@@ -5,7 +5,10 @@ $(function () {
         var args = {
             changeMonth: true,
             changeYear: true,
-            dateFormat: "dd/mm/yy"
+            dateFormat: "dd/mm/yy",
+            onSelect: function (dateText) {
+                $(this).attr('value', dateText);
+            }
         };
         if (this.hasAttribute('future')) {
             args.minDate = 0;
