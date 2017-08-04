@@ -2,15 +2,9 @@
 
 {% block body %}
     {% if submitted %}
-        {% if errors %}
-            <h2>{{ errors }}</h2>
-            <br />
-            <a href="{{ path('voucher_use', {'id': voucher.id}) }}">{{ 'back'|trans }}</a>
-        {% else %}
-            <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
-            <br />
-            <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
-        {% endif %}
+        <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
+        <br />
+        <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
     {% else %}
         <h2>Voucher {{ voucher.voucherCode }}</h2>
         {{ form_start(form) }}
@@ -33,6 +27,11 @@
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
     <script>
         $( document ).ready(function() {
+            if ($("#voucher_use_usage_1").is(':checked')) {
+                $("#voucher_use_partial_amount").attr("required", true);
+                $("#partial_amount_div").removeClass("hidden");
+            }
+
             $( "#voucher_use_usage_1" ).click(function() {
                 $("#voucher_use_partial_amount").attr("required", true);
                 $("#partial_amount_div").removeClass("hidden");
