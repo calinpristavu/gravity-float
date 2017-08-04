@@ -259,31 +259,20 @@ class VoucherController extends Controller
             return $this->redirectToRoute('voucher_search');
         }
 
-        $form = $this->createForm(VoucherUseType::class, null, ['voucherUsages' => $voucher->getUsages()]);
+        $form = $this->createForm(VoucherUseType::class, null, [
+            'voucherUsages' => $voucher->getUsages(),
+            'remainingVoucherValue' => $voucher->getRemainingValue()
+        ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $errors = '';
-            if (count($form->getData()['used_for']) == 0) {
-                $errors .= 'You must use the voucher for something! ';
-            }
-            if ($form->getData()['usage'] == 'PARTIAL_USE' &&
-                ($form->getData()['partial_amount'] <= 0 ||
-                $form->getData()['partial_amount'] > $voucher->getRemainingValue())
-            ) {
-                $errors .= 'Invalid partial amount value! ';
-            }
-
-            if ($errors === '') {
-                $em = $this->getDoctrine()->getManager();
-                $this->savePaymentDetails($voucher, $em, $form->getData());
-                $em->persist($voucher);
-                $em->flush();
-            }
+            $em = $this->getDoctrine()->getManager();
+            $this->savePaymentDetails($voucher, $em, $form->getData());
+            $em->persist($voucher);
+            $em->flush();
 
             return $this->render('floathamburg/voucheruse.html.twig', [
                 'form' => null,
                 'submitted' => true,
-                'errors' => $errors,
                 'voucher' => $voucher
             ]);
         }
