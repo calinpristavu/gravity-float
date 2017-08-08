@@ -28,10 +28,7 @@ class VoucherCodeInformation
      */
     protected $voucherCode;
 
-    /**
-     * @return int
-     */
-    public function getNextVoucherCode()
+    public function getNextVoucherCode() : int
     {
         return $this->voucherCode++;
     }

@@ -24,11 +24,11 @@
 
 - name: hook | Configure php-fpm www.conf pool
   become: yes
-  copy: src=files/php/7.0/fpm/pool.d/www.conf dest=/etc/php/7.0/fpm/pool.d/www.conf backup=yes
+  copy: src=files/php/7.1/fpm/pool.d/www.conf dest=/etc/php/7.1/fpm/pool.d/www.conf backup=yes
 
 - name: hook | Configure php.ini
   become: yes
-  copy: src=files/php/7.0/fpm/php.ini dest=/etc/php/7.0/fpm/php.ini backup=yes
+  copy: src=files/php/7.1/fpm/php.ini dest=/etc/php/7.1/fpm/php.ini backup=yes
 
 - name: hook | Configure nginx mime.types
   become: yes

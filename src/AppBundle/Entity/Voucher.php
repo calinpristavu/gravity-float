@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -61,15 +62,6 @@ class Voucher
      * @ORM\ManyToOne(targetEntity="Shop", inversedBy="createdVouchers")
      */
     protected $shopWhereCreated;
-
-    /**
-     * Bidirectional - Many ideas are created for one customer (OWNING SIDE)
-     *
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="designatedVouchers")
-     */
-    protected $designatedCustomer;
 
     /**
      * @var float
@@ -149,7 +141,7 @@ class Voucher
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One Voucher can have many payments
      *
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="voucherBought")
      */
@@ -176,368 +168,216 @@ class Voucher
         $this->blocked = false;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreationDate()
+    public function getCreationDate(): ?\DateTime
     {
         return $this->creationDate;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getExpirationDate()
+    public function getExpirationDate() : ?\DateTime
     {
         return $this->expirationDate;
     }
 
-    /**
-     * @param \DateTime $expirationDate
-     *
-     * @return $this
-     */
-    public function setExpirationDate($expirationDate)
+    public function setExpirationDate(\DateTime $expirationDate) : self
     {
         $this->expirationDate = $expirationDate;
 
         return $this;
     }
 
-    /**
-     * @return User
-     */
-    public function getAuthor()
+    public function getAuthor() : ?User
     {
         return $this->author;
     }
 
-    /**
-     * @param User $author
-     *
-     * @return $this
-     */
-    public function setAuthor($author)
+    public function setAuthor(User $author) : self
     {
         $this->author = $author;
 
         return $this;
     }
 
-    /**
-     * @return Shop
-     */
-    public function getShopWhereCreated()
+    public function getShopWhereCreated() : ?Shop
     {
         return $this->shopWhereCreated;
     }
 
-    /**
-     * @param Shop $shopWhereCreated
-     *
-     * @return $this
-     */
-    public function setShopWhereCreated($shopWhereCreated)
+    public function setShopWhereCreated(Shop $shopWhereCreated) : self
     {
         $this->shopWhereCreated = $shopWhereCreated;
 
         return $this;
     }
 
-    /**
-     * @return User
-     */
-    public function getDesignatedCustomer()
-    {
-        return $this->designatedCustomer;
-    }
-
-    /**
-     * @param User $designatedCustomer
-     *
-     * @return $this
-     */
-    public function setDesignatedCustomer($designatedCustomer)
-    {
-        $this->designatedCustomer = $designatedCustomer;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getRemainingValue()
+    public function getRemainingValue() : ?float
     {
         return $this->remainingValue;
     }
 
-    /**
-     * @param float $remainingValue
-     *
-     * @return $this
-     */
-    public function setRemainingValue($remainingValue)
+    public function setRemainingValue(float $remainingValue) : self
     {
         $this->remainingValue = $remainingValue;
 
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getPartialPayment()
+    public function getPartialPayment() : ?float
     {
         return $this->partialPayment;
     }
 
-    /**
-     * @param float $partialPayment
-     *
-     * @return $this
-     */
-    public function setPartialPayment($partialPayment)
+    public function setPartialPayment(float $partialPayment) : self
     {
         $this->partialPayment = $partialPayment;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getNumberOfUsers()
+    public function getNumberOfUsers() : ?array
     {
         return $this->numberOfUsers;
     }
 
-    /**
-     * @param array $numberOfUsers
-     *
-     * @return $this
-     */
-    public function setNumberOfUsers($numberOfUsers)
+    public function setNumberOfUsers(array $numberOfUsers) : self
     {
         $this->numberOfUsers = $numberOfUsers;
 
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isOnlineVoucher()
+    public function isOnlineVoucher() : ?bool
     {
         return $this->onlineVoucher;
     }
 
-    /**
-     * @param boolean $onlineVoucher
-     *
-     * @return $this
-     */
-    public function setOnlineVoucher($onlineVoucher)
+    public function setOnlineVoucher(bool $onlineVoucher) : self
     {
         $this->onlineVoucher = $onlineVoucher;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getMethodOfPayment()
+    public function getMethodOfPayment() : ?string
     {
         return $this->methodOfPayment;
     }
 
-    /**
-     * @return array
-     */
-    public function getUsages()
+    public function getUsages() : ?array
     {
         return $this->usages;
     }
 
-    /**
-     * @param string $methodOfPayment
-     *
-     * @return $this
-     */
-    public function setMethodOfPayment($methodOfPayment)
+    public function setMethodOfPayment(string $methodOfPayment) : self
     {
         $this->methodOfPayment = $methodOfPayment;
 
         return $this;
     }
 
-    /**
-     * @param array $usages
-     *
-     * @return $this
-     */
-    public function setUsages($usages)
+    public function setUsages(array $usages) : self
     {
         $this->usages = $usages;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getVoucherCode()
+    public function getVoucherCode() : ?string
     {
         return $this->voucherCode;
     }
 
-    /**
-     * @param string $voucherCode
-     *
-     * @return $this
-     */
-    public function setVoucherCode($voucherCode)
+    public function setVoucherCode(string $voucherCode) : self
     {
         $this->voucherCode = $voucherCode;
 
         return $this;
     }
 
-    /**
-     * @param \DateTime $creationDate
-     *
-     * @return $this
-     */
-    public function setCreationDate($creationDate)
+    public function setCreationDate(\DateTime $creationDate) : self
     {
         $this->creationDate = $creationDate;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getOrderNumber()
+    public function getOrderNumber() : ?string
     {
         return $this->orderNumber;
     }
 
-    /**
-     * @param string $orderNumber
-     */
-    public function setOrderNumber($orderNumber)
+    public function setOrderNumber($orderNumber) : self
     {
         $this->orderNumber = $orderNumber;
+
+        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getInvoiceNumber()
+    public function getInvoiceNumber() : ?string
     {
         return $this->invoiceNumber;
     }
 
-    /**
-     * @param string $invoiceNumber
-     */
-    public function setInvoiceNumber($invoiceNumber)
+    public function setInvoiceNumber(string $invoiceNumber) : self
     {
         $this->invoiceNumber = $invoiceNumber;
+
+        return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isIncludedPostalCharges()
+    public function isIncludedPostalCharges() : ?bool
     {
         return $this->includedPostalCharges;
     }
 
-    /**
-     * @param boolean $includedPostalCharges
-     */
-    public function setIncludedPostalCharges($includedPostalCharges)
+    public function setIncludedPostalCharges(bool $includedPostalCharges) : self
     {
         $this->includedPostalCharges = $includedPostalCharges;
+
+        return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getPayments()
+    public function getPayments() : Collection
     {
         return $this->payments;
     }
 
-    /**
-     * @param Payment $payment
-     *
-     * @return $this
-     */
-    public function addPayment($payment)
+    public function addPayment(Payment $payment)  : self
     {
         $this->payments->add($payment);
 
         return $this;
     }
 
-    /**
-     * @param Payment $payment
-     *
-     * @return $this
-     */
-    public function removePayment($payment)
+    public function removePayment(Payment $payment) : self
     {
         $this->payments->removeElement($payment);
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isBlocked()
+    public function isBlocked() : ?bool
     {
         return $this->blocked;
     }
 
-    /**
-     * @param bool $blocked
-     *
-     * @return $this
-     */
-    public function setBlocked($blocked)
+    public function setBlocked(bool $blocked) : self
     {
         $this->blocked = $blocked;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getComment()
+    public function getComment() : ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return $this
-     */
-    public function setComment($comment)
+    public function setComment(string $comment) : self
     {
         $this->comment = $comment;
 

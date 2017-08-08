@@ -71,108 +71,65 @@ class Payment
     {
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getProduct()
+    public function getProduct() : ?string
     {
         return $this->product;
     }
 
-    /**
-     * @param string $product
-     *
-     * @return $this
-     */
-    public function setProduct($product)
+    public function setProduct(string $product) : self
     {
         $this->product = $product;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getPaymentDate()
+    public function getPaymentDate() : ?\DateTime
     {
         return $this->paymentDate;
     }
 
-    /**
-     * @param \DateTime $paymentDate
-     *
-     * @return $this
-     */
-    public function setPaymentDate($paymentDate)
+    public function setPaymentDate(\DateTime $paymentDate) : self
     {
         $this->paymentDate = $paymentDate;
 
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getAmount()
+    public function getAmount() : ?float
     {
         return $this->amount;
     }
 
-    /**
-     * @param float $amount
-     *
-     * @return $this
-     */
-    public function setAmount($amount)
+    public function setAmount(float $amount) : self
     {
         $this->amount = $amount;
 
         return $this;
     }
 
-    /**
-     * @return User
-     */
-    public function getEmployee()
+    public function getEmployee() : ?User
     {
         return $this->employee;
     }
 
-    /**
-     * @param User $employee
-     *
-     * @return $this
-     */
-    public function setEmployee($employee)
+    public function setEmployee(User $employee) : self
     {
         $this->employee = $employee;
 
         return $this;
     }
 
-    /**
-     * @return Voucher
-     */
-    public function getVoucherBought()
+    public function getVoucherBought() : ?Voucher
     {
         return $this->voucherBought;
     }
 
-    /**
-     * @param Voucher $voucherBought
-     *
-     * @return $this
-     */
-    public function setVoucherBought($voucherBought)
+    public function setVoucherBought(Voucher $voucherBought) : self
     {
         $this->voucherBought = $voucherBought;
 

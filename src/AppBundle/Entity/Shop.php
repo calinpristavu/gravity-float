@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,7 +49,7 @@ class Shop
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One Shop can be the creation place for many vouchers
      *
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Voucher", mappedBy="shopWhereCreated")
      */
@@ -58,7 +59,7 @@ class Shop
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One Shop can have assigned many users
      *
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="shop")
      */
@@ -75,112 +76,67 @@ class Shop
         return (string) $this->name;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
+    public function setName(string $name) : self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getAddress()
+    public function getAddress() : ?string
     {
         return $this->address;
     }
 
-    /**
-     * @param string $address
-     *
-     * @return $this
-     */
-    public function setAddress($address)
+    public function setAddress(string $address) : self
     {
         $this->address = $address;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getCreatedVouchers()
+    public function getCreatedVouchers() : Collection
     {
         return $this->createdVouchers;
     }
 
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function addCreatedVoucher($voucher)
+    public function addCreatedVoucher(Voucher $voucher) : self
     {
         $this->createdVouchers->add($voucher);
 
         return $this;
     }
 
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function removeCreatedVoucher($voucher)
+    public function removeCreatedVoucher(Voucher $voucher) : self
     {
         $this->createdVouchers->removeElement($voucher);
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getAssignedUsers()
+    public function getAssignedUsers() : Collection
     {
         return $this->assignedUsers;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function addAssignedUser($user)
+    public function addAssignedUser(User $user) : self
     {
         $this->assignedUsers->add($user);
 
         return $this;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return $this
-     */
-    public function removeAssignedUser($user)
+    public function removeAssignedUser(User $user) : self
     {
         $this->assignedUsers->removeElement($user);
 
