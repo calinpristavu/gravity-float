@@ -9,6 +9,7 @@ use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherUseType;
+use AppBundle\Service\VoucherFinder;
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -52,7 +53,7 @@ class VoucherController extends Controller
             ->getRepository('AppBundle:Voucher')
             ->countAllWithCode($request->get('voucherCode'));
 
-        $vouchers = $this->get('voucher.finder')->setFilters($filters)->getVouchers();
+        $vouchers = $this->get(VoucherFinder::class)->setFilters($filters)->getVouchers();
         $nrOfPages = (int)($allVouchersCount / $this->getParameter('vouchers_per_page')) + 1;
         if ($allVouchersCount % $this->getParameter('vouchers_per_page') == 0 || $allVouchersCount == 0) {
             $nrOfPages = $allVouchersCount / $this->getParameter('vouchers_per_page');
@@ -207,7 +208,7 @@ class VoucherController extends Controller
             'items_per_page' => $this->getParameter('vouchers_per_page'),
             'decreasing' => true,
         ];
-        $voucherFinder = $this->get('voucher.finder');
+        $voucherFinder = $this->get(VoucherFinder::class);
         if ($filterFrom !== null) {
             $filters['filterFrom'] = $filterFrom;
         }

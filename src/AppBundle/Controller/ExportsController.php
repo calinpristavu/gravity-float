@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\CsvWriter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,6 @@ class ExportsController extends Controller
     {
         $filterFrom = $request->get('filterFrom') !== null ? new \DateTime($request->get('filterFrom').' 00:00') : null;
         $filterTo = $request->get('filterTo') !== null ? new \DateTime($request->get('filterTo'). ' 23:59') : null;
-        return $this->get('csv.writer')->getCsvVouchers($filterFrom, $filterTo);
+        return $this->get(CsvWriter::class)->getCsvVouchers($filterFrom, $filterTo);
     }
 }
