@@ -10,10 +10,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
-    /**
-     * @return int
-     */
-    public function countAll()
+    public function countAll() : int
     {
         return (int)$this->createQueryBuilder('u')
             ->select('count(u.id)')
