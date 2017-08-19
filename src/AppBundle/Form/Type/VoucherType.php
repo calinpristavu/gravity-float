@@ -14,14 +14,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 /**
  * Class VoucherType
- *
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  */
 class VoucherType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -125,9 +121,6 @@ class VoucherType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

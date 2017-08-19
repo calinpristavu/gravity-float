@@ -10,14 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ForgotPasswordType
- *
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  */
 class ForgotPasswordType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -26,9 +22,6 @@ class ForgotPasswordType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(

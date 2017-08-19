@@ -18,14 +18,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class UserType
- *
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  */
 class UserType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -66,10 +62,6 @@ class UserType extends AbstractType
         ;
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
