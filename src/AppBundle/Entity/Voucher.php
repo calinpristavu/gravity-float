@@ -161,9 +161,6 @@ class Voucher
         $this->numberOfUsers = array();
 
         $this->partialPayment = 0;
-        $this->orderNumber = "";
-        $this->invoiceNumber = "";
-        $this->comment = "";
         $this->includedPostalCharges = false;
         $this->blocked = false;
     }
@@ -226,7 +223,7 @@ class Voucher
         return $this;
     }
 
-    public function getPartialPayment() : ?float
+    public function getPartialPayment() : float
     {
         return $this->partialPayment;
     }
@@ -238,7 +235,7 @@ class Voucher
         return $this;
     }
 
-    public function getNumberOfUsers() : ?array
+    public function getNumberOfUsers() : array
     {
         return $this->numberOfUsers;
     }
@@ -267,7 +264,7 @@ class Voucher
         return $this->methodOfPayment;
     }
 
-    public function getUsages() : ?array
+    public function getUsages() : array
     {
         return $this->usages;
     }
@@ -310,7 +307,7 @@ class Voucher
         return $this->orderNumber;
     }
 
-    public function setOrderNumber($orderNumber) : self
+    public function setOrderNumber(?string $orderNumber) : self
     {
         $this->orderNumber = $orderNumber;
 
@@ -322,14 +319,14 @@ class Voucher
         return $this->invoiceNumber;
     }
 
-    public function setInvoiceNumber(string $invoiceNumber) : self
+    public function setInvoiceNumber(?string $invoiceNumber) : self
     {
         $this->invoiceNumber = $invoiceNumber;
 
         return $this;
     }
 
-    public function isIncludedPostalCharges() : ?bool
+    public function isIncludedPostalCharges() : bool
     {
         return $this->includedPostalCharges;
     }
@@ -360,7 +357,7 @@ class Voucher
         return $this;
     }
 
-    public function isBlocked() : ?bool
+    public function isBlocked() : bool
     {
         return $this->blocked;
     }

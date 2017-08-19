@@ -136,10 +136,7 @@ class Payment
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function __toString() : string
     {
         return $this->getAmount() . '€ used on ' .
                 $this->getProduct() . ' on ' .

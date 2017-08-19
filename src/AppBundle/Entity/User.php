@@ -94,7 +94,7 @@ class User extends BaseUser
         $this->canCreateOnlineVouchers = false;
     }
 
-    public function getCanCreateOnlineVouchers() : ?bool
+    public function getCanCreateOnlineVouchers() : bool
     {
         return $this->canCreateOnlineVouchers;
     }
@@ -111,7 +111,7 @@ class User extends BaseUser
         return $this->id;
     }
 
-    public function getName() : ?string
+    public function getName() : string
     {
         return $this->name;
     }
@@ -135,7 +135,7 @@ class User extends BaseUser
         return $this;
     }
 
-    public function getPhone() : ?string
+    public function getPhone() : string
     {
         return $this->phone;
     }
@@ -147,23 +147,24 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function __toString() : ?string
     {
         return $this->getName();
     }
 
+    /**
+     * Username is the same as the email
+     */
     public function getUsername() : ?string
     {
-        //Username is the same as the email
         return $this->getEmail();
     }
 
+    /**
+     * Username is the same as the email
+     */
     public function getUsernameCanonical() : ?string
     {
-        //Username is the same as the email
         return $this->getEmailCanonical();
     }
 
@@ -186,9 +187,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setEmail($email) : self
     {
         parent::setEmail($email);
@@ -198,9 +196,6 @@ class User extends BaseUser
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function setEmailCanonical($email) : self
     {
         parent::setEmailCanonical($email);
