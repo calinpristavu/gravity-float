@@ -28,11 +28,12 @@
                         <td></td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
-                        {% if user.canCreateOnlineVouchers %}
-                            <td>{{ user.shop }} Online</td>
-                        {% else %}
-                            <td>{{ user.shop }}</td>
-                        {% endif %}
+                        <td>
+                            {{ user.shop }}
+                            {% if user.canCreateOnlineVouchers %}
+                                Online
+                            {% endif %}
+                        </td>
 
                         <td>{{ user.createdVouchers|length }}</td>
                         <td>

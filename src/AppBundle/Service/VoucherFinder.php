@@ -26,9 +26,6 @@ class VoucherFinder
      */
     private $vouchersPerPage;
 
-    /**
-     * VoucherFinder constructor.
-     */
     public function __construct(VoucherRepository $voucherRepository, int $vouchersPerPage)
     {
         $this->voucherRepository = $voucherRepository;

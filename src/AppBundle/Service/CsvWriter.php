@@ -35,10 +35,7 @@ class CsvWriter
      * @var UserRepository
      */
     protected $userRepository;
-
-    /**
-     * CsvWriter constructor.
-     */
+    
     public function __construct(
         Connection $conn,
         TranslatorInterface $translator,
@@ -68,7 +65,10 @@ class CsvWriter
         return $response;
     }
 
-    private function addVouchersHeader(resource $handle)
+    /**
+     * @param resource $handle
+     */
+    private function addVouchersHeader($handle)
     {
         fputcsv(
             $handle,
@@ -89,7 +89,10 @@ class CsvWriter
         );
     }
 
-    private function addVouchersData(resource $handle, \DateTime $filterFrom = null, \DateTime $filterTo = null)
+    /**
+     * @param resource $handle
+     */
+    private function addVouchersData($handle, \DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
         $userData = $this->fetchVoucherData($filterFrom, $filterTo);
         while ($row = $userData->fetch()) {

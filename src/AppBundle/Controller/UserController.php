@@ -49,12 +49,13 @@ class UserController extends Controller
      */
     public function userManagementAction(Request $request) : Response
     {
-        if (!$request->get('page')) {
-            $request->request->set('page', 1);
+        $currentPage = (int)$request->get('page');
+        if ($currentPage <= 0) {
+            $currentPage = 1;
         }
 
         $filters = [
-            'page' => (int)$request->get('page'),
+            'page' => $currentPage,
             'items_per_page' => $this->getParameter('users_per_page'),
         ];
 
@@ -68,7 +69,7 @@ class UserController extends Controller
         return $this->render('floathamburg/usermanagement.html.twig',[
             'users' => $users,
             'numberOfPages' => $nrOfPages,
-            'currentPage' => $request->get('page'),
+            'currentPage' => $currentPage,
         ]);
     }
 
