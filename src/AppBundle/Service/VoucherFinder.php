@@ -5,6 +5,10 @@ namespace AppBundle\Service;
 use AppBundle\Repository\VoucherRepository;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class VoucherFinder
+ * @author Ioan Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
 class VoucherFinder
 {
     /**
@@ -23,9 +27,7 @@ class VoucherFinder
     private $vouchersPerPage;
 
     /**
-     * Class constructor.
-     *
-     * @param VoucherRepository $voucherRepository
+     * VoucherFinder constructor.
      */
     public function __construct(VoucherRepository $voucherRepository, int $vouchersPerPage)
     {
@@ -33,11 +35,6 @@ class VoucherFinder
         $this->vouchersPerPage = $vouchersPerPage;
     }
 
-    /**
-     * @param array $filters
-     *
-     * @return VoucherFinder
-     */
     public function setFilters(array $filters): self
     {
         $this->filters = $filters;
@@ -45,10 +42,7 @@ class VoucherFinder
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getVouchers()
+    public function getVouchers() : array
     {
         $queryBuilder = $this->voucherRepository->createQueryBuilder('v');
         $this->applyFiltersToQueryBuilder($queryBuilder);
@@ -56,7 +50,7 @@ class VoucherFinder
         return $queryBuilder->getQuery()->getResult();
     }
 
-    private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
+    protected function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
         if (isset($this->filters['decreasing'])) {
             $queryBuilder->addOrderBy('v.creationDate', 'DESC');
