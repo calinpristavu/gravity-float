@@ -543,4 +543,14 @@ class Voucher
 
         return $this;
     }
+
+    public function isCompletelyUsed(): bool
+    {
+        return $this->getRemainingValue() == 0;
+    }
+
+    public function isPartiallyUsed(): bool
+    {
+        return $this->getPartialPayment() > 0 && !$this->isCompletelyUsed();
+    }
 }

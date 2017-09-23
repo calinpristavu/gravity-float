@@ -31,7 +31,9 @@
             <tbody>
                 {% for voucher in matchedVouchers %}
                     <tr>
-                        <td>{{ voucher.voucherCode }}</td>
+                        <td class="text-{{ voucher.isCompletelyUsed ? 'danger' : (voucher.isPartiallyUsed ? 'warning' : 'success') }}">
+                            {{ voucher.voucherCode }}
+                        </td>
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>

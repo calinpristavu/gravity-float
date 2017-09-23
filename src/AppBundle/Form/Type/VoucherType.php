@@ -96,6 +96,7 @@ class VoucherType extends AbstractType
                     'Card' => 'Card',
                     'Cash' => 'Cash',
                     'Paypal' => 'Paypal',
+                    'Lastschrift' => 'Lastschrift'
                 ),
                 'expanded' => true,
                 'multiple' => false,
@@ -120,7 +121,7 @@ class VoucherType extends AbstractType
                 'attr' => [
                     'class' => 'datepicker'
                 ],
-                'data' => (new \DateTime(date('Y-m-d', strtotime('Dec 25'))))->add(new \DateInterval('P3Y'))
+                'data' => (new \DateTime('31-12-'.(date('Y') + 3)))
             ])
         ;
     }

@@ -19,8 +19,8 @@
                             {{ 'no'|trans }} <br />
                         {% endif %}
                     {% endif %}
-                    {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("m/d/Y") }} <br/>
-                    {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }} <br/>
+                    {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("d/m/Y") }} <br/>
+                    {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("d/m/Y") }} <br/>
                     {{ 'created.by'|trans }}: {{ voucher.author }} <br />
                     {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br />
                     {{ 'number.of.users'|trans }}:
@@ -42,10 +42,6 @@
                     {% else %}
                         {{ 'no.usages.set'|trans }}
                     {% endfor %}
-                    <br /><br />
-                    {{ 'you.can.use.this.voucher.in.shop'|trans }}: <br />
-                    {{ voucher.shopWhereCreated.name }}
-                    {{ voucher.shopWhereCreated.address }} <br />
                 </div>
             </div>
         </div>

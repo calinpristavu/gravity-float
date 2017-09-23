@@ -23,8 +23,8 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("m/d/Y") }} <br/>
-                {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }} <br/>
+                {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("d/m/Y") }} <br/>
+                {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("d/m/Y") }} <br/>
                 <div class="hidden-print">{{ 'created.by'|trans }} {{ voucher.author }}</div> <br />
                 {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br />
                 <div class="hidden-print">
