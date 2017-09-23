@@ -11,18 +11,27 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CommentType
+ *
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  */
 class CommentType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('comment', TextareaType::class, ['attr' => array('maxlength' => 300)])
+            ->add('comment', TextareaType::class, [
+                'attr' => array('maxlength' => 300),
+            ])
             ->add('save', SubmitType::class, array('label' => "Save"))
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
