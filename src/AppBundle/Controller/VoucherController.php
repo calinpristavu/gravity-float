@@ -371,12 +371,20 @@ class VoucherController extends Controller
 
     protected function calculateVoucherCode(string $voucherLetter, Voucher $voucher)
     {
+        $shopToCodeMap = [
+            0 => 222,
+            1 => 201,
+            2 => 204,
+            3 => 205
+        ];
+
         $shopId = $this->getUser()->getShop()->getId();
         if ($voucher->isOnlineVoucher()) {
             $shopId = 0;
         }
         $voucherCodeInfo = $this->getDoctrine()->getRepository('AppBundle:VoucherCodeInformation')->find($shopId);
-        $voucher->setVoucherCode('201'.$voucherLetter.$voucherCodeInfo->getNextVoucherCode());
+
+        $voucher->setVoucherCode($shopToCodeMap[$shopId].$voucherLetter.$voucherCodeInfo->getNextVoucherCode());
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucherCodeInfo);
         $em->flush();
