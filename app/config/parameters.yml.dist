@@ -10,6 +10,6 @@ parameters:
     mailer_user: mydummytestingemail@gmail.com
     mailer_password: ~
 
-    secret: ThisTokenIsNotSoSecretChangeIt
+    secret: ThisTokenIsMoreSecretTrustMe
     vouchers_per_page: 5
     users_per_page: 5
