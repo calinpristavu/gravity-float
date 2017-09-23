@@ -10,11 +10,6 @@ class UserFinder
     public static $NUMBER_OF_USERS_PER_PAGE = 5;
 
     /**
-     * @var int
-     */
-    private $page;
-
-    /**
      * @var array
      */
     private $filters;
@@ -38,18 +33,6 @@ class UserFinder
     {
         $this->userRepository = $userRepository;
         $this->usersPerPage = $usersPerPage;
-    }
-
-    /**
-     * @param int $page
-     *
-     * @return UserFinder
-     */
-    public function setPage(int $page): self
-    {
-        $this->page = $page;
-
-        return $this;
     }
 
     /**

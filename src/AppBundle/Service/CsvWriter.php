@@ -145,13 +145,13 @@ class CsvWriter
         FROM vouchers ";
 
         $tag = ' WHERE';
-        if ($filterFrom != null) {
+        if ($filterFrom !== null) {
             $filterFrom = $filterFrom->format('Ymd');
             $sql .= "WHERE DATE(creation_date) >= '$filterFrom'";
             $tag = ' AND';
         }
 
-        if ($filterTo != null) {
+        if ($filterTo !== null) {
             $filterTo = $filterTo->format('Ymd');
             $sql .= $tag . " DATE(creation_date) <= '$filterTo'";
         }

@@ -15,13 +15,13 @@ class VoucherRepository extends EntityRepository
         $queryBuilder = $this->createQueryBuilder('v')
             ->select('count(v.id)');
 
-        if ($from != null) {
+        if ($from !== null) {
             $queryBuilder
                 ->andWhere('v.creationDate >= :from')
                 ->setParameter('from', $from);
         }
 
-        if ($to != null) {
+        if ($to !== null) {
             $queryBuilder
                 ->andWhere('v.creationDate <= :to')
                 ->setParameter('to', $to);

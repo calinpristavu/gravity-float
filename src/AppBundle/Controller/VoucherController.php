@@ -179,11 +179,11 @@ class VoucherController extends Controller
         }
 
         $filterFrom = null;
-        if ($request->get('filterFrom') != null) {
+        if ($request->get('filterFrom') !== null) {
             $filterFrom = new \DateTime($request->get('filterFrom'). ' 00:00');
         }
         $filterTo = null;
-        if ($request->get('filterTo') != null) {
+        if ($request->get('filterTo') !== null) {
             $filterTo = new \DateTime($request->get('filterTo').' 23:59');
         }
 
@@ -191,11 +191,11 @@ class VoucherController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $filterFrom = $form->getData()['filterFrom'];
-            if ($filterFrom != null) {
+            if ($filterFrom !== null) {
                 $filterFrom->setTime(0,0);
             }
             $filterTo = $form->getData()['filterTo'];
-            if ($filterTo != null) {
+            if ($filterTo !== null) {
                 $filterTo->setTime(23,59);
             }
             $request->query->remove('page');
@@ -226,8 +226,8 @@ class VoucherController extends Controller
             'vouchers' => $vouchers,
             'numberOfPages' => $nrOfPages,
             'currentPage' => $request->get('page'),
-            'filterFrom' => $filterFrom != null ? $filterFrom->format('Y-m-d') : null,
-            'filterTo' => $filterTo != null ? $filterTo->format('Y-m-d') : null,
+            'filterFrom' => $filterFrom !== null ? $filterFrom->format('Y-m-d') : null,
+            'filterTo' => $filterTo !== null ? $filterTo->format('Y-m-d') : null,
             'form' => $form->createView(),
         ]);
     }

@@ -18,8 +18,8 @@ class ExportsController extends Controller
      */
     public function exportVouchersAction(Request $request) : StreamedResponse
     {
-        $filterFrom = $request->get('filterFrom') != null ? new \DateTime($request->get('filterFrom').' 00:00') : null;
-        $filterTo = $request->get('filterTo') != null ? new \DateTime($request->get('filterTo'). ' 23:59') : null;
+        $filterFrom = $request->get('filterFrom') !== null ? new \DateTime($request->get('filterFrom').' 00:00') : null;
+        $filterTo = $request->get('filterTo') !== null ? new \DateTime($request->get('filterTo'). ' 23:59') : null;
         return $this->get('csv.writer')->getCsvVouchers($filterFrom, $filterTo);
     }
 }

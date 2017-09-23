@@ -8,11 +8,6 @@ use Doctrine\ORM\QueryBuilder;
 class VoucherFinder
 {
     /**
-     * @var int
-     */
-    private $page;
-
-    /**
      * @var array
      */
     private $filters;
@@ -36,18 +31,6 @@ class VoucherFinder
     {
         $this->voucherRepository = $voucherRepository;
         $this->vouchersPerPage = $vouchersPerPage;
-    }
-
-    /**
-     * @param int $page
-     *
-     * @return VoucherFinder
-     */
-    public function setPage(int $page): self
-    {
-        $this->page = $page;
-
-        return $this;
     }
 
     /**
