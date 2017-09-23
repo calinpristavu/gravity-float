@@ -1,0 +1,18 @@
+server_hostname: ec2-52-59-245-86.eu-central-1.compute.amazonaws.com
+
+symfony_project_root: "/var/www/gravity-float"
+
+nginx_docroot: /var/www/gravity-float/current/web
+nginx_servername: ec2-52-59-245-86.eu-central-1.compute.amazonaws.com
+nginx_index: app.php
+
+app_deploy_user: ubuntu
+app_deploy_group: ubuntu
+
+mailer_transport: gmail
+mailer_host: smtp.gmail.com
+mailer_user: mydummytestingemail@gmail.com
+mailer_password: areallycomplexpassword
+mailer_port: 25
+mailer_address: 'danielmuresan@gmail.com'
+mailer_sender_name: 'FLOAT_HAMBURG Dev'

@@ -18,6 +18,7 @@ show_usage() {
     echo "  production"
     echo "  integration"
     echo "  test"
+    echo "  floataws"
     exit 1
 }
 
