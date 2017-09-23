@@ -3,3 +3,10 @@ server_timezone: UTC
 server_locale: en_US.UTF-8
 
 nginx_servername: float-hamburg.com
+
+app_user: www-data
+app_group: www-data
+
+nginx_user: www-data
+nginx_group: www-data
+

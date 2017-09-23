@@ -255,7 +255,7 @@ class VoucherController extends Controller
      */
     public function useVoucherAction(Request $request, Voucher $voucher = null) : Response
     {
-        if ($voucher == null || $voucher->isBlocked()) {
+        if ($voucher === null || $voucher->isBlocked()) {
             return $this->redirectToRoute('voucher_search');
         }
 

@@ -1,57 +1,18 @@
 ---
-- name: Install php7.1-cli
-  become: yes
-  apt:
-    pkg: php7.1-cli
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_packages_state }}"
+- name: Add repository for Ubuntu
+  become: true
+  apt_repository: repo={{ php_ppa }}
 
-- name: Install php7.1-fpm
+- name: Update apt
   become: yes
-  apt:
-    pkg: php7.1-fpm
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_fpm_state }}"
-  notify: restart php7.1-fpm
+  apt: update_cache=yes
 
 - name: Install PHP Packages
   become: yes
-  apt:
-    pkg: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_packages_state }}"
+  apt: pkg={{ item }} state=latest
   with_items: "{{ php_packages }}"
-
-- name: Install dev PHP Packages
-  become: yes
-  apt:
-    pkg: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_packages_state }}"
-  with_items: "{{ php_dev_packages }}"
-  when: not ansidev_production
-
-- name: Install production PHP Packages
-  become: yes
-  apt:
-    pkg: "{{ item }}"
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_packages_state }}"
-  with_items: "{{ php_production_packages }}"
-  when: ansidev_production
-
-- name: Install xDebug
-  become: yes
-  apt:
-    pkg: php-xdebug
-    update_cache: yes
-    cache_valid_time: 3600
-    state: "{{ php_packages_state }}"
-  when: "{{ php_xdebug }}"
+  when: php_packages is defined
+  notify:
+    - restart php7-fpm
 
 - include: configure.yml
