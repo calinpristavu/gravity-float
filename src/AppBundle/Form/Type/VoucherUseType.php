@@ -11,14 +11,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class VoucherUseType
- *
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  */
 class VoucherUseType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $choices = array();
@@ -66,9 +62,6 @@ class VoucherUseType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
