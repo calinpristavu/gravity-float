@@ -5,18 +5,18 @@ ansidev_production: false
 php_packages_state: "{{ ansidev_package_state }}"
 php_fpm_state: "{{ ansidev_package_state }}" # latest|absent|present|build-dep
 php_packages:
-  - php7.0-common
-  - php7.0-mysql
-  - php7.0-curl
-  - php7.0-gd
-  - php7.0-json
-  - php7.0-intl
-  - php7.0-mbstring
-  - php7.0-opcache
-  - php7.0-xml
-  - php7.0-bcmath
-  - php7.0-zip
+  - php7.1-common
+  - php7.1-mysql
+  - php7.1-curl
+  - php7.1-gd
+  - php7.1-json
+  - php7.1-intl
+  - php7.1-mbstring
+  - php7.1-opcache
+  - php7.1-xml
+  - php7.1-bcmath
+  - php7.1-zip
 php_dev_packages:
-  - php7.0-phpdbg
+  - php7.1-phpdbg
 php_production_packages: []
 php_xdebug: false

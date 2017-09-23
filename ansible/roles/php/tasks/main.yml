@@ -1,20 +1,20 @@
 ---
-- name: Install php7.0-cli
+- name: Install php7.1-cli
   become: yes
   apt:
-    pkg: php7.0-cli
+    pkg: php7.1-cli
     update_cache: yes
     cache_valid_time: 3600
     state: "{{ php_packages_state }}"
 
-- name: Install php7.0-fpm
+- name: Install php7.1-fpm
   become: yes
   apt:
-    pkg: php7.0-fpm
+    pkg: php7.1-fpm
     update_cache: yes
     cache_valid_time: 3600
     state: "{{ php_fpm_state }}"
-  notify: restart php7.0-fpm
+  notify: restart php7.1-fpm
 
 - name: Install PHP Packages
   become: yes

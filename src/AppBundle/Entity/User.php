@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -54,7 +55,7 @@ class User extends BaseUser
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One User can create many vouchers
      *
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Voucher", mappedBy="author")
      */
@@ -64,21 +65,11 @@ class User extends BaseUser
      * Bidirectional - One-To-Many (INVERSE SIDE)
      * One User can create many payments
      *
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="employee")
      */
     protected $createdPayments;
-
-    /**
-     * Bidirectional - One-To-Many (INVERSE SIDE)
-     * One User can be designated many vouchers
-     *
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="Voucher", mappedBy="designatedCustomer")
-     */
-    protected $designatedVouchers;
 
     /**
      * @var string
@@ -96,7 +87,6 @@ class User extends BaseUser
         parent::__construct();
 
         $this->createdVouchers = new ArrayCollection();
-        $this->designatedVouchers = new ArrayCollection();
         $this->createdPayments = new ArrayCollection();
 
         $this->name = "";
@@ -104,230 +94,130 @@ class User extends BaseUser
         $this->canCreateOnlineVouchers = false;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getCanCreateOnlineVouchers()
+    public function getCanCreateOnlineVouchers() : bool
     {
         return $this->canCreateOnlineVouchers;
     }
 
-    /**
-     * @param boolean $canCreateVouchers
-     *
-     * @return $this
-     */
-    public function setCanCreateOnlineVouchers($canCreateVouchers)
+    public function setCanCreateOnlineVouchers(bool $canCreateVouchers) : self
     {
         $this->canCreateOnlineVouchers = $canCreateVouchers;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId() : ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
+    public function setName(string $name) : self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return Shop
-     */
-    public function getShop()
+    public function getShop() : ?Shop
     {
         return $this->shop;
     }
 
-    /**
-     * @param Shop $shop
-     *
-     * @return $this
-     */
-    public function setShop($shop)
+    public function setShop(Shop $shop) : self
     {
         $this->shop = $shop;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getPhone()
+    public function getPhone() : string
     {
         return $this->phone;
     }
 
-    /**
-     * @param string $phone
-     *
-     * @return $this
-     */
-    public function setPhone($phone)
+    public function setPhone(string $phone) : self
     {
         $this->phone = $phone;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString() : ?string
     {
         return $this->getName();
     }
 
     /**
-     * @return string
+     * Username is the same as the email
      */
-    public function getUsername()
+    public function getUsername() : ?string
     {
-        //Username is the same as the email
         return $this->getEmail();
     }
 
     /**
-     * @return string
+     * Username is the same as the email
      */
-    public function getUsernameCanonical()
+    public function getUsernameCanonical() : ?string
     {
-        //Username is the same as the email
         return $this->getEmailCanonical();
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getCreatedVouchers()
+    public function getCreatedVouchers() : Collection
     {
         return $this->createdVouchers;
     }
 
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function addCreatedVoucher($voucher)
+    public function addCreatedVoucher(Voucher $voucher)  : self
     {
         $this->createdVouchers->add($voucher);
 
         return $this;
     }
 
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function removeCreatedVoucher($voucher)
+    public function removeCreatedVoucher(Voucher $voucher) : self
     {
         $this->createdVouchers->removeElement($voucher);
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getDesignatedVouchers()
-    {
-        return $this->designatedVouchers;
-    }
-
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function addDesignatedVoucher($voucher)
-    {
-        $this->designatedVouchers->add($voucher);
-
-        return $this;
-    }
-
-    /**
-     * @param Voucher $voucher
-     *
-     * @return $this
-     */
-    public function removeDesignatedVoucher($voucher)
-    {
-        $this->designatedVouchers->removeElement($voucher);
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setEmail($email)
+    public function setEmail($email) : self
     {
         parent::setEmail($email);
 
         $this->setUsername($email);
+
+        return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function setEmailCanonical($email)
+    public function setEmailCanonical($email) : self
     {
         parent::setEmailCanonical($email);
 
         $this->setUsernameCanonical($email);
+
+        return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getCreatedPayments()
+    public function getCreatedPayments() : Collection
     {
         return $this->createdPayments;
     }
 
-    /**
-     * @param Payment $payment
-     *
-     * @return $this
-     */
-    public function addCreatedPayment($payment)
+    public function addCreatedPayment(Payment $payment) : self
     {
         $this->createdPayments->add($payment);
 
         return $this;
     }
 
-    /**
-     * @param Payment $payment
-     *
-     * @return $this
-     */
-    public function removeCreatedPayment($payment)
+    public function removeCreatedPayment(Payment $payment) : self
     {
         $this->createdPayments->removeElement($payment);
 
