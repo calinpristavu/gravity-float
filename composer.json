@@ -1,5 +1,6 @@
 {
-    "name": "johnny/test",
+    "name": "calinpristavu/gravity-float",
+    "description": "Gravity Project",
     "license": "proprietary",
     "type": "project",
     "autoload": {
