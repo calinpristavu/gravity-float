@@ -10,13 +10,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class VoucherRepository extends EntityRepository
 {
-    /**
-     * @param null $from
-     * @param null $to
-     *
-     * @return int
-     */
-    public function countAll($from = null, $to = null)
+    public function countAll(\DateTime $from = null, \DateTime $to = null) : int
     {
         $queryBuilder = $this->createQueryBuilder('v')
             ->select('count(v.id)');
@@ -38,12 +32,7 @@ class VoucherRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    /**
-     * @param string $voucherCode
-     *
-     * @return int
-     */
-    public function countAllWithCode(string $voucherCode = null)
+    public function countAllWithCode(string $voucherCode = null) : int
     {
         if ($voucherCode === null) {
             return 0;
@@ -57,12 +46,7 @@ class VoucherRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    /**
-     * @param string $code
-     *
-     * @return array
-     */
-    public function getAllWithCode(string $code = null)
+    public function getAllWithCode(string $code = null) : array
     {
         if ($code === null) {
             return array();
