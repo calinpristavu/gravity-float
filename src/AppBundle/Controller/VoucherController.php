@@ -70,6 +70,14 @@ class VoucherController extends Controller
     }
 
     /**
+     * @Route("/voucher/chose-type", name="voucher_chose_type")
+     */
+    public function createChoseTypeAction()
+    {
+        return $this->render('voucher/create_step_1.html.twig');
+    }
+
+    /**
      * @Route("/voucher/create", name="voucher_create")
      */
     public function createVoucherAction(Request $request) : Response
@@ -147,7 +155,6 @@ class VoucherController extends Controller
 
         $voucher->setUsages($usages);
     }
-
 
     /**
      * @Route("/voucher/save", name="voucher_save")
@@ -242,7 +249,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/{id}", name="voucher_details")
+     * @Route("/voucher/{id}", name="voucher_details", requirements={"id": "\d+"})
      * @ParamConverter("voucher", class="AppBundle:Voucher")
      * @Template("floathamburg/voucher_details.html.twig")
      */
