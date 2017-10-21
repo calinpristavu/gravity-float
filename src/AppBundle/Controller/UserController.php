@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\UserType;
+use AppBundle\Service\UserFinder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -58,7 +59,7 @@ class UserController extends Controller
             'items_per_page' => $this->getParameter('users_per_page'),
         ];
 
-        $users = $this->get('user.finder')->setFilters($filters)->getUsers();
+        $users = $this->get(UserFinder::class)->setFilters($filters)->getUsers();
         $allUsersCount = $this->getDoctrine()->getRepository('AppBundle:User')->countAll();
         $nrOfPages = (int)($allUsersCount / $this->getParameter('users_per_page')) + 1;
         if ($allUsersCount % $this->getParameter('users_per_page') == 0) {

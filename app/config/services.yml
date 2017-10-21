@@ -1,37 +1,18 @@
-parameters:
-    #
+imports:
+    - { resource: repositories.yml }
 
 services:
-    shop.repository:
-        class: AppBundle\Repository\ShopRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - AppBundle\Entity\Shop
-
-    user.repository:
-        class: AppBundle\Repository\UserRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - AppBundle\Entity\User
-
-    voucher.repository:
-        class: AppBundle\Repository\VoucherRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - AppBundle\Entity\Voucher
-
-    csv.writer:
-        class: AppBundle\Service\CsvWriter
+    _defaults:
         autowire: true
 
-    voucher.finder:
-        class: AppBundle\Service\VoucherFinder
+    AppBundle\Service\CsvWriter: ~
+
+    AppBundle\Service\VoucherFinder:
         arguments:
             - "@=service('doctrine.orm.default_entity_manager').getRepository('AppBundle:Voucher')"
             - "%vouchers_per_page%"
 
-    user.finder:
-        class: AppBundle\Service\UserFinder
+    AppBundle\Service\UserFinder:
         arguments:
             - "@=service('doctrine.orm.default_entity_manager').getRepository('AppBundle:User')"
             - "%vouchers_per_page%"
