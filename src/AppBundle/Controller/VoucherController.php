@@ -128,6 +128,7 @@ class VoucherController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $voucher->setBlocked(false);
+            $this->fillVoucherDetails($voucher);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -147,11 +148,14 @@ class VoucherController extends Controller
      */
     public function createTreatmentVoucherAction(Request $request, Voucher $voucher): array
     {
+        // TODO: implement treatment vouchers using the same principle as value vouchers.
         return [];
     }
 
     /**
      * @Route("/voucher/create/{id}", name="voucher_create")
+     *
+     * TODO: This method should only forward the request depending on the type of voucher.
      */
     public function createVoucherAction(Voucher $voucher) : Response
     {
@@ -403,6 +407,9 @@ class VoucherController extends Controller
         $em->flush();
     }
 
+    /**
+     * TODO: This should be handled by a doctrine listener on persist.
+     */
     protected function fillVoucherDetails(Voucher $voucher)
     {
         $voucher->setShopWhereCreated($this->getUser()->getShop());
