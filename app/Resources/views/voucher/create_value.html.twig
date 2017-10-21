@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ 'create.voucher'|trans }}</h2>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="create-voucher">
+        {% if app.user.canCreateOnlineVouchers %}
+            {{ form_row(form.onlineVoucher) }}
+            {{ form_row(form.orderNumber) }}
+            {{ form_row(form.invoiceNumber) }}
+            {{ form_row(form.includedPostalCharges) }}
+        {% endif %}
+        {{ form_rest(form) }}
+
+        <button type="submit">{{ 'button.voucher.create'|trans }}</button>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+

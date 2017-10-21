@@ -6,8 +6,10 @@ use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
+use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
+use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Service\VoucherFinder;
 use DateTime;
@@ -71,22 +73,73 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/chose-type", name="voucher_chose_type")
+     * @Template("voucher/create_step_1.html.twig")
      */
-    public function createChoseTypeAction()
+    public function createChoseTypeAction(Request $request)
     {
-        return $this->render('voucher/create_step_1.html.twig');
+        $voucher = new Voucher();
+
+        $form = $this
+            ->createForm(VoucherTypeType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voucher->setCreationDate(new \DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute('voucher_create', [
+                'id' => $voucher->getId()
+            ]);
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
     }
 
     /**
-     * @Route("/voucher/create", name="voucher_create")
+     * @Template("voucher/create_value.html.twig")
      */
-    public function createVoucherAction(Request $request) : Response
+    public function createValueVoucherAction(Request $request, Voucher $voucher)
     {
+        $form = $this
+            ->createForm(ValueVoucherType::class, $voucher)
+            ->handleRequest($request);
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @Template("voucher/create_treatment.html.twig")
+     */
+    public function createTreatmentVoucherAction(Request $request, Voucher $voucher)
+    {
+        return [];
+    }
+
+    /**
+     * @Route("/voucher/create/{id}", name="voucher_create")
+     */
+    public function createVoucherAction(Voucher $voucher) : Response
+    {
+        return $this->forward(
+            $voucher->getType()->getId() === 1
+                ? 'AppBundle:Voucher:createValueVoucher'
+                : 'AppBundle:Voucher:createTreatmentVoucher',
+            [
+                'voucher' => $voucher
+            ]
+        );
+
+
         if ($this->get('session')->get('voucher')) {
             $this->get('session')->remove('voucher');
         }
-
-        $voucher = new Voucher();
 
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
