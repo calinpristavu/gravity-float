@@ -2,3 +2,5 @@ dev_env: True
 server_hostname: float-hamburg.com
 nginx_docroot: /var/www/gravity-float/web
 nginx_index: app_dev.php
+
+php_opcache_revalidate_freq: 0

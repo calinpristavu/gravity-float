@@ -26,7 +26,7 @@ class Voucher
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      */
     protected $voucherCode;
 
@@ -41,7 +41,7 @@ class Voucher
     /**
      * @var \DateTime
      *
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $expirationDate;
 
@@ -66,14 +66,14 @@ class Voucher
     /**
      * @var float
      *
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     protected $remainingValue;
 
     /**
      * @var float
      *
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     protected $partialPayment;
 
@@ -96,7 +96,7 @@ class Voucher
      *
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $methodOfPayment;
 
@@ -112,21 +112,21 @@ class Voucher
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable = true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $orderNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable = true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $invoiceNumber;
 
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", nullable = true)
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $includedPostalCharges;
 
@@ -150,17 +150,22 @@ class Voucher
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable = true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $comment;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VoucherType", inversedBy="vouchers")
+     */
+    protected $type;
 
     public function __construct()
     {
         $this->payments = new ArrayCollection();
-        $this->usages = array();
-        $this->numberOfUsers = array();
-
+        $this->usages = [];
+        $this->numberOfUsers = [];
         $this->partialPayment = 0;
+        $this->onlineVoucher = false;
         $this->includedPostalCharges = false;
         $this->blocked = false;
     }
@@ -389,5 +394,17 @@ class Voucher
     public function isPartiallyUsed(): bool
     {
         return $this->getPartialPayment() > 0 && !$this->isCompletelyUsed();
+    }
+
+    public function setType(VoucherType $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getType(): ?VoucherType
+    {
+        return $this->type;
     }
 }

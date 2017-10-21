@@ -1,5 +1,6 @@
 imports:
     - { resource: repositories.yml }
+    - { resource: form_types.yml }
 
 services:
     _defaults:

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ 'create.voucher'|trans }}</h2>
+
+    {{ form_start(form) }}
+        <div class="create-voucher">
+                <div class="row">
+                    <div class="col-md-offset-4">
+                        {{ form_rest(form) }}
+                    </div>
+                </div>
+        </div>
+
+        <br>
+
+        <div class="row text-center">
+            <button class="btn btn-success" type="submit">{{ 'next.step'|trans }}</button>
+        </div>
+
+        <br>
+
+        <div class="row text-center">
+            <a href="{{ app.request.headers.get('referer')|default(path('voucher_all')) }}">Back</a>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

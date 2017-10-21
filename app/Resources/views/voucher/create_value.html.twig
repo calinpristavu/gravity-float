@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ 'create.voucher'|trans }}</h2>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="create-voucher">
+        {% if app.user.canCreateOnlineVouchers %}
+            {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
+
+            <div id="online_voucher_data" class="interactive hidden" data-managed-by="value_voucher_onlineVoucher">
+                {{ form_row(form.orderNumber) }}
+                {{ form_row(form.invoiceNumber) }}
+                {{ form_row(form.includedPostalCharges) }}
+                <hr>
+            </div>
+        {% endif %}
+        {{ form_rest(form) }}
+    </div>
+
+    <br>
+
+    <div class="text-center">
+        <button class="btn btn-success" type="submit">{{ 'button.voucher.create'|trans }}</button>
+
+        <br>
+        <br>
+
+        <a href="{{ path('voucher_delete', {id: voucher.id}) }}">Back</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/barcode.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            if ($("#value_voucher_onlineVoucher").is(':checked')) {
+                $("#online_voucher_data").removeClass("hidden");
+            }
+
+            $("#value_voucher_onlineVoucher").on('click', function () {
+                if ($("#value_voucher_onlineVoucher").is(':checked')) {
+                    $("#value_voucher_orderNumber").attr("required", true);
+                    $("#value_voucher_invoiceNumber").attr("required", true);
+                } else {
+                    $("#value_voucher_orderNumber").attr("required", false).val("");
+                    $("#value_voucher_invoiceNumber").attr("required", false).val("");
+                    $("#value_voucher_include_postal_charges").prop("checked", false);
+                }
+            });
+        });
+    </script>
+{% endblock %}

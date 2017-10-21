@@ -92,3 +92,6 @@ back.to.homepage: 'Back to Homepage'
 comment: 'Voucher Comment'
 comment.added.successfully: 'Comment has been successfully added'
 add.comment: 'Comment'
+voucher.type.value_voucher: Value voucher
+voucher.type.treatment_voucher: Treatment voucher
+next.step: Next Step

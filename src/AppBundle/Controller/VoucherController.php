@@ -6,8 +6,10 @@ use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
+use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
+use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Service\VoucherFinder;
 use DateTime;
@@ -70,15 +72,106 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/create", name="voucher_create")
+     * @Route("/voucher/{id}/delete", name="voucher_delete")
      */
-    public function createVoucherAction(Request $request) : Response
+    public function deleteVoucher(Voucher $voucher): Response
     {
+        if (!$voucher->isBlocked()) {
+            throw new \LogicException("Can't delete an active voucher!");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($voucher);
+        $em->flush();
+
+        return $this->redirectToRoute('voucher_chose_type');
+    }
+
+    /**
+     * @Route("/voucher/chose-type", name="voucher_chose_type")
+     * @Template("voucher/create_step_1.html.twig")
+     */
+    public function createChoseTypeAction(Request $request)
+    {
+        $voucher = new Voucher();
+
+        $form = $this
+            ->createForm(VoucherTypeType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voucher->setCreationDate(new \DateTime());
+            $voucher->setBlocked(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute('voucher_create', [
+                'id' => $voucher->getId()
+            ]);
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @Template("voucher/create_value.html.twig")
+     */
+    public function createValueVoucherAction(Request $request, Voucher $voucher)
+    {
+        $form = $this
+            ->createForm(ValueVoucherType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voucher->setBlocked(false);
+            $this->fillVoucherDetails($voucher);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute('voucher_all');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'voucher' => $voucher
+        ];
+    }
+
+    /**
+     * @Template("voucher/create_treatment.html.twig")
+     */
+    public function createTreatmentVoucherAction(Request $request, Voucher $voucher): array
+    {
+        // TODO: implement treatment vouchers using the same principle as value vouchers.
+        return [];
+    }
+
+    /**
+     * @Route("/voucher/create/{id}", name="voucher_create")
+     *
+     * TODO: This method should only forward the request depending on the type of voucher.
+     */
+    public function createVoucherAction(Voucher $voucher) : Response
+    {
+        return $this->forward(
+            $voucher->getType()->getId() === 1
+                ? 'AppBundle:Voucher:createValueVoucher'
+                : 'AppBundle:Voucher:createTreatmentVoucher',
+            [
+                'voucher' => $voucher
+            ]
+        );
+
+
         if ($this->get('session')->get('voucher')) {
             $this->get('session')->remove('voucher');
         }
-
-        $voucher = new Voucher();
 
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
@@ -147,7 +240,6 @@ class VoucherController extends Controller
 
         $voucher->setUsages($usages);
     }
-
 
     /**
      * @Route("/voucher/save", name="voucher_save")
@@ -242,7 +334,7 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/{id}", name="voucher_details")
+     * @Route("/voucher/{id}", name="voucher_details", requirements={"id": "\d+"})
      * @ParamConverter("voucher", class="AppBundle:Voucher")
      * @Template("floathamburg/voucher_details.html.twig")
      */
@@ -315,6 +407,9 @@ class VoucherController extends Controller
         $em->flush();
     }
 
+    /**
+     * TODO: This should be handled by a doctrine listener on persist.
+     */
     protected function fillVoucherDetails(Voucher $voucher)
     {
         $voucher->setShopWhereCreated($this->getUser()->getShop());
