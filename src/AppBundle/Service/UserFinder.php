@@ -5,6 +5,10 @@ namespace AppBundle\Service;
 use AppBundle\Repository\UserRepository;
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * Class UserFinder
+ * @author Ioan Ovidiu Enache <i.ovidiuenache@yahoo.com>
+ */
 class UserFinder
 {
     public static $NUMBER_OF_USERS_PER_PAGE = 5;
@@ -24,22 +28,12 @@ class UserFinder
      */
     private $usersPerPage;
 
-    /**
-     * Class constructor.
-     *
-     * @param UserRepository $userRepository
-     */
     public function __construct(UserRepository $userRepository, int $usersPerPage)
     {
         $this->userRepository = $userRepository;
         $this->usersPerPage = $usersPerPage;
     }
 
-    /**
-     * @param array $filters
-     *
-     * @return UserFinder
-     */
     public function setFilters(array $filters): self
     {
         $this->filters = $filters;
@@ -47,10 +41,7 @@ class UserFinder
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getUsers()
+    public function getUsers() : array
     {
         $queryBuilder = $this->userRepository->createQueryBuilder('v');
         $this->applyFiltersToQueryBuilder($queryBuilder);
@@ -58,18 +49,14 @@ class UserFinder
         return $queryBuilder->getQuery()->getResult();
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     */
-    private function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
+    protected function applyFiltersToQueryBuilder(QueryBuilder $queryBuilder)
     {
         if (isset($this->filters['page'])) {
-            $page = $this->filters['page'];
-            if (!is_int($this->filters['page']) || $page <= 0) {
-                $page = 1;
+            if (!is_int($this->filters['page']) || $this->filters['page'] <= 0) {
+                $this->filters['page'] = 1;
             }
 
-            $queryBuilder->setFirstResult(($page - 1)*$this->usersPerPage);
+            $queryBuilder->setFirstResult(($this->filters['page'] - 1)*$this->usersPerPage);
         }
 
         if (isset($this->filters['items_per_page'])) {

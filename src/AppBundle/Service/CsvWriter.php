@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Repository\ShopRepository;
 use AppBundle\Repository\UserRepository;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -34,15 +35,7 @@ class CsvWriter
      * @var UserRepository
      */
     protected $userRepository;
-
-    /**
-     * CsvWriter constructor.
-     *
-     * @param Connection $conn
-     * @param TranslatorInterface $translator
-     * @param ShopRepository $shopRepository
-     * @param UserRepository $userRepository
-     */
+    
     public function __construct(
         Connection $conn,
         TranslatorInterface $translator,
@@ -73,7 +66,7 @@ class CsvWriter
     }
 
     /**
-     * @param $handle
+     * @param resource $handle
      */
     private function addVouchersHeader($handle)
     {
@@ -97,7 +90,7 @@ class CsvWriter
     }
 
     /**
-     * @param $handle
+     * @param resource $handle
      */
     private function addVouchersData($handle, \DateTime $filterFrom = null, \DateTime $filterTo = null)
     {
@@ -125,10 +118,7 @@ class CsvWriter
         }
     }
 
-    /**
-     * @return \Doctrine\DBAL\Driver\Statement
-     */
-    private function fetchVoucherData(\DateTime $filterFrom = null, \DateTime $filterTo = null)
+    private function fetchVoucherData(\DateTime $filterFrom = null, \DateTime $filterTo = null) : Statement
     {
         $sql = "SELECT
             voucher_code,

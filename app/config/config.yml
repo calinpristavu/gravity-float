@@ -27,6 +27,7 @@ framework:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
         save_path: '%kernel.logs_dir%/../sessions/%kernel.environment%'
+        name: gravityfloat
     fragments: ~
     http_method_override: true
     assets: ~
