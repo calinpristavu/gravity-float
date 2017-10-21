@@ -72,6 +72,22 @@ class VoucherController extends Controller
     }
 
     /**
+     * @Route("/voucher/{id}/delete", name="voucher_delete")
+     */
+    public function deleteVoucher(Voucher $voucher): Response
+    {
+        if (!$voucher->isBlocked()) {
+            throw new \LogicException("Can't delete an active voucher!");
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($voucher);
+        $em->flush();
+
+        return $this->redirectToRoute('voucher_chose_type');
+    }
+
+    /**
      * @Route("/voucher/chose-type", name="voucher_chose_type")
      * @Template("voucher/create_step_1.html.twig")
      */
@@ -85,6 +101,7 @@ class VoucherController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $voucher->setCreationDate(new \DateTime());
+            $voucher->setBlocked(true);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -109,15 +126,26 @@ class VoucherController extends Controller
             ->createForm(ValueVoucherType::class, $voucher)
             ->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voucher->setBlocked(false);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute('voucher_all');
+        }
+
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'voucher' => $voucher
         ];
     }
 
     /**
      * @Template("voucher/create_treatment.html.twig")
      */
-    public function createTreatmentVoucherAction(Request $request, Voucher $voucher)
+    public function createTreatmentVoucherAction(Request $request, Voucher $voucher): array
     {
         return [];
     }
