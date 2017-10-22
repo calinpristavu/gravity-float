@@ -6,6 +6,7 @@ use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
+use AppBundle\Form\Type\TreatmentVoucherType;
 use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherType;
@@ -146,10 +147,27 @@ class VoucherController extends Controller
     /**
      * @Template("voucher/create_treatment.html.twig")
      */
-    public function createTreatmentVoucherAction(Request $request, Voucher $voucher): array
+    public function createTreatmentVoucherAction(Request $request, Voucher $voucher)
     {
-        // TODO: implement treatment vouchers using the same principle as value vouchers.
-        return [];
+        $form = $this
+            ->createForm(TreatmentVoucherType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $voucher->setBlocked(false);
+            $this->fillVoucherDetails($voucher);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute('voucher_all');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'voucher' => $voucher
+        ];
     }
 
     /**
@@ -167,33 +185,6 @@ class VoucherController extends Controller
                 'voucher' => $voucher
             ]
         );
-
-
-        if ($this->get('session')->get('voucher')) {
-            $this->get('session')->remove('voucher');
-        }
-
-        $form = $this->createForm(VoucherType::class, $voucher);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $this->fillVoucherDetails($voucher);
-            $voucher->setCreationDate(new DateTime());
-            $this->calculateVoucherCode($form['voucherCodeLetter']->getData(), $voucher);
-            $this->get('session')->set('voucher', $voucher);
-            $this->prepareVoucherUsages($voucher, $form);
-            return $this->render('floathamburg/vouchercreate.html.twig', array(
-                'form' => null,
-                'submitted' => true,
-                'voucher' => $voucher,
-                'shops' => $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll(),
-            ));
-        }
-
-        return $this->render('floathamburg/vouchercreate.html.twig', array(
-            'form' => $form->createView(),
-            'submitted' => false,
-            'voucher' => null,
-        ));
     }
 
     /**
