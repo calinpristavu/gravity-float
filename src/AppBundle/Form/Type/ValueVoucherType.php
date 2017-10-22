@@ -27,6 +27,7 @@ class ValueVoucherType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('voucherCodeLetter', CodeLetterType::class)
             ->add('remainingValue', NumberType::class, [
                 'label' => 'Value'
             ])

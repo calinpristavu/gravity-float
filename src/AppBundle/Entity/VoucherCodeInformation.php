@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @author: Enache Ioan Ovidiu <i.ovidiuenache@yahoo.com>
  *
  * @ORM\Table(name="voucher_code_information")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\VoucherRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\VoucherCodeInformationRepository")
  */
 class VoucherCodeInformation
 {

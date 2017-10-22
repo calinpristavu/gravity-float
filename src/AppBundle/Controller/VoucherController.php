@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
+use AppBundle\Event\AppEvents;
+use AppBundle\Event\VoucherCreatedEvent;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
@@ -13,7 +15,6 @@ use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Service\VoucherFinder;
-use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -77,7 +78,7 @@ class VoucherController extends Controller
      */
     public function deleteVoucher(Voucher $voucher): Response
     {
-        if (!$voucher->getCreationDate()) {
+        if ($voucher->getCreationDate()) {
             throw new \LogicException("Can't delete an active voucher!");
         }
 
@@ -125,8 +126,10 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $voucher->setBlocked(false);
-            $this->fillVoucherDetails($voucher);
+            $this->get('event_dispatcher')->dispatch(
+                AppEvents::VOUCHER_CREATED,
+                new VoucherCreatedEvent($voucher, $form)
+            );
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -151,8 +154,10 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $voucher->setBlocked(false);
-            $this->fillVoucherDetails($voucher);
+            $this->get('event_dispatcher')->dispatch(
+                AppEvents::VOUCHER_CREATED,
+                new VoucherCreatedEvent($voucher, $form)
+            );
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -234,8 +239,6 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->fillVoucherDetails($voucher);
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
@@ -270,7 +273,6 @@ class VoucherController extends Controller
         }
 
         $voucher = $this->get('session')->get('voucher');
-        $this->fillVoucherDetails($voucher);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
@@ -424,16 +426,6 @@ class VoucherController extends Controller
 
         $em->persist($payment);
         $em->flush();
-    }
-
-    /**
-     * TODO: This should be handled by a doctrine listener on persist.
-     */
-    protected function fillVoucherDetails(Voucher $voucher)
-    {
-        $voucher->setShopWhereCreated($this->getUser()->getShop());
-        $voucher->setAuthor($this->getUser());
-        $voucher->setCreationDate(new \DateTime());
     }
 
     /**
