@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{{ 'edit.voucher'|trans }}</h2>
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="create-voucher">
+        {% if app.user.canCreateOnlineVouchers %}
+            {{ form_row(form.onlineVoucher, { attr: { class: "manager" } }) }}
+
+            <div id="online_voucher_data" class="interactive hidden" data-managed-by="treatment_voucher_onlineVoucher">
+                {{ form_row(form.orderNumber) }}
+                {{ form_row(form.invoiceNumber) }}
+                {{ form_row(form.includedPostalCharges) }}
+                <hr>
+            </div>
+        {% endif %}
+
+        <div>
+            <p>
+                Voucher value:
+                <span class="voucher_value_container">
+                    <span id="voucher_value">0</span> euro
+                </span>
+            </p>
+        </div>
+
+        <div>
+            <input
+                    class="manager"
+                    id="usage_type_1"
+                    type="radio"
+                    form=""
+                    name="excluded"
+                    value="1"
+                    checked="checked">
+            <label for="usage_type_1">{{ 'float'|trans }}</label>
+
+            <input class="manager" id="usage_type_2" type="radio" form="" name="excluded" value="2">
+            <label for="usage_type_2">{{ 'massage'|trans }}</label>
+
+            <input class="manager" id="usage_type_3" type="radio" form="" name="excluded" value="3">
+            <label for="usage_type_3">{{ 'float_&_massage'|trans }}</label>
+        </div>
+
+        <div class="interactive" data-managed-by="usage_type" data-manager-val="1">
+            {% for id in 1..2 %}
+                {{ form_row(form.service[id]) }}
+            {% endfor %}
+        </div>
+
+        <div class="interactive hidden" data-managed-by="usage_type" data-manager-val="2">
+            {% for id in 3..9 %}
+                {{ form_row(form.service[id]) }}
+            {% endfor %}
+        </div>
+
+        <div class="interactive hidden" data-managed-by="usage_type" data-manager-val="3">
+            {% for id in 10..21 %}
+                {{ form_row(form.service[id]) }}
+            {% endfor %}
+        </div>
+
+        {{ form_rest(form) }}
+    </div>
+
+    <br>
+
+    <div class="text-center">
+        <button class="btn btn-success" type="submit">{{ 'edit.voucher'|trans }}</button>
+
+        <br>
+        <br>
+
+        <a href="{{ path(parentRoute, {page: page, filterFrom: filterFrom, filterTo:filterTo, voucherCode:voucherCode}) }}">{{ 'back'|trans }}</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/barcode.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            if ($("#treatment_voucher_onlineVoucher").is(':checked')) {
+                $("#online_voucher_data").removeClass("hidden");
+            }
+
+            $("#treatment_voucher_onlineVoucher").on('click', function () {
+                if ($("#treatment_voucher_onlineVoucher").is(':checked')) {
+                    $("#treatment_voucher_orderNumber").attr("required", true);
+                    $("#treatment_voucher_invoiceNumber").attr("required", true);
+                } else {
+                    $("#treatment_voucher_orderNumber").attr("required", false).val("");
+                    $("#treatment_voucher_invoiceNumber").attr("required", false).val("");
+                    $("#treatment_voucher_include_postal_charges").prop("checked", false);
+                }
+            });
+
+            $('input[name="treatment_voucher[service]"]').on('change', function () {
+                $('#voucher_value').text($(this).attr('data-price'));
+            })
+        });
+    </script>
+{% endblock %}
+
