@@ -169,8 +169,6 @@ class VoucherController extends Controller
 
     /**
      * @Route("/voucher/create/{id}", name="voucher_create")
-     *
-     * TODO: This method should only forward the request depending on the type of voucher.
      */
     public function createVoucherAction(Voucher $voucher) : Response
     {
@@ -228,11 +226,24 @@ class VoucherController extends Controller
 
     /**
      * @Template("voucher/edit_treatment.html.twig")
-     * @todo implement this
      */
     public function editTreatmentVoucherAction(Request $request, Voucher $voucher, array $parent)
     {
-        return [];
+        $form = $this
+            ->createForm(TreatmentVoucherType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->fillVoucherDetails($voucher);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute($parent['parentRoute'], $parent);
+        }
+
+        return array_merge($parent,['form' => $form->createView(), 'voucher' => $voucher,]);
     }
 
     protected function prepareVoucherUsages(Voucher $voucher, Form $form)
@@ -422,6 +433,7 @@ class VoucherController extends Controller
     {
         $voucher->setShopWhereCreated($this->getUser()->getShop());
         $voucher->setAuthor($this->getUser());
+        $voucher->setCreationDate(new \DateTime());
     }
 
     /**
