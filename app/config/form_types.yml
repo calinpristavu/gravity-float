@@ -7,3 +7,4 @@ services:
         autoconfigure: true
 
     AppBundle\Form\Type\ValueVoucherType: ~
+    AppBundle\Form\Type\TreatmentVoucherType: ~
