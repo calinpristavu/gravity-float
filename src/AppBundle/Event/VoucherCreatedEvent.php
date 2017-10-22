@@ -27,11 +27,4 @@ class VoucherCreatedEvent extends Event
     {
         return $this->form;
     }
-
-    public function setVoucher(Voucher $voucher): self
-    {
-        $this->voucher = $voucher;
-
-        return $this;
-    }
 }

@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>{% trans %}voucher.preview{% endtrans %}</h2>
+
+    <div class="create-voucher">
+        <div class="row">
+            <div class="col-md-8">
+                {{ 'voucher.code'|trans }}: {{ voucher.voucherCode }} <br/>
+                {% if voucher.onlineVoucher %}
+                    {{ 'online.voucher'|trans }} <br/>
+                    {{ 'voucher.order.number'|trans }}: {{ voucher.orderNumber }} <br/>
+                    {{ 'voucher.invoice.number'|trans }}: {{ voucher.invoiceNumber }} <br/>
+                    {{ 'is.included.postal.charges'|trans }}:
+                    {% if voucher.includedPostalCharges %}
+                        {{ 'yes'|trans }} 1.5€ <br/>
+                    {% else %}
+                        {{ 'no'|trans }} <br/>
+                    {% endif %}
+                {% endif %}
+                {{ 'creation.date'|trans }}: {{ voucher.creationDate|date("d/m/Y") }} <br/>
+                {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("d/m/Y") }} <br/>
+                {{ 'created.by'|trans }}: {{ voucher.author }} <br/>
+                {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br/>
+                {{ 'number.of.users'|trans }}:
+                {% for user in voucher.numberOfUsers %}
+                    {{ user }}
+                {% endfor %} <br/>
+            </div>
+            <div class="col-md-4">
+                <svg id="barcode" data-code="{{ voucher.voucherCode }}"></svg>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {{ 'voucher.value'|trans }}: {{ voucher.remainingValue }} <br/>
+                {{ 'voucher.method.of.payment'|trans }}: {{ voucher.methodOfPayment }} <br/>
+                {% if voucher.type.id == 2 %}
+                    {{ 'can.be.used.for'|trans }}: {{ voucher.service.name|trans }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a href="{{ path('voucher_save', {id: voucher.id}) }}" class="btn btn-success">
+                {% trans %}button.voucher.create{% endtrans %}
+            </a>
+            <a href="{{ path('voucher_edit', {id: voucher.id}) }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
+    <script src="{{ asset('assets/js/barcode.js') }}"></script>
+{% endblock %}

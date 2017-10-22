@@ -11,7 +11,6 @@ use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
 use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
-use AppBundle\Form\Type\VoucherType;
 use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Service\VoucherFinder;
@@ -135,7 +134,9 @@ class VoucherController extends Controller
             $em->persist($voucher);
             $em->flush();
 
-            return $this->redirectToRoute('voucher_all');
+            return $this->redirectToRoute('voucher_preview', [
+                'id' => $voucher->getId()
+            ]);
         }
 
         return [
@@ -163,7 +164,9 @@ class VoucherController extends Controller
             $em->persist($voucher);
             $em->flush();
 
-            return $this->redirectToRoute('voucher_all');
+            return $this->redirectToRoute('voucher_preview', [
+                'id' => $voucher->getId()
+            ]);
         }
 
         return [
@@ -185,6 +188,17 @@ class VoucherController extends Controller
                 'voucher' => $voucher
             ]
         );
+    }
+
+    /**
+     * @Route("/voucher/preview/{id}", name="voucher_preview")
+     * @Template("voucher/preview.html.twig")
+     */
+    public function previewVoucherAction(Voucher $voucher)
+    {
+        return [
+            'voucher' => $voucher
+        ];
     }
 
     /**
@@ -217,7 +231,6 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->fillVoucherDetails($voucher);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -264,22 +277,10 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/save", name="voucher_save")
+     * @Route("/voucher/save/{id}", name="voucher_save")
      */
     public function saveVoucherAction() : Response
     {
-        if (!$this->get('session')->get('voucher')) {
-            return $this->redirectToRoute('voucher_create');
-        }
-
-        $voucher = $this->get('session')->get('voucher');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($voucher);
-        $em->flush();
-
-        $this->get('session')->remove('voucher');
-
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
     }
 
@@ -304,10 +305,12 @@ class VoucherController extends Controller
         $form = $this->createForm(VoucherDateType::class);
         $form->handleRequest($request);
         if ($form->isValid()) {
+            /** @var \DateTime $filterFrom */
             $filterFrom = $form->getData()['filterFrom'];
             if ($filterFrom !== null) {
                 $filterFrom->setTime(0,0);
             }
+            /** @var \DateTime $filterTo */
             $filterTo = $form->getData()['filterTo'];
             if ($filterTo !== null) {
                 $filterTo->setTime(23,59);

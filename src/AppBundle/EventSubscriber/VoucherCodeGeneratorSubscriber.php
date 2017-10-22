@@ -32,6 +32,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
             AppEvents::VOUCHER_CREATED => [
                 ['setUserRelatedInfo', 10],
                 ['setVoucherCode', -10],
+                ['setVoucherValue', -20],
             ]
         ];
     }
@@ -60,8 +61,17 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
             $form->get('voucherCodeLetter')->getData() .
             $voucherCodeInfo->getNextVoucherCode()
         );
+    }
 
-        $event->setVoucher($voucher);
+    public function setVoucherValue(VoucherCreatedEvent $event)
+    {
+        $voucher = $event->getVoucher();
+
+        if ($voucher->getType()->getId() !== 2) {
+            return;
+        }
+
+        $voucher->setRemainingValue($voucher->getService()->getPrice());
     }
 
     public function setUserRelatedInfo(VoucherCreatedEvent $event)
