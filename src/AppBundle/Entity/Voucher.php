@@ -13,6 +13,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *
  * @ORM\Table(name="vouchers")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VoucherRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Voucher
 {
@@ -304,9 +305,20 @@ class Voucher
         return $this;
     }
 
-    public function setCreationDate(\DateTime $creationDate) : self
+    /**
+     * Only run on the first update of the voucher.
+     * (Also known as the 2-nd create voucher step, which completes voucher creation.)
+     *
+     * @ORM\PreUpdate
+     * @internal Do not manually call this. Ever.
+     */
+    public function setCreationDate() : self
     {
-        $this->creationDate = $creationDate;
+        if (null === $this->voucherCode || null !== $this->creationDate) {
+            return $this;
+        }
+
+        $this->creationDate = new \DateTime();
 
         return $this;
     }

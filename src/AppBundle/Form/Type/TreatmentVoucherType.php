@@ -28,6 +28,7 @@ class TreatmentVoucherType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('voucherCodeLetter', CodeLetterType::class)
             ->add('service', EntityType::class, [
                 'class' => AvailableService::class,
                 'choice_attr' => function (AvailableService $service) {
