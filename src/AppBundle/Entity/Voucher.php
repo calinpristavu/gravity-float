@@ -110,6 +110,11 @@ class Voucher
     protected $usages;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AvailableService")
+     */
+    protected $service;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
@@ -406,5 +411,17 @@ class Voucher
     public function getType(): ?VoucherType
     {
         return $this->type;
+    }
+
+    public function setService(AvailableService $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    public function getService(): ?AvailableService
+    {
+        return $this->service;
     }
 }
