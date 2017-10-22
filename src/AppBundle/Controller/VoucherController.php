@@ -197,33 +197,34 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/create/edit", name="voucher_edit")
+     * @Route("/voucher/create/edit/{id}", name="voucher_edit")
+     *
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
      */
-    public function editVoucherAction(Request $request) : Response
+    public function editVoucherAction(Request $request, Voucher $voucher) : Response
     {
-        if (!$this->get('session')->get('voucher')) {
-            return $this->redirectToRoute('voucher_create');
+        if (!$voucher->getPayments()->isEmpty()) {
+            return $this->redirectToRoute('voucher_search');
         }
 
-        $voucher = $this->get('session')->get('voucher');
-        $this->fillVoucherDetails($voucher);
+        $parent = $this->getParentData($request);
         $form = $this->createForm(VoucherType::class, $voucher);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->get('session')->set('voucher', $voucher);
-            $this->prepareVoucherUsages($voucher, $form);
-            return $this->render('floathamburg/vouchercreate.html.twig', array(
-                'form' => null,
-                'submitted' => true,
-                'voucher' => $voucher,
-                'shops' => $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll(),
-            ));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute($parent['parentRoute'], [
+                'page' => $parent['page'],
+                'filterFrom' => $parent['filterFrom'],
+                'filterTo' => $parent['filterTo'],
+                'voucherCode' => $parent['voucherCode'],
+            ]);
         }
 
-        return $this->render('floathamburg/vouchercreate.html.twig', array(
+        return $this->render('floathamburg/voucheredit.html.twig', array(
             'form' => $form->createView(),
-            'submitted' => false,
-            'voucher' => null,
         ));
     }
 

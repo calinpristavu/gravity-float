@@ -89,3 +89,4 @@ add.comment: __add.comment
 voucher.type.value_voucher: Value voucher
 voucher.type.treatment_voucher: Treatment voucher
 next.step: Next Step
+edit.voucher: __edit.voucher
