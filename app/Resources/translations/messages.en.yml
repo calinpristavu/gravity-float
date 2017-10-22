@@ -97,3 +97,24 @@ voucher.type.treatment_voucher: Treatment voucher
 next.step: Next Step
 edit.voucher: Edit Voucher
 float_&_massage: 'Float & massage'
+FLOAT_SINGLE_60: Single Float for 60 minutes
+FLOAT_DOUBLE_60: Double Float for 60 minutes
+MASSAGE_CLASSIC_30: Classic Massage for 30 minutes
+MASSAGE_CLASSIC_45: Classic Massage for 45 minutes
+MASSAGE_CLASSIC_60: Classic Massage for 60 minutes
+MASSAGE_CLASSIC_90: Classic Massage for 90 minutes
+MASSAGE_FOOT_30: Foot Massage for 30 minutes
+MASSAGE_DEEP_60: Deep Relax Massage for 60 minutes
+MASSAGE_DEEP_90: Deep Relax Massage for 90 minutes
+FLOAT_60_MASSAGE_CLASSIC_30_SINGLE: Classic Massage for 30 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_CLASSIC_30_DOUBLE: Classic Massage for 30 minutes and Float for 60 minutes Double
+FLOAT_60_MASSAGE_CLASSIC_45_SINGLE: Classic Massage for 45 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_CLASSIC_45_DOUBLE: Classic Massage for 45 minutes and Float for 60 minutes Double
+FLOAT_60_MASSAGE_CLASSIC_60_SINGLE: Classic Massage for 60 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_CLASSIC_60_DOUBLE: Classic Massage for 60 minutes and Float for 60 minutes Double
+FLOAT_60_MASSAGE_DEEP_60_SINGLE: Deep Relax Massage for 60 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_DEEP_60_DOUBLE: Deep Relax Massage for 60 minutes and Float for 60 minutes Double
+FLOAT_60_MASSAGE_CLASSIC_90_SINGLE: Classic Massage for 90 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_CLASSIC_90_DOUBLE: Classic Massage for 90 minutes and Float for 60 minutes Double
+FLOAT_60_MASSAGE_DEEP_90_SINGLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Single
+FLOAT_60_MASSAGE_DEEP_90_DOUBLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Double
