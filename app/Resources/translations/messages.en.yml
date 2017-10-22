@@ -95,4 +95,5 @@ add.comment: 'Comment'
 voucher.type.value_voucher: Value voucher
 voucher.type.treatment_voucher: Treatment voucher
 next.step: Next Step
+edit.voucher: Edit Voucher
 float_&_massage: 'Float & massage'

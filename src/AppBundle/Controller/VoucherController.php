@@ -185,34 +185,54 @@ class VoucherController extends Controller
     }
 
     /**
-     * @Route("/voucher/create/edit", name="voucher_edit")
+     * @Route("/voucher/edit/{id}", name="voucher_edit")
      */
-    public function editVoucherAction(Request $request) : Response
+    public function editVoucherAction(Request $request, Voucher $voucher) : Response
     {
-        if (!$this->get('session')->get('voucher')) {
-            return $this->redirectToRoute('voucher_create');
+        if (!$voucher->getPayments()->isEmpty()) {
+            return $this->redirectToRoute('voucher_search');
         }
 
-        $voucher = $this->get('session')->get('voucher');
-        $this->fillVoucherDetails($voucher);
-        $form = $this->createForm(VoucherType::class, $voucher);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $this->get('session')->set('voucher', $voucher);
-            $this->prepareVoucherUsages($voucher, $form);
-            return $this->render('floathamburg/vouchercreate.html.twig', array(
-                'form' => null,
-                'submitted' => true,
+        return $this->forward(
+            $voucher->getType()->getId() === 1
+                ? 'AppBundle:Voucher:editValueVoucher'
+                : 'AppBundle:Voucher:editTreatmentVoucher',
+            [
                 'voucher' => $voucher,
-                'shops' => $this->getDoctrine()->getRepository('AppBundle:Shop')->findAll(),
-            ));
+                'parent' => $this->getParentData($request)
+            ]
+        );
+    }
+
+    /**
+     * @Template("voucher/edit_value.html.twig")
+     */
+    public function editValueVoucherAction(Request $request, Voucher $voucher, array $parent)
+    {
+        $form = $this
+            ->createForm(ValueVoucherType::class, $voucher)
+            ->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->fillVoucherDetails($voucher);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($voucher);
+            $em->flush();
+
+            return $this->redirectToRoute($parent['parentRoute'], $parent);
         }
 
-        return $this->render('floathamburg/vouchercreate.html.twig', array(
-            'form' => $form->createView(),
-            'submitted' => false,
-            'voucher' => null,
-        ));
+        return array_merge($parent,['form' => $form->createView(), 'voucher' => $voucher,]);
+    }
+
+    /**
+     * @Template("voucher/edit_treatment.html.twig")
+     * @todo implement this
+     */
+    public function editTreatmentVoucherAction(Request $request, Voucher $voucher, array $parent)
+    {
+        return [];
     }
 
     protected function prepareVoucherUsages(Voucher $voucher, Form $form)
