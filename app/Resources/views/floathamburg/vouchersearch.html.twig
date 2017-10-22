@@ -54,6 +54,9 @@
                             {% else %}
                                 <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, voucherCode: voucherCode}) }}">{{ 'block'|trans }}</a>
                             {% endif %}
+                            {% if voucher.payments is empty %}
+                                | <a href="{{ path('voucher_edit', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, filterFrom: filterFrom, filterTo: filterTo}) }}">{{ 'edit'|trans }}</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}
