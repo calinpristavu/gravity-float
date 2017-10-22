@@ -33,6 +33,10 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
                 ['setUserRelatedInfo', 10],
                 ['setVoucherCode', -10],
                 ['setVoucherValue', -20],
+            ],
+            AppEvents::VOUCHER_UPDATED => [
+                ['setVoucherCode', -10],
+                ['setVoucherValue', -20],
             ]
         ];
     }

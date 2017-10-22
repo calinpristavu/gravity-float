@@ -42,7 +42,13 @@
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
                         <td>{{ voucher.shopWhereCreated.name }}</td>
-                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {id: voucher.id, parentRoute: 'voucher_search', voucherCode: voucherCode, page: currentPage}) }}">{{ 'add.comment'|trans }}</a></td>
+                        <td>
+                            {{ voucher.comment }}
+                            <br/><br/>
+                            <a href="{{ path('voucher_comment_edit', {id: voucher.id, parentRoute: 'voucher_search', voucherCode: voucherCode, page: currentPage}) }}">
+                                {{ 'add.comment'|trans }}
+                            </a>
+                        </td>
                         <td>
                             {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
@@ -55,7 +61,7 @@
                                 <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, voucherCode: voucherCode}) }}">{{ 'block'|trans }}</a>
                             {% endif %}
                             {% if voucher.payments is empty %}
-                                | <a href="{{ path('voucher_edit', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, filterFrom: filterFrom, filterTo: filterTo}) }}">{{ 'edit'|trans }}</a>
+                                | <a href="{{ path('voucher_edit', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage}) }}">{{ 'edit'|trans }}</a>
                             {% endif %}
                         </td>
                     </tr>

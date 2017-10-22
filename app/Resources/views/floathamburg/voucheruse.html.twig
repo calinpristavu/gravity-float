@@ -9,12 +9,17 @@
         <h2>Voucher {{ voucher.voucherCode }}</h2>
         {{ form_start(form) }}
         {{ form_errors(form) }}
-        {{ form_row(form.usage, { attr: { class: "manager" } }) }}
-        <div id="partial_amount_div" class="hidden">
-            {{ 'remaining.value'|trans}}: {{  voucher.remainingValue }}€
-            {{ form_row(form.partial_amount) }}
-        </div>
-        {{ form_row(form.used_for) }}
+
+        {% if voucher.type.id == 1 %}
+            {{ form_row(form.complete_use, { attr: { class: "manager" } }) }}
+            <div id="partial_amount_div" class="hidden">
+                {{ 'remaining.value'|trans}}: {{  voucher.remainingValue }} €
+                {{ form_row(form.partial_amount) }}
+            </div>
+        {% endif %}
+
+        {{ form_row(form.info) }}
+
         <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
         <a class="btn btn-default" href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
         {{ form_end(form) }}
@@ -27,17 +32,19 @@
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
     <script>
         $( document ).ready(function() {
-            if ($("#voucher_use_usage_1").is(':checked')) {
+            var completeUse = $("#use_value_complete_use_1");
+
+            if (completeUse.is(':checked')) {
                 $("#voucher_use_partial_amount").attr("required", true);
                 $("#partial_amount_div").removeClass("hidden");
             }
 
-            $( "#voucher_use_usage_1" ).click(function() {
+            completeUse.on("click", function() {
                 $("#voucher_use_partial_amount").attr("required", true);
                 $("#partial_amount_div").removeClass("hidden");
             });
 
-            $( "#voucher_use_usage_0" ).click(function() {
+            $( "#use_value_complete_use_0" ).on("click", function() {
                 $("#voucher_use_partial_amount").attr("required", false);
                 $("#partial_amount_div").addClass("hidden");
             });
