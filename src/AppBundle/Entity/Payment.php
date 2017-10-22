@@ -25,13 +25,6 @@ class Payment
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=50)
-     */
-    protected $product;
-
-    /**
      * @var \DateTime
      *
      * @Gedmo\Timestampable(on="create")
@@ -74,18 +67,6 @@ class Payment
     public function getId() : ?int
     {
         return $this->id;
-    }
-
-    public function getProduct() : ?string
-    {
-        return $this->product;
-    }
-
-    public function setProduct(string $product) : self
-    {
-        $this->product = $product;
-
-        return $this;
     }
 
     public function getPaymentDate() : ?\DateTime

@@ -9,16 +9,18 @@ use AppBundle\Event\VoucherCreatedEvent;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
+use AppBundle\Form\Type\UseTreatmentType;
+use AppBundle\Form\Type\UseValueType;
 use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherTypeType;
-use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Service\VoucherFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -74,7 +76,7 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/{id}/delete", name="voucher_delete")
      */
-    public function deleteVoucher(Voucher $voucher): Response
+    public function deleteVoucherAction(Voucher $voucher): Response
     {
         if ($voucher->getCreationDate()) {
             throw new \LogicException("Can't delete an active voucher!");
@@ -255,7 +257,7 @@ class VoucherController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')->dispatch(
-                AppEvents::VOUCHER_CREATED,
+                AppEvents::VOUCHER_UPDATED,
                 new VoucherCreatedEvent($voucher, $form)
             );
             $em = $this->getDoctrine()->getManager();
@@ -363,20 +365,26 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/use/{id}", name="voucher_use")
      */
-    public function useVoucherAction(Request $request, Voucher $voucher = null) : Response
+    public function useVoucherAction(Request $request, Voucher $voucher) : Response
     {
-        if ($voucher === null || $voucher->isBlocked()) {
+        if ($voucher->isBlocked()) {
             return $this->redirectToRoute('voucher_search');
         }
 
-        $form = $this->createForm(VoucherUseType::class, null, [
-            'voucherUsages' => $voucher->getUsages(),
-            'remainingVoucherValue' => $voucher->getRemainingValue()
-        ]);
+        $form = $this->createForm(
+            $voucher->getType()->getId() === 1
+                ? UseValueType::class
+                : UseTreatmentType::class,
+            null,
+            [
+                'remainingVoucherValue' => $voucher->getRemainingValue()
+            ]
+        );
+
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $this->savePaymentDetails($voucher, $em, $form->getData());
+            $this->savePaymentDetails($voucher, $em, $form);
             $em->persist($voucher);
             $em->flush();
 
@@ -394,25 +402,15 @@ class VoucherController extends Controller
         ]);
     }
 
-    protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, array $formData)
+    protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, FormInterface $form)
     {
         $payment = new Payment();
-        $product = '';
-        foreach ($formData['used_for'] as $usage) {
-            if ($usage == 'USE_FOR_MASSAGE') {
-                $product .= 'Massage ';
-            }
-            if ($usage == 'USE_FOR_FLOAT') {
-                $product .= 'Floating ';
-            }
-        }
 
-        $payment->setProduct($product);
         $payment->setVoucherBought($voucher);
-        if ($formData['usage'] == 'COMPLETE_USE') {
+        if (!$form->has('complete_use') || $form->get('complete_use')->getData()) {
             $payment->setAmount($voucher->getRemainingValue());
         } else {
-            $payment->setAmount($formData['partial_amount']);
+            $payment->setAmount($form->get('partial_amount')->getData());
         }
         $payment->setEmployee($this->getUser());
         $payment->setPaymentDate(new \DateTime());
