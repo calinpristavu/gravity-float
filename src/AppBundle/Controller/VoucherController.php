@@ -77,7 +77,7 @@ class VoucherController extends Controller
      */
     public function deleteVoucher(Voucher $voucher): Response
     {
-        if (!$voucher->isBlocked()) {
+        if (!$voucher->getCreationDate()) {
             throw new \LogicException("Can't delete an active voucher!");
         }
 
@@ -101,9 +101,6 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $voucher->setCreationDate(new \DateTime());
-            $voucher->setBlocked(true);
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();

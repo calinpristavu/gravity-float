@@ -34,7 +34,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for voucher in vouchers %}
+                {% for voucher in vouchers if voucher.creationDate is not null %}
                     <tr>
                         <td class="text-{{ voucher.isCompletelyUsed ? 'danger' : (voucher.isPartiallyUsed ? 'warning' : 'success') }}">
                             {{ voucher.voucherCode }}

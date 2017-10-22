@@ -33,8 +33,7 @@ class Voucher
     /**
      * @var \DateTime
      *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     protected $creationDate;
 
