@@ -19,7 +19,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -231,7 +230,10 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $this->get('event_dispatcher')->dispatch(
+                AppEvents::VOUCHER_UPDATED,
+                new VoucherCreatedEvent($voucher, $form)
+            );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
@@ -252,6 +254,10 @@ class VoucherController extends Controller
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('event_dispatcher')->dispatch(
+                AppEvents::VOUCHER_CREATED,
+                new VoucherCreatedEvent($voucher, $form)
+            );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
@@ -260,20 +266,6 @@ class VoucherController extends Controller
         }
 
         return array_merge($parent,['form' => $form->createView(), 'voucher' => $voucher,]);
-    }
-
-    protected function prepareVoucherUsages(Voucher $voucher, Form $form)
-    {
-        $usages = $voucher->getUsages();
-        foreach ($usages as $key=>$usage) {
-            if ($usage === 'massage') {
-                $usages[$key] .= ' '.$form['massage_type']->getData().' '.$form['time_for_massage']->getData();
-            } else if ($usage === 'floating') {
-                $usages[$key] .= ' '.$form['time_for_floating']->getData();
-            }
-        }
-
-        $voucher->setUsages($usages);
     }
 
     /**
@@ -302,16 +294,17 @@ class VoucherController extends Controller
             $filterTo = new \DateTime($request->get('filterTo').' 23:59');
         }
 
-        $form = $this->createForm(VoucherDateType::class);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+        $form = $this
+            ->createForm(VoucherDateType::class)
+            ->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             /** @var \DateTime $filterFrom */
-            $filterFrom = $form->getData()['filterFrom'];
+            $filterFrom = $form->get('filterFrom')->getData();
             if ($filterFrom !== null) {
                 $filterFrom->setTime(0,0);
             }
             /** @var \DateTime $filterTo */
-            $filterTo = $form->getData()['filterTo'];
+            $filterTo = $form->get('filterTo')->getData();
             if ($filterTo !== null) {
                 $filterTo->setTime(23,59);
             }
