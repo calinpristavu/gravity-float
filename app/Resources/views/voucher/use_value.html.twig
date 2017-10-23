@@ -7,14 +7,18 @@
         <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
     {% else %}
         <h2>Voucher {{ voucher.voucherCode }}</h2>
-        <p>{{ 'used.for'|trans }}: {{ voucher.service|trans }}</p>
+        <h4>{{ 'this.is.a.value.voucher'|trans }}</h4>
+        <h4>{{ 'the.voucher.is.valid.until'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }}</h4>
+        <h4>{{ 'current.remaining.value'|trans }}: {{ voucher.remainingValue }}</h4>
+        <h4>{{ 'used.value'|trans }}: {{ voucher.partialPayment }}</h4>
         {{ form_start(form) }}
         {{ form_errors(form) }}
         {{ form_row(form.usageType, { attr: { class: "manager" } }) }}
         <div id="partial_amount_div" class="hidden">
-            {{ 'remaining.value'|trans}}: {{  voucher.remainingValue }}€
             {{ form_row(form.partial_amount) }}
+            {{ 'maximum.amount'|trans}}: {{  voucher.remainingValue }}€ <br /><br />
         </div>
+        {{ form_row(form.info) }}
         <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
         <a class="btn btn-default" href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
         {{ form_end(form) }}
@@ -27,17 +31,17 @@
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
     <script>
         $( document ).ready(function() {
-            if ($("#voucher_use_usage_1").is(':checked')) {
+            if ($("#use_value_voucher_usageType_1").is(':checked')) {
                 $("#voucher_use_partial_amount").attr("required", true);
                 $("#partial_amount_div").removeClass("hidden");
             }
 
-            $( "#voucher_use_usage_1" ).click(function() {
+            $( "#use_value_voucher_usageType_1" ).click(function() {
                 $("#voucher_use_partial_amount").attr("required", true);
                 $("#partial_amount_div").removeClass("hidden");
             });
 
-            $( "#voucher_use_usage_0" ).click(function() {
+            $( "#use_value_voucher_usageType_0" ).click(function() {
                 $("#voucher_use_partial_amount").attr("required", false);
                 $("#partial_amount_div").addClass("hidden");
             });

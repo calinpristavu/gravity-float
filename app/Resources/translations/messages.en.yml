@@ -118,3 +118,17 @@ FLOAT_60_MASSAGE_CLASSIC_90_SINGLE: Classic Massage for 90 minutes and Float for
 FLOAT_60_MASSAGE_CLASSIC_90_DOUBLE: Classic Massage for 90 minutes and Float for 60 minutes Double
 FLOAT_60_MASSAGE_DEEP_90_SINGLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Single
 FLOAT_60_MASSAGE_DEEP_90_DOUBLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Double
+this.is.a.value.voucher: This is a value voucher
+the.voucher.is.valid.until: The voucher is valid until
+current.remaining.value: Current remaining value
+used.value: Used value
+this.is.a.treatment.voucher: This is a treatment voucher
+treatments.selected: Treatments selected
+treatment.value: Treatment value
+complete_use: Complete use
+partial_use: Partial use
+maximum.amount: Maximum amount
+the.voucher.has.been.valid.until: The voucher has been valid until
+treatment.value.when.created: Treatment value when voucher was created
+current.treatment.value: Current value of the same treatment
+difference.that.must.be.paid: Difference that must be paid

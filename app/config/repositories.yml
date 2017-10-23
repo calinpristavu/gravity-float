@@ -21,3 +21,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - AppBundle\Entity\VoucherCodeInformation
+
+    AppBundle\Repository\AvailableServiceRepository:
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - AppBundle\Entity\AvailableService

@@ -52,12 +52,7 @@
                 </div>
                 <div class="hidden-print">{{ 'voucher.method.of.payment'|trans }}: {{ voucher.methodOfPayment }} <br /></div>
                 <div class="hidden-print">
-                    {{ 'can.be.used.for'|trans }}: <br />
-                    {% for usage in voucher.usages %}
-                        - {{ usage }} <br />
-                    {% else %}
-                        {{ 'no.usages.set'|trans }}
-                    {% endfor %}
+                    {{ 'can.be.used.for'|trans }}: {{ voucher.service }}
                 </div>
             </div>
         </div>
