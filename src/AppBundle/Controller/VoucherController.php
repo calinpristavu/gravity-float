@@ -9,10 +9,13 @@ use AppBundle\Event\VoucherCreatedEvent;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
+use AppBundle\Form\Type\UseTreatmentVoucherType;
+use AppBundle\Form\Type\UseValueVoucherType;
 use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
+use AppBundle\Repository\AvailableServiceRepository;
 use AppBundle\Service\VoucherFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -262,20 +265,6 @@ class VoucherController extends Controller
         return array_merge($parent,['form' => $form->createView(), 'voucher' => $voucher,]);
     }
 
-    protected function prepareVoucherUsages(Voucher $voucher, Form $form)
-    {
-        $usages = $voucher->getUsages();
-        foreach ($usages as $key=>$usage) {
-            if ($usage === 'massage') {
-                $usages[$key] .= ' '.$form['massage_type']->getData().' '.$form['time_for_massage']->getData();
-            } else if ($usage === 'floating') {
-                $usages[$key] .= ' '.$form['time_for_floating']->getData();
-            }
-        }
-
-        $voucher->setUsages($usages);
-    }
-
     /**
      * @Route("/voucher/save/{id}", name="voucher_save")
      */
@@ -370,15 +359,29 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/use/{id}", name="voucher_use")
      */
-    public function useVoucherAction(Request $request, Voucher $voucher = null) : Response
+    public function useVoucherAction(Voucher $voucher = null)
     {
         if ($voucher === null || $voucher->isBlocked()) {
             return $this->redirectToRoute('voucher_search');
         }
 
-        $form = $this->createForm(VoucherUseType::class, null, [
-            'voucherUsages' => $voucher->getUsages(),
-            'remainingVoucherValue' => $voucher->getRemainingValue()
+        return $this->forward(
+            $voucher->getType()->getId() === 1
+                ? 'AppBundle:Voucher:useValueVoucher'
+                : 'AppBundle:Voucher:useTreatmentVoucher',
+            [
+                'voucher' => $voucher
+            ]
+        );
+    }
+
+    /**
+     * @Template("voucher/use_value.html.twig")
+     */
+    public function useValueVoucherAction(Request $request, Voucher $voucher) : array
+    {
+        $form = $this->createForm(UseValueVoucherType::class, null, [
+            'remainingVoucherValue' => $voucher->getRemainingValue(),
         ]);
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -387,36 +390,63 @@ class VoucherController extends Controller
             $em->persist($voucher);
             $em->flush();
 
-            return $this->render('floathamburg/voucheruse.html.twig', [
+            return [
                 'form' => null,
                 'submitted' => true,
                 'voucher' => $voucher
-            ]);
+            ];
         }
 
-        return $this->render('floathamburg/voucheruse.html.twig', [
+        return [
             'form' => $form->createView(),
             'submitted' => false,
             'voucher' => $voucher
+        ];
+    }
+
+    /**
+     * @Template("voucher/use_treatment.html.twig")
+     */
+    public function useTreatmentVoucherAction(Request $request, Voucher $voucher) : array
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(UseTreatmentVoucherType::class, null, [
+            'expirationDate' => $voucher->getExpirationDate(),
         ]);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->savePaymentDetails($voucher, $em, $form->getData());
+            $em->persist($voucher);
+            $em->flush();
+
+            return [
+                'form' => null,
+                'submitted' => true,
+                'voucher' => $voucher
+            ];
+        }
+
+        $currentValue = $em->getRepository('AppBundle:AvailableService')
+            ->findOneBy(['name' => $voucher->getService()->getName()])
+            ->getPrice();
+
+        return [
+            'form' => $form->createView(),
+            'submitted' => false,
+            'voucher' => $voucher,
+            'expired' => $voucher->getExpirationDate() < (new \DateTime()),
+            'currentValue' => $currentValue,
+        ];
     }
 
     protected function savePaymentDetails(Voucher $voucher, ObjectManager $em, array $formData)
     {
         $payment = new Payment();
-        $product = '';
-        foreach ($formData['used_for'] as $usage) {
-            if ($usage == 'USE_FOR_MASSAGE') {
-                $product .= 'Massage ';
-            }
-            if ($usage == 'USE_FOR_FLOAT') {
-                $product .= 'Floating ';
-            }
-        }
 
+        $product = $voucher->getService() !== null ? $voucher->getService()->getName() : 'VALUE';
         $payment->setProduct($product);
         $payment->setVoucherBought($voucher);
-        if ($formData['usage'] == 'COMPLETE_USE') {
+        if ($formData['usageType'] == 'complete_use') {
             $payment->setAmount($voucher->getRemainingValue());
         } else {
             $payment->setAmount($formData['partial_amount']);
@@ -426,6 +456,11 @@ class VoucherController extends Controller
 
         $voucher->setPartialPayment($voucher->getPartialPayment() + $payment->getAmount());
         $voucher->setRemainingValue($voucher->getRemainingValue() - $payment->getAmount());
+
+        if ($formData['info']) {
+            $voucher->setComment($voucher->getComment() . "\nInfo: " . $formData['info']);
+            $em->persist($voucher);
+        }
 
         $em->persist($payment);
         $em->flush();

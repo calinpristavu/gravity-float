@@ -101,15 +101,6 @@ class Voucher
     protected $methodOfPayment;
 
     /**
-     * Array of string representing the facilities it can be used for
-     *
-     * @var array
-     *
-     * @ORM\Column(type="array")
-     */
-    protected $usages;
-
-    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AvailableService")
      */
     protected $service;
@@ -167,7 +158,6 @@ class Voucher
     public function __construct()
     {
         $this->payments = new ArrayCollection();
-        $this->usages = [];
         $this->numberOfUsers = [];
         $this->partialPayment = 0;
         $this->onlineVoucher = false;
@@ -274,21 +264,9 @@ class Voucher
         return $this->methodOfPayment;
     }
 
-    public function getUsages() : array
-    {
-        return $this->usages;
-    }
-
     public function setMethodOfPayment(string $methodOfPayment) : self
     {
         $this->methodOfPayment = $methodOfPayment;
-
-        return $this;
-    }
-
-    public function setUsages(array $usages) : self
-    {
-        $this->usages = $usages;
 
         return $this;
     }

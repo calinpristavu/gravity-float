@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if submitted %}
+        <h2>{{ 'you.have.successfully.used.the.voucher'|trans }}</h2>
+        <br />
+        <a href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
+    {% else %}
+        <h2>Voucher {{ voucher.voucherCode }}</h2>
+        <h4>{{ 'this.is.a.treatment.voucher'|trans }}</h4>
+        {% if expired %}
+            <h4 class="expired">{{ 'the.voucher.has.been.valid.until'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }}</h4>
+            <h4 class="expired">{{ 'treatments.selected'|trans }}: {{ voucher.service|trans }}</h4>
+            <h4 class="expired">{{ 'treatment.value.when.created'|trans }}: {{ voucher.partialPayment + voucher.remainingValue}}€</h4>
+            <h4 class="expired">{{ 'current.treatment.value'|trans }}: {{ currentValue }}€</h4>
+            <h3 class="expired">{{ 'difference.that.must.be.paid'|trans }}: {{ voucher.partialPayment + voucher.remainingValue - currentValue }}€</h3>
+        {% else %}
+            <h4>{{ 'the.voucher.is.valid.until'|trans }}: {{ voucher.expirationDate|date("m/d/Y") }}</h4>
+            <h4>{{ 'treatments.selected'|trans }}: {{ voucher.service|trans }}</h4>
+            <h4>{{ 'treatment.value'|trans }}: {{ voucher.remainingValue }}€</h4>
+        {% endif %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.usageType, { attr: { class: "manager" } }) }}
+        {{ form_row(form.info) }}
+        <button class="btn btn-success">{{ 'use.voucher'|trans }}</button>
+        <a class="btn btn-default" href="{{ path('voucher_search') }}">{{ 'back.to.homepage'|trans }}</a>
+        {{ form_end(form) }}
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .expired {
+            color: red;
+        }
+    </style>
+{% endblock %}
