@@ -77,7 +77,7 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/{id}/delete", name="voucher_delete")
      */
-    public function deleteVoucher(Voucher $voucher): Response
+    public function deleteVoucherAction(Voucher $voucher): Response
     {
         if ($voucher->getCreationDate()) {
             throw new \LogicException("Can't delete an active voucher!");
