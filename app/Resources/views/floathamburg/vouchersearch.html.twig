@@ -55,7 +55,9 @@
                                 |
                             {% endif %}
                             <a href="{{ path('voucher_details', {id: voucher.id}) }}">{{ 'details'|trans }}</a> |
-                            {% if voucher.blocked %}
+                            {% if voucher.blocked and is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('voucher_unblock', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, voucherCode: voucherCode}) }}">{{ 'unblock'|trans }}</a>
+                            {% elseif voucher.blocked%}
                                 {{ 'blocked'|trans }}
                             {% else %}
                                 <a href="{{ path('voucher_block', {id: voucher.id, parentRoute: 'voucher_search', page: currentPage, voucherCode: voucherCode}) }}">{{ 'block'|trans }}</a>

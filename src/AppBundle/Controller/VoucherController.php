@@ -496,6 +496,36 @@ class VoucherController extends Controller
     }
 
     /**
+     * @Route("/voucher/unblock/{id}", name="voucher_unblock")
+     *
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
+     */
+    public function unblockVoucherAction(Voucher $voucher, Request $request) : RedirectResponse
+    {
+        $parent = $this->getParentData($request);
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute($parent['parentRoute'], [
+                'page' => $parent['page'],
+                'filterFrom' => $parent['filterFrom'],
+                'filterTo' => $parent['filterTo'],
+                'voucherCode' => $parent['voucherCode'],
+            ]);
+        }
+
+        $voucher->setBlocked(false);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($voucher);
+        $em->flush();
+
+        return $this->redirectToRoute($parent['parentRoute'], [
+            'page' => $parent['page'],
+            'filterFrom' => $parent['filterFrom'],
+            'filterTo' => $parent['filterTo'],
+            'voucherCode' => $parent['voucherCode'],
+        ]);
+    }
+
+    /**
      * @Route("/voucher/comment/{id}", name="voucher_comment_edit")
      */
     public function editVoucherCommentAction(Voucher $voucher, Request $request) : Response
