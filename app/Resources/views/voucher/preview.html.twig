@@ -22,7 +22,6 @@
                 {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("d/m/Y") }} <br/>
                 {{ 'created.by'|trans }}: {{ voucher.author }} <br/>
                 {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br/>
-                {{ 'number.of.users'|trans }}:
                 {% for user in voucher.numberOfUsers %}
                     {{ user }}
                 {% endfor %} <br/>

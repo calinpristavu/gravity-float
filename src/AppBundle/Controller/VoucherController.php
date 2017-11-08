@@ -6,6 +6,7 @@ use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Event\AppEvents;
 use AppBundle\Event\VoucherCreatedEvent;
+use AppBundle\Event\VoucherUpdatedEvent;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
@@ -235,7 +236,7 @@ class VoucherController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')->dispatch(
                 AppEvents::VOUCHER_UPDATED,
-                new VoucherCreatedEvent($voucher, $form)
+                new VoucherUpdatedEvent($voucher, $form)
             );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -258,8 +259,8 @@ class VoucherController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')->dispatch(
-                AppEvents::VOUCHER_CREATED,
-                new VoucherCreatedEvent($voucher, $form)
+                AppEvents::VOUCHER_UPDATED,
+                new VoucherUpdatedEvent($voucher, $form)
             );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);

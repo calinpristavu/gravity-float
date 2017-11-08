@@ -31,7 +31,7 @@
             <tbody>
                 {% for voucher in matchedVouchers %}
                     <tr>
-                        <td class="text-{{ voucher.isCompletelyUsed ? 'danger' : (voucher.isPartiallyUsed ? 'warning' : 'success') }}">
+                        <td class="text-{{ voucher.isCompletelyUsed or voucher.blocked ? 'danger' : (voucher.isPartiallyUsed ? 'warning' : 'success') }}">
                             {{ voucher.voucherCode }}
                         </td>
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
