@@ -4,7 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\User;
 use AppBundle\Event\AppEvents;
-use AppBundle\Event\VoucherCreatedEvent;
+use AppBundle\Event\VoucherEventInterface;
 use AppBundle\Repository\VoucherCodeInformationRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -35,13 +35,12 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
                 ['setVoucherValue', -20],
             ],
             AppEvents::VOUCHER_UPDATED => [
-                ['setVoucherCode', -10],
                 ['setVoucherValue', -20],
             ]
         ];
     }
 
-    public function setVoucherCode(VoucherCreatedEvent $event)
+    public function setVoucherCode(VoucherEventInterface $event)
     {
         $voucher = $event->getVoucher();
         $form = $event->getForm();
@@ -67,7 +66,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function setVoucherValue(VoucherCreatedEvent $event)
+    public function setVoucherValue(VoucherEventInterface $event)
     {
         $voucher = $event->getVoucher();
 
@@ -78,7 +77,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
         $voucher->setRemainingValue($voucher->getService()->getPrice());
     }
 
-    public function setUserRelatedInfo(VoucherCreatedEvent $event)
+    public function setUserRelatedInfo(VoucherEventInterface $event)
     {
         $user = $this->getuser();
         $event

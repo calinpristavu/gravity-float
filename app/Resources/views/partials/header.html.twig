@@ -5,12 +5,15 @@
                 <img alt="Brand" src="{{ asset('assets/img/logo.png') }}">
             </a>
         </div>
-        <div class="col-md-3 col-md-offset-3">
+        <div class="col-md-3 col-md-offset-2">
             <a href="{{ path('voucher_search') }}" class="btn btn-default navbar-btn">{{ 'search'|trans }}</a>
             <a href="{{ path('voucher_chose_type') }}" class="btn btn-default navbar-btn">{{ 'create'|trans }}</a>
             <a href="{{ path('voucher_all') }}" class="btn btn-default navbar-btn">{{ 'all.vouchers'|trans }}</a>
         </div>
-        <div class="col-md-2 col-md-offset-2">
+        <div class="col-md-2 col-md-offset-0">
+            {{ locale_switcher() }}
+        </div>
+        <div class="col-md-3 col-md-offset-0">
             <a href="{{ path('user_profile') }}" class="navbar-text">{{ 'my.account'|trans }}</a>
             <a href="{{ path('fos_user_security_logout') }}" class="navbar-text">{{ 'logout'|trans }}</a>
         </div>

@@ -83,3 +83,19 @@ doctrine_migrations:
     namespace: Application\Migrations
     table_name: migration_versions
     name: Application Migrations
+
+lunetics_locale:
+    allowed_locales:
+        - de
+        - en
+    guessing_order:
+        - query
+        - router
+        - session
+        - cookie
+        - browser
+    cookie:
+        set_on_change: true
+    switcher:
+        show_current_locale: true
+        template: switcher-template.html.twig

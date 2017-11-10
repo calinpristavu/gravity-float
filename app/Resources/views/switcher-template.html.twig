@@ -1,0 +1,26 @@
+<ul class="locale_chooser">
+    {% for locale in locales %}
+        <li{% if current_locale == locale.locale %} class="locale_current"{% endif %}>
+            <a style="display: block;" href="{{ locale.link }}" title="{{ locale.locale_current_language }}">{{ locale.locale_current_language|trans }}</a>
+        </li>
+    {% endfor %}
+</ul>
+
+<style>
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+    }
+</style>

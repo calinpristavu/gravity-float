@@ -6,6 +6,7 @@ use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
 use AppBundle\Event\AppEvents;
 use AppBundle\Event\VoucherCreatedEvent;
+use AppBundle\Event\VoucherUpdatedEvent;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Form\Type\SearchVoucherType;
 use AppBundle\Form\Type\TreatmentVoucherType;
@@ -235,7 +236,7 @@ class VoucherController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')->dispatch(
                 AppEvents::VOUCHER_UPDATED,
-                new VoucherCreatedEvent($voucher, $form)
+                new VoucherUpdatedEvent($voucher, $form)
             );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -258,8 +259,8 @@ class VoucherController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')->dispatch(
-                AppEvents::VOUCHER_CREATED,
-                new VoucherCreatedEvent($voucher, $form)
+                AppEvents::VOUCHER_UPDATED,
+                new VoucherUpdatedEvent($voucher, $form)
             );
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
@@ -482,6 +483,36 @@ class VoucherController extends Controller
     {
         $parent = $this->getParentData($request);
         $voucher->setBlocked(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($voucher);
+        $em->flush();
+
+        return $this->redirectToRoute($parent['parentRoute'], [
+            'page' => $parent['page'],
+            'filterFrom' => $parent['filterFrom'],
+            'filterTo' => $parent['filterTo'],
+            'voucherCode' => $parent['voucherCode'],
+        ]);
+    }
+
+    /**
+     * @Route("/voucher/unblock/{id}", name="voucher_unblock")
+     *
+     * @ParamConverter("voucher", class="AppBundle:Voucher")
+     */
+    public function unblockVoucherAction(Voucher $voucher, Request $request) : RedirectResponse
+    {
+        $parent = $this->getParentData($request);
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
+            return $this->redirectToRoute($parent['parentRoute'], [
+                'page' => $parent['page'],
+                'filterFrom' => $parent['filterFrom'],
+                'filterTo' => $parent['filterTo'],
+                'voucherCode' => $parent['voucherCode'],
+            ]);
+        }
+
+        $voucher->setBlocked(false);
         $em = $this->getDoctrine()->getManager();
         $em->persist($voucher);
         $em->flush();

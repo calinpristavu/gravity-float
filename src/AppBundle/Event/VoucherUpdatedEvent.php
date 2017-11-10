@@ -6,7 +6,7 @@ use AppBundle\Entity\Voucher;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Form\FormInterface;
 
-class VoucherCreatedEvent extends Event implements VoucherEventInterface
+class VoucherUpdatedEvent extends Event implements VoucherEventInterface
 {
     protected $voucher;
 
