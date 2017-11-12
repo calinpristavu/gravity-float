@@ -27,12 +27,6 @@
                 {{ 'expiration.date'|trans }}: {{ voucher.expirationDate|date("d/m/Y") }} <br/>
                 <div class="hidden-print">{{ 'created.by'|trans }} {{ voucher.author }}</div> <br />
                 {{ 'created.at'|trans }}: {{ voucher.shopWhereCreated.name }} <br />
-                <div class="hidden-print">
-                    {{ 'number.of.users'|trans }}:
-                    {% for user in voucher.numberOfUsers %}
-                        {{ user }}
-                    {% endfor %} <br />
-                </div>
             </div>
             <div class="col-md-4 col-xs-4">
                 <svg id="barcode" data-code="{{ voucher.voucherCode }}"></svg>
