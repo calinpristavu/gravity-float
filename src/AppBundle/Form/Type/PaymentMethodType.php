@@ -12,14 +12,16 @@ class PaymentMethodType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => [
-                'Card' => 'Card',
-                'Cash' => 'Cash',
-                'Paypal' => 'Paypal',
-                'Lastschrift' => 'Lastschrift'
+                'payment.card' => 'Card',
+                'payment.cash' => 'Cash',
+                'payment.paypal' => 'Paypal',
+                'payment.lastschrift' => 'Lastschrift'
             ],
             'expanded' => true,
             'multiple' => false,
-            'required' => true
+            'required' => true,
+            'label' => 'voucher.method.of.payment',
+            'choice_translation_domain' => true
         ]);
     }
 

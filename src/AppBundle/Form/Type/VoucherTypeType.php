@@ -28,5 +28,4 @@ class VoucherTypeType extends AbstractType
             'data_class' => Voucher::class,
         ]);
     }
-
 }

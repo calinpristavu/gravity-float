@@ -17,8 +17,12 @@ class ForgotPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('send', SubmitType::class, array('label' => "button.send.password"))
+            ->add('email', EmailType::class, [
+                'label' => 'user.email'
+            ])
+            ->add('send', SubmitType::class, [
+                'label' => "button.send.password"
+            ])
         ;
     }
 

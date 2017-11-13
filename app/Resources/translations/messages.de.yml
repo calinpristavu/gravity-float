@@ -133,3 +133,20 @@ treatment.value.when.created: 'Wert der Behandlung bei Ausstellungsdatum'
 current.treatment.value: 'Aktueller Wert der Behandlung'
 difference.that.must.be.paid: 'zu begleichende Differenz'
 unblock: 'Entsperren'
+voucher.code_letter: Gutscheincode-Brief
+voucher.comment: Kommentar
+button.save: Sparen
+user.email: Email
+voucher.service: Bedienung
+user.name: Name
+user.phone: Telefon
+user.password.first: Passwort
+user.password.second:  Passwort wiederholen
+voucher.usage_type: Nutzungsart
+voucher.info: Info
+voucher.confirm_extra_cost: Mehrkosten bestätigen
+voucher.use.partial_amount: Teilbetrag
+payment.card: Kreditkarte
+payment.cash: Kasse
+payment.paypal: PayPal
+payment.lastschrift: Lastschrift

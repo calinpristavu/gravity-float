@@ -20,6 +20,7 @@ class UseTreatmentVoucherType extends AbstractType
     {
         $builder
             ->add("usageType", ChoiceType::class, [
+                'label' => 'voucher.usage_type',
                 'choices' => [
                     'complete_use' => 'complete_use',
                 ],
@@ -27,6 +28,7 @@ class UseTreatmentVoucherType extends AbstractType
                 'expanded' => true,
             ])
             ->add('info', TextareaType::class, [
+                'label' => 'voucher.info',
                 'required' => false,
             ])
         ;
@@ -34,6 +36,7 @@ class UseTreatmentVoucherType extends AbstractType
         $now = new \DateTime();
         if ($options['expirationDate'] < $now) {
             $builder->add('confirmExtraCost', CheckboxType::class, [
+                'label' => 'voucher.confirm_extra_cost',
                 'required' => true,
             ]);
         }

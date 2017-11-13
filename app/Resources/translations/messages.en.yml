@@ -1,40 +1,40 @@
 all.users: 'All users'
-name: 'Name'
-email: 'Email'
-shops: 'Shops'
+name: Name
+email: Email
+shops: Shops
 no.shops: 'No shops'
 vouchers.created: 'Vouchers created'
 user.type: 'User type'
-administrator: 'Administrator'
-employee: 'Employee'
-edit.user: 'Edit'
-suspend.user: 'Suspend'
-unsuspend.user: 'Reactivate'
+administrator: Administrator
+employee: Employee
+edit.user: Edit
+suspend.user: Suspend
+unsuspend.user: Reactivate
 no.users: 'No users.'
-previous.page: 'Previous'
-next.page: 'Next'
+previous.page: Previous
+next.page: Next
 create.user: 'Create user'
-back: 'Back'
+back: Back
 creation.date: 'Creation date'
 expiration.date: 'Expiration date'
 created.by: 'Created by'
 created.at: 'Created at shop'
 created.for: 'Created for'
 original.voucher.value: 'Original Voucher value'
-partial.payment: 'Payment'
+partial.payment: Payment
 remaining.sum: 'Remaining ammount'
 you.can.use.this.voucher.in.shops: 'You can use this voucher in shops'
 use.voucher: 'Use voucher'
-print.voucher: 'Print'
+print.voucher: Print
 voucher.with.code.doesnt.exist: 'No vouchers matching that code.'
-voucher.preview: 'Preview'
-voucher.value: 'Value'
+voucher.preview: Preview
+voucher.value: Value
 can.be.used.for: 'Can be used for'
 no.usages.set: 'No usages set'
 you.can.use.voucher.in.any.shop: 'You can use this voucher in any shop.'
-save.voucher: 'Save'
-edit: 'Edit'
-print: 'Print'
+save.voucher: Save
+edit: Edit
+print: Print
 create.voucher: 'Create new Voucher'
 button.voucher.create: 'Create Voucher'
 all.vouchers: 'All Vouchers'
@@ -46,10 +46,10 @@ amount.remaining: 'Amount remaining'
 no.vouchers: 'No vouchers'
 print.selected.vouchers: 'Print selected vouchers'
 export.list: 'Export list'
-search: 'Search'
-create: 'Create'
+search: Search
+create: Create
 my.account: 'My account'
-logout: 'Logout'
+logout: Logout
 user.successfully.updated: 'User successfully updated'
 can.create.online.vouchers: 'Can create online vouchers'
 cannot.create.online.vouchers: 'Cannot create online vouchers'
@@ -58,15 +58,15 @@ user.management: 'User management'
 user.successfully.edited: 'User successfully edited'
 user.successfully.created: 'User successfully created'
 voucher.saved.successfully: 'Voucher Saved!'
-included: 'Included'
+included: Included
 not.included: 'Not Included'
-details: 'Details'
+details: Details
 voucher.details: 'Voucher details'
 you.have.successfully.used.the.voucher: 'You have successfully used the voucher!'
 complete.use: 'Complete use'
 partial.use: 'Partial use'
-massage: 'Massage'
-float: 'Float'
+massage: Massage
+float: Float
 use.for: 'Use for'
 voucher.order.number: 'Voucher Order Number'
 voucher.invoice.number: 'Voucher Invoice Number'
@@ -79,57 +79,75 @@ voucher.payment: 'Voucher payment'
 no.payments.have.been.made: 'No payments have been made'
 voucher.method.of.payment: 'Method of payment'
 you.can.use.this.voucher.in.shop: 'You can use this voucher in shop'
-shop: 'Shop'
+shop: Shop
 not.applicable: 'Not applicable'
-online: 'Online'
+online: Online
 online.voucher: 'Online voucher'
 number.of.users: 'Number of users'
-blocked: 'Blocked'
-block: 'Block'
+blocked: Blocked
+block: Block
 voucher.is.blocked: 'Voucher is blocked'
 remaining.value: 'Remaining value'
 back.to.homepage: 'Back to Homepage'
 comment: 'Voucher Comment'
 comment.added.successfully: 'Comment has been successfully added'
-add.comment: 'Comment'
-voucher.type.value_voucher: Value voucher
-voucher.type.treatment_voucher: Treatment voucher
-next.step: Next Step
-edit.voucher: Edit Voucher
-float_&_massage: 'Float & massage'
-FLOAT_SINGLE_60: Single Float for 60 minutes
-FLOAT_DOUBLE_60: Double Float for 60 minutes
-MASSAGE_CLASSIC_30: Classic Massage for 30 minutes
-MASSAGE_CLASSIC_45: Classic Massage for 45 minutes
-MASSAGE_CLASSIC_60: Classic Massage for 60 minutes
-MASSAGE_CLASSIC_90: Classic Massage for 90 minutes
-MASSAGE_FOOT_30: Foot Massage for 30 minutes
-MASSAGE_DEEP_60: Deep Relax Massage for 60 minutes
-MASSAGE_DEEP_90: Deep Relax Massage for 90 minutes
-FLOAT_60_MASSAGE_CLASSIC_30_SINGLE: Classic Massage for 30 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_CLASSIC_30_DOUBLE: Classic Massage for 30 minutes and Float for 60 minutes Double
-FLOAT_60_MASSAGE_CLASSIC_45_SINGLE: Classic Massage for 45 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_CLASSIC_45_DOUBLE: Classic Massage for 45 minutes and Float for 60 minutes Double
-FLOAT_60_MASSAGE_CLASSIC_60_SINGLE: Classic Massage for 60 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_CLASSIC_60_DOUBLE: Classic Massage for 60 minutes and Float for 60 minutes Double
-FLOAT_60_MASSAGE_DEEP_60_SINGLE: Deep Relax Massage for 60 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_DEEP_60_DOUBLE: Deep Relax Massage for 60 minutes and Float for 60 minutes Double
-FLOAT_60_MASSAGE_CLASSIC_90_SINGLE: Classic Massage for 90 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_CLASSIC_90_DOUBLE: Classic Massage for 90 minutes and Float for 60 minutes Double
-FLOAT_60_MASSAGE_DEEP_90_SINGLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Single
-FLOAT_60_MASSAGE_DEEP_90_DOUBLE: Deep Relax Massage for 90 minutes and Float for 60 minutes Double
-this.is.a.value.voucher: This is a value voucher
-the.voucher.is.valid.until: The voucher is valid until
-current.remaining.value: Current remaining value
-used.value: Used value
-this.is.a.treatment.voucher: This is a treatment voucher
-treatments.selected: Treatments selected
-treatment.value: Treatment value
-complete_use: Complete use
-partial_use: Partial use
-maximum.amount: Maximum amount
-the.voucher.has.been.valid.until: The voucher has been valid until
-treatment.value.when.created: Treatment value when voucher was created
-current.treatment.value: Current value of the same treatment
-difference.that.must.be.paid: Difference that must be paid
+add.comment: Comment
+voucher.type.value_voucher: 'Value voucher'
+voucher.type.treatment_voucher: 'Treatment voucher'
+next.step: 'Next Step'
+edit.voucher: 'Edit Voucher'
+'float_&_massage': 'Float & massage'
+FLOAT_SINGLE_60: 'Single Float for 60 minutes'
+FLOAT_DOUBLE_60: 'Double Float for 60 minutes'
+MASSAGE_CLASSIC_30: 'Classic Massage for 30 minutes'
+MASSAGE_CLASSIC_45: 'Classic Massage for 45 minutes'
+MASSAGE_CLASSIC_60: 'Classic Massage for 60 minutes'
+MASSAGE_CLASSIC_90: 'Classic Massage for 90 minutes'
+MASSAGE_FOOT_30: 'Foot Massage for 30 minutes'
+MASSAGE_DEEP_60: 'Deep Relax Massage for 60 minutes'
+MASSAGE_DEEP_90: 'Deep Relax Massage for 90 minutes'
+FLOAT_60_MASSAGE_CLASSIC_30_SINGLE: 'Classic Massage for 30 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_CLASSIC_30_DOUBLE: 'Classic Massage for 30 minutes and Float for 60 minutes Double'
+FLOAT_60_MASSAGE_CLASSIC_45_SINGLE: 'Classic Massage for 45 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_CLASSIC_45_DOUBLE: 'Classic Massage for 45 minutes and Float for 60 minutes Double'
+FLOAT_60_MASSAGE_CLASSIC_60_SINGLE: 'Classic Massage for 60 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_CLASSIC_60_DOUBLE: 'Classic Massage for 60 minutes and Float for 60 minutes Double'
+FLOAT_60_MASSAGE_DEEP_60_SINGLE: 'Deep Relax Massage for 60 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_DEEP_60_DOUBLE: 'Deep Relax Massage for 60 minutes and Float for 60 minutes Double'
+FLOAT_60_MASSAGE_CLASSIC_90_SINGLE: 'Classic Massage for 90 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_CLASSIC_90_DOUBLE: 'Classic Massage for 90 minutes and Float for 60 minutes Double'
+FLOAT_60_MASSAGE_DEEP_90_SINGLE: 'Deep Relax Massage for 90 minutes and Float for 60 minutes Single'
+FLOAT_60_MASSAGE_DEEP_90_DOUBLE: 'Deep Relax Massage for 90 minutes and Float for 60 minutes Double'
+this.is.a.value.voucher: 'This is a value voucher'
+the.voucher.is.valid.until: 'The voucher is valid until'
+current.remaining.value: 'Current remaining value'
+used.value: 'Used value'
+this.is.a.treatment.voucher: 'This is a treatment voucher'
+treatments.selected: 'Treatments selected'
+treatment.value: 'Treatment value'
+complete_use: 'Complete use'
+partial_use: 'Partial use'
+maximum.amount: 'Maximum amount'
+the.voucher.has.been.valid.until: 'The voucher has been valid until'
+treatment.value.when.created: 'Treatment value when voucher was created'
+current.treatment.value: 'Current value of the same treatment'
+difference.that.must.be.paid: 'Difference that must be paid'
 unblock: Unblock
+used.for: 'Used for'
+voucher.code_letter: Voucher code letter
+voucher.comment: Comment
+button.save: Save
+user.email: Email
+voucher.service: Service
+user.name: Name
+user.phone: Phone
+user.password.first: Password
+user.password.second: Repeat password
+voucher.usage_type: Usage type
+voucher.info: Info
+voucher.confirm_extra_cost: Confirm extra cost
+voucher.use.partial_amount: Partial amount
+payment.card: Credit card
+payment.cash: Cash
+payment.paypal: PayPal
+payment.lastschrift: Lastschrift

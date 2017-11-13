@@ -21,7 +21,7 @@ class CodeLetterType extends AbstractType
             'multiple' => false,
             'required' => true,
             'mapped' => false,
-            'label' => 'Voucher code letter',
+            'label' => 'voucher.code_letter',
         ]);
     }
 

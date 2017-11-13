@@ -21,6 +21,7 @@ class UseValueVoucherType extends AbstractType
     {
         $builder
             ->add("usageType", ChoiceType::class, [
+                'label' => 'voucher.usage_type',
                 'choices' => [
                     'complete_use' => 'complete_use',
                     'partial_use' => 'partial_use',
@@ -29,6 +30,7 @@ class UseValueVoucherType extends AbstractType
                 'expanded' => true,
             ])
             ->add('partial_amount', NumberType::class, [
+                'label' => 'voucher.use.partial_amount',
                 'required' => false,
                 'constraints' => [
                     new Assert\Range(array(
@@ -40,6 +42,7 @@ class UseValueVoucherType extends AbstractType
                 ]
             ])
             ->add('info', TextareaType::class, [
+                'label' => 'voucher.info',
                 'required' => false,
             ])
         ;

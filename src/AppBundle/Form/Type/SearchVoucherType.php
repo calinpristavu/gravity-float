@@ -16,8 +16,12 @@ class SearchVoucherType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('vouchercode')
-            ->add('search', SubmitType::class, array('label' => "button.search"))
+            ->add('vouchercode', null, [
+                'label' => 'voucher.code'
+            ])
+            ->add('search', SubmitType::class, [
+                'label' => "button.search"
+            ])
         ;
     }
 

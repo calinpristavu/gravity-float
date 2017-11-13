@@ -30,6 +30,7 @@ class TreatmentVoucherType extends AbstractType
         $builder
             ->add('voucherCodeLetter', CodeLetterType::class)
             ->add('service', EntityType::class, [
+                'label' => 'voucher.service',
                 'class' => AvailableService::class,
                 'choice_attr' => function (AvailableService $service) {
                     return [
@@ -41,6 +42,7 @@ class TreatmentVoucherType extends AbstractType
             ])
             ->add('methodOfPayment', PaymentMethodType::class)
             ->add("expirationDate", DateType::class, [
+                'label' => 'expiration.date',
                 'widget' => "single_text",
                 'format' => 'dd/MM/yyyy',
                 'attr' => [

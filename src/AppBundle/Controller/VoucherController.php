@@ -72,6 +72,7 @@ class VoucherController extends Controller
             'currentPage' => $request->get('page'),
             'searchedCode' => $request->get('voucherCode'),
             'voucherCode' => $request->get('voucherCode'),
+            'fullWidth' => true
         ]);
     }
 
@@ -343,6 +344,7 @@ class VoucherController extends Controller
             'filterFrom' => $filterFrom !== null ? $filterFrom->format('Y-m-d') : null,
             'filterTo' => $filterTo !== null ? $filterTo->format('Y-m-d') : null,
             'form' => $form->createView(),
+            'fullWidth' => true
         ]);
     }
 

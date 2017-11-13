@@ -29,10 +29,11 @@ class ValueVoucherType extends AbstractType
         $builder
             ->add('voucherCodeLetter', CodeLetterType::class)
             ->add('remainingValue', NumberType::class, [
-                'label' => 'Value'
+                'label' => 'voucher.remaining.value'
             ])
             ->add('methodOfPayment', PaymentMethodType::class)
             ->add("expirationDate", DateType::class, [
+                'label' => 'expiration.date',
                 'widget' => "single_text",
                 'format' => 'dd/MM/yyyy',
                 'attr' => [
@@ -47,15 +48,19 @@ class ValueVoucherType extends AbstractType
 
                 $form
                     ->add('onlineVoucher', CheckboxType::class, [
+                        'label' => 'online.voucher',
                         'required' => false,
                     ])
                     ->add('orderNumber', TextType::class, [
+                        'label' => 'voucher.order.number',
                         'required' => false,
                     ])
                     ->add('invoiceNumber', TextType::class, [
+                        'label' => 'voucher.invoice.number',
                         'required' => false,
                     ])
                     ->add('includedPostalCharges', CheckboxType::class, [
+                        'label' => 'is.included.postal.charges',
                         'required' => false,
                     ]);
             }
