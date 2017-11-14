@@ -30,6 +30,13 @@ class VoucherCodeInformation
 
     public function getNextVoucherCode() : int
     {
-        return ++$this->voucherCode;
+        return $this->voucherCode + 1;
+    }
+
+    public function incrementVoucherCode()
+    {
+        $this->voucherCode++;
+
+        return $this;
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Payment;
 use AppBundle\Entity\Voucher;
+use AppBundle\Entity\VoucherCodeInformation;
 use AppBundle\Event\AppEvents;
 use AppBundle\Event\VoucherCreatedEvent;
 use AppBundle\Event\VoucherUpdatedEvent;
@@ -17,6 +18,7 @@ use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Repository\AvailableServiceRepository;
+use AppBundle\Repository\VoucherCodeInformationRepository;
 use AppBundle\Service\VoucherFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -281,6 +283,13 @@ class VoucherController extends Controller
         $em = $this->getDoctrine()->getManager();
         $voucher->setEnabled(true);
         $em->persist($voucher);
+
+        /** @var VoucherCodeInformation $voucherCodeInfo */
+        $voucherCodeInfo = $this->get(VoucherCodeInformationRepository::class)->find(
+            $voucher->getShopWhereCreated()->getId()
+        );
+        $voucherCodeInfo->incrementVoucherCode();
+        $em->persist($voucherCodeInfo);
         $em->flush();
 
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
