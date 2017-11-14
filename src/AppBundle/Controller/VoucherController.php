@@ -19,6 +19,7 @@ use AppBundle\Form\Type\VoucherTypeType;
 use AppBundle\Form\Type\VoucherUseType;
 use AppBundle\Repository\AvailableServiceRepository;
 use AppBundle\Repository\VoucherCodeInformationRepository;
+use AppBundle\Repository\VoucherRepository;
 use AppBundle\Service\VoucherFinder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -281,6 +282,14 @@ class VoucherController extends Controller
     public function saveVoucherAction(Voucher $voucher) : Response
     {
         $em = $this->getDoctrine()->getManager();
+        $unfinishedVouchers = $this->get(VoucherRepository::class)->findBy([
+            'voucherCode' => $voucher->getVoucherCode()
+        ]);
+
+        foreach ($unfinishedVouchers as $unfinishedVoucher) {
+            $em->remove($unfinishedVoucher);
+        }
+
         $voucher->setEnabled(true);
         $em->persist($voucher);
 
