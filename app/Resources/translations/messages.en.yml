@@ -151,3 +151,5 @@ payment.card: Credit card
 payment.cash: Cash
 payment.paypal: PayPal
 payment.lastschrift: Lastschrift
+button.voucher.next: Next
+button.back: Back

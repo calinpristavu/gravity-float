@@ -276,8 +276,13 @@ class VoucherController extends Controller
     /**
      * @Route("/voucher/save/{id}", name="voucher_save")
      */
-    public function saveVoucherAction() : Response
+    public function saveVoucherAction(Voucher $voucher) : Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $voucher->setEnabled(true);
+        $em->persist($voucher);
+        $em->flush();
+
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
     }
 

@@ -46,7 +46,7 @@
             <a href="{{ path('voucher_save', {id: voucher.id}) }}" class="btn btn-success">
                 {% trans %}button.voucher.create{% endtrans %}
             </a>
-            <a href="{{ path('voucher_edit', {id: voucher.id}) }}" class="btn btn-warning">{% trans %}edit{% endtrans %}</a>
+            <button class="btn btn-warning" onclick="goBack()">{% trans %}button.back{% endtrans %}</button>
         </div>
     </div>
 {% endblock %}
@@ -55,4 +55,9 @@
     {{ parent() }}
     <script src="{{ asset('assets/js/createVoucherFormHandling.js') }}" charset="utf-8"></script>
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
+    <script>
+        function goBack() {
+            window.history.back()
+        }
+    </script>
 {% endblock %}

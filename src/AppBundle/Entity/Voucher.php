@@ -155,6 +155,11 @@ class Voucher
      */
     protected $type;
 
+    /**
+     * @ORM\Column(type="boolean", name="enabled")
+     */
+    protected $enabled;
+
     public function __construct()
     {
         $this->payments = new ArrayCollection();
@@ -163,6 +168,7 @@ class Voucher
         $this->onlineVoucher = false;
         $this->includedPostalCharges = false;
         $this->blocked = false;
+        $this->enabled = false;
     }
 
     public function getId() : ?int
@@ -412,5 +418,17 @@ class Voucher
     public function getService(): ?AvailableService
     {
         return $this->service;
+    }
+
+    public function isEnabled(): bool
+    {
+        return (bool) $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
     }
 }

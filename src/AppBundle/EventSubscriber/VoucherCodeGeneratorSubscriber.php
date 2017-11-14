@@ -62,7 +62,11 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
         $voucher->setVoucherCode(
             $shopToCodeMap[$shopId] .
             $form->get('voucherCodeLetter')->getData() .
-            $voucherCodeInfo->getNextVoucherCode()
+            str_pad(
+                (string) $voucherCodeInfo->getNextVoucherCode(),
+                5,
+                STR_PAD_LEFT
+            )
         );
     }
 

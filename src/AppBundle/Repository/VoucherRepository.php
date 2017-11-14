@@ -15,7 +15,8 @@ class VoucherRepository extends EntityRepository
         $qb = $this->createQueryBuilder('v');
         $qb
             ->select('count(v.id)')
-            ->andWhere($qb->expr()->isNotNull('v.creationDate'));
+            ->andWhere($qb->expr()->isNotNull('v.creationDate'))
+            ->andWhere($qb->expr()->eq('v.enabled', true));
 
         if ($from !== null) {
             $qb
@@ -40,9 +41,12 @@ class VoucherRepository extends EntityRepository
             return 0;
         }
 
-        return (int)$this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v');
+
+        return (int)$qb
             ->select('count(v.id)')
             ->where('v.voucherCode LIKE :code')
+            ->andWhere($qb->expr()->eq('v.enabled', true))
             ->setParameter('code', '%' . $voucherCode . '%')
             ->getQuery()
             ->getSingleScalarResult();
@@ -54,8 +58,11 @@ class VoucherRepository extends EntityRepository
             return array();
         }
 
-        return $this->createQueryBuilder('v')
+        $qb = $this->createQueryBuilder('v');
+
+        return $qb
             ->where('v.voucherCode LIKE :code')
+            ->andWhere($qb->expr()->eq('v.enabled', true))
             ->setParameter('code', '%' . $code . '%')
             ->getQuery()
             ->getResult();
