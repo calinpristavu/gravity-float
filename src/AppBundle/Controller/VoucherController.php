@@ -287,7 +287,9 @@ class VoucherController extends Controller
         ]);
 
         foreach ($unfinishedVouchers as $unfinishedVoucher) {
-            $em->remove($unfinishedVoucher);
+            if ($unfinishedVoucher->getId() != $voucher->getId()) {
+                $em->remove($unfinishedVoucher);
+            }
         }
 
         $voucher->setEnabled(true);
@@ -295,7 +297,7 @@ class VoucherController extends Controller
 
         /** @var VoucherCodeInformation $voucherCodeInfo */
         $voucherCodeInfo = $this->get(VoucherCodeInformationRepository::class)->find(
-            $voucher->getShopWhereCreated()->getId()
+            $voucher->isOnlineVoucher() ? 0 : $voucher->getShopWhereCreated()->getId()
         );
         $voucherCodeInfo->incrementVoucherCode();
         $em->persist($voucherCodeInfo);

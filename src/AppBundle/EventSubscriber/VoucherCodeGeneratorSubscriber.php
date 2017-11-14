@@ -65,6 +65,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
             str_pad(
                 (string) $voucherCodeInfo->getNextVoucherCode(),
                 5,
+                '0',
                 STR_PAD_LEFT
             )
         );
