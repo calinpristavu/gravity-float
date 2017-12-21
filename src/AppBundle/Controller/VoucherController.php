@@ -16,8 +16,6 @@ use AppBundle\Form\Type\UseValueVoucherType;
 use AppBundle\Form\Type\ValueVoucherType;
 use AppBundle\Form\Type\VoucherDateType;
 use AppBundle\Form\Type\VoucherTypeType;
-use AppBundle\Form\Type\VoucherUseType;
-use AppBundle\Repository\AvailableServiceRepository;
 use AppBundle\Repository\VoucherCodeInformationRepository;
 use AppBundle\Repository\VoucherRepository;
 use AppBundle\Service\VoucherFinder;

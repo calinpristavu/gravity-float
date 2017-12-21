@@ -19,11 +19,11 @@
                     <th>{{ 'creation.date'|trans }}</th>
                     <th>{{ 'expiration.date'|trans }}</th>
                     <th>{{ 'original.voucher.value'|trans }}</th>
-                    <th>{{ 'postal.charge'|trans }}</th>
                     <th>{{ 'amount.used'|trans }}</th>
                     <th>{{ 'amount.remaining'|trans }}</th>
                     <th>{{ 'created.by'|trans }}</th>
-                    <th>{{ 'created.at'|trans }}</th>
+                    <th>{{ 'voucher.invoice.number'|trans }}</th>
+                    <th>{{ 'voucher.order.number'|trans }}</th>
                     <th>{{ 'comment'|trans }}</th>
                     <th></th>
                 </tr>
@@ -37,11 +37,11 @@
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>
-                        <td>{{ voucher.includedPostalCharges ? 1.5 : 0 }}€</td>
                         <td>{{ voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
-                        <td>{{ voucher.shopWhereCreated.name }}</td>
+                        <td>{{ voucher.invoiceNumber }}</td>
+                        <td>{{ voucher.orderNumber }}</td>
                         <td>
                             {{ voucher.comment }}
                             <br/><br/>
@@ -73,11 +73,20 @@
 
         {% if numberOfPages > 1 %}
             <ul class="pagination">
+                <li>
+                    <a href="{{ path('voucher_search', {'page': 1, 'voucherCode': voucherCode}) }}"><<</a>
+                </li>
                 {% for page in 1..numberOfPages %}
-                    <li {% if page == currentPage %}class="active"{% endif %}>
+                    <li class="
+                        {% if page == currentPage %} active
+                        {% elseif (page - currentPage)|abs > 3 %} hidden {% endif %}
+                    ">
                         <a href="{{ path('voucher_search', {'page': page, 'voucherCode': voucherCode}) }}">{{ page }}</a>
                     </li>
                 {% endfor %}
+                <li>
+                    <a href="{{ path('voucher_search', {'page': numberOfPages, 'voucherCode': voucherCode}) }}">>></a>
+                </li>
             </ul>
         {% endif %}
     </div>

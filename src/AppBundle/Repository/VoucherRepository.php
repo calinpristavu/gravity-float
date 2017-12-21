@@ -30,7 +30,7 @@ class VoucherRepository extends EntityRepository
                 ->setParameter('to', $to);
         }
 
-        return (int)$qb
+        return (int) $qb
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -43,9 +43,13 @@ class VoucherRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('v');
 
-        return (int)$qb
+        return (int) $qb
             ->select('count(v.id)')
-            ->where('v.voucherCode LIKE :code')
+            ->where($qb->expr()->orX(
+                'v.voucherCode LIKE :code',
+                'v.invoiceNumber LIKE :code',
+                'v.orderNumber LIKE :code'
+            ))
             ->andWhere($qb->expr()->eq('v.enabled', true))
             ->setParameter('code', '%' . $voucherCode . '%')
             ->getQuery()

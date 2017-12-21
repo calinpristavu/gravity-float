@@ -24,11 +24,11 @@
                     <th>{{ 'creation.date'|trans }}</th>
                     <th>{{ 'expiration.date'|trans }}</th>
                     <th>{{ 'original.voucher.value'|trans }}</th>
-                    <th>{{ 'postal.charge'|trans }}</th>
                     <th>{{ 'amount.used'|trans }}</th>
                     <th>{{ 'amount.remaining'|trans }}</th>
                     <th>{{ 'created.by'|trans }}</th>
-                    <th>{{ 'created.at'|trans }}</th>
+                    <th>{{ 'voucher.invoice.number'|trans }}</th>
+                    <th>{{ 'voucher.order.number'|trans }}</th>
                     <th>{{ 'comment'|trans }}</th>
                     <th></th>
                 </tr>
@@ -42,17 +42,22 @@
                         <td>{{ voucher.creationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.expirationDate|date("d/m/Y") }}</td>
                         <td>{{ voucher.remainingValue + voucher.partialPayment }} &euro;</td>
-                        <td>{{ voucher.includedPostalCharges ? 1.5 : 0 }}€</td>
                         <td>{{ voucher.partialPayment }} &euro;</td>
                         <td>{{ voucher.remainingValue }} &euro;</td>
                         <td>{{ voucher.author }}</td>
+                        <td>{{ voucher.invoiceNumber }}</td>
+                        <td>{{ voucher.orderNumber }}</td>
                         <td>
-                            {{ voucher.shopWhereCreated.name }}
-                            {% if voucher.onlineVoucher %}
-                                {{ 'online'|trans }}
-                            {% endif %}
+                            {{ voucher.comment }}
+                            <br/><br/>
+                            <a href="{{ path('voucher_comment_edit', {
+                                id: voucher.id,
+                                parentRoute: 'voucher_all',
+                                filterFrom: filterFrom,
+                                filterTo: filterTo,
+                                page: currentPage
+                            }) }}">{{ 'add.comment'|trans }}</a>
                         </td>
-                        <td>{{ voucher.comment }} <br/><br/> <a href="{{ path('voucher_comment_edit', {id: voucher.id, parentRoute: 'voucher_all', filterFrom: filterFrom, filterTo: filterTo, page: currentPage}) }}">{{ 'add.comment'|trans }}</a></td>
                         <td>
                             {% if voucher.remainingValue > 0 and (not voucher.blocked) %}
                                 <a href="{{ path('voucher_use', {id: voucher.id}) }}">{{ 'use.voucher'|trans }}</a>
@@ -77,19 +82,24 @@
 
         {% if numberOfPages > 1 %}
             <ul class="pagination">
+                <li>
+                    <a href="{{ path('voucher_all', {'page': 1, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}"><<</a>
+                </li>
                 {% for page in 1..numberOfPages %}
-                    <li {% if page == currentPage %}class="active"{% endif %}>
+                    <li class="
+                        {% if page == currentPage %} active
+                        {% elseif (page - currentPage)|abs > 3 %} hidden {% endif %}
+                    ">
                         <a href="{{ path('voucher_all', {'page': page, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ page }}</a>
                     </li>
                 {% endfor %}
+                <li>
+                    <a href="{{ path('voucher_all', {'page': numberOfPages, 'filterFrom': filterFrom, 'filterTo': filterTo}) }}">>></a>
+                </li>
             </ul>
         {% endif %}
     </div>
 
     <a class="btn btn-default" href="{{ path('user_export_vouchers', {'filterFrom': filterFrom, 'filterTo': filterTo}) }}">{{ 'export.list'|trans }}</a> <br /> <br />
     <a href="{{ path('voucher_search') }}">{{ 'back'|trans }}</a>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
 {% endblock %}

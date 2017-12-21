@@ -77,10 +77,16 @@ class VoucherFinder
         }
 
         if (isset($this->filters['voucherCode'])) {
-            $queryBuilder->andWhere($queryBuilder->expr()->like(
-                'v.voucherCode',
-                $queryBuilder->expr()->literal('%' . $this->filters['voucherCode'] . '%')
-            ));
+            $queryBuilder
+                ->andWhere($queryBuilder->expr()->orX(
+                    'v.voucherCode LIKE :code',
+                    'v.invoiceNumber LIKE :code',
+                    'v.orderNumber LIKE :code'
+                ))
+                ->setParameter("code", sprintf(
+                    '%%%s%%',
+                    $this->filters['voucherCode']
+                ));
         }
 
         if (isset($this->filters['items_per_page'])) {
