@@ -14,3 +14,4 @@ parameters:
     mailer_sender_name: {{ mailer_sender_name }}
     secret: ThisTokenIsNotSoSecretChangeIt
     vouchers_per_page: 100
+    users_per_page: 5
