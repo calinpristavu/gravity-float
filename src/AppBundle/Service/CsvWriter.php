@@ -132,7 +132,8 @@ class CsvWriter
             shop_where_created_id,
             comment,
             blocked
-        FROM vouchers ";
+        FROM vouchers 
+        WHERE creation_date IS NOT NULL";
 
         $tag = ' WHERE';
         if ($filterFrom !== null) {
