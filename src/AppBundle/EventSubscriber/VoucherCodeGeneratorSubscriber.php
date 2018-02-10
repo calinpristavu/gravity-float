@@ -3,6 +3,7 @@
 namespace AppBundle\EventSubscriber;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\VoucherCodeInformation;
 use AppBundle\Event\AppEvents;
 use AppBundle\Event\VoucherEventInterface;
 use AppBundle\Repository\VoucherCodeInformationRepository;
@@ -58,17 +59,21 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
             $shopId = 0;
         }
 
+        /** @var VoucherCodeInformation $voucherCodeInfo */
         $voucherCodeInfo = $this->codeInformationRepo->find($shopId);
-
-        $voucher->setVoucherCode(
-            $shopToCodeMap[$shopId] .
-            $form->get('voucherCodeLetter')->getData() .
-            str_pad(
+        $voucherNumber = $voucher->getVoucherCode()
+            ? substr($voucher->getVoucherCode(), -5)
+            : str_pad(
                 (string) $voucherCodeInfo->getNextVoucherCode(),
                 5,
                 '0',
                 STR_PAD_LEFT
-            )
+            );
+
+        $voucher->setVoucherCode(
+            $shopToCodeMap[$shopId] .
+            $form->get('voucherCodeLetter')->getData() .
+            $voucherNumber
         );
     }
 
