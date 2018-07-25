@@ -97,6 +97,7 @@ voucher.type.treatment_voucher: Behandlungsgutschein
 next.step: nächster Schritt
 edit.voucher: Gutschein bearbeiten
 float_&_massage: Float & Massage
+cosmetic: Kosmetik
 FLOAT_SINGLE_60: 60 Min Singlefloat
 FLOAT_DOUBLE_60: 60 Min Paarfloat
 MASSAGE_CLASSIC_30: 30 Min Klassische Massage
@@ -118,6 +119,13 @@ FLOAT_60_MASSAGE_CLASSIC_90_SINGLE: 60 Min Singlefloat & 90 Min Klassische Massa
 FLOAT_60_MASSAGE_CLASSIC_90_DOUBLE: 60 Min Paarfloat & 2 x 90 Min Klassische Massage
 FLOAT_60_MASSAGE_DEEP_90_SINGLE: 60 Min Singlefloat & 90 Min Deep Relax Massage
 FLOAT_60_MASSAGE_DEEP_90_DOUBLE: 60 Min Paarfloat & 2 x 90 Min Deep Relax Massage
+COSMETIC_CLASSIC: Kosmetik Classic
+COSMETIC_CLASSIC_PLUS: Kosmetik Classic Plus
+COSMETIC_MICRO_DERMA: Mikrodermabrasion
+COSMETIC_MICRO_DERMA_PLUS: Mikrodermabrasion Plus
+COSMETIC_MICRO_NEEDLING: Microneedling
+COSMETIC_MICRO_NEEDLING_PLUS: Microneedling Plus
+COSMETIC_COUPEROSE: Couperose Behandlung
 this.is.a.value.voucher: Dies ist ein Wertgutschein
 the.voucher.is.valid.until: Der Gutschein ist gültig bis
 current.remaining.value: Aktuell verbleibender Restwert
