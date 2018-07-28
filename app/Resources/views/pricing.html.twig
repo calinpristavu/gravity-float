@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block form_group_class -%}
+    col-sm-8 input-group
+{%- endblock form_group_class %}
+
+{% block form_label_class -%}
+    col-sm-4
+{%- endblock form_label_class %}
+
+{% block form_row -%}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        <div class="{{ block('form_group_class') }}">
+            <div class="input-group-addon">&euro;</div>
+            {{- form_widget(form) -}}
+            {{- form_errors(form) -}}
+            <div class="input-group-addon save" style="cursor: pointer">Save</div>
+        </div>
+    </div>
+{%- endblock form_row %}
+
+{% block body %}
+    <h1 class="text-center">Pricing management.</h1>
+
+    {% for form in forms %}
+        {% form_theme form _self %}
+
+        {{ form_start(form) }}
+            {{ form_row(form.price, {container_attr: {class: "lallala"}}) }}
+        {{ form_end(form) }}
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.save').on('click', function () {
+            $(this).closest('form').submit()
+        })
+    </script>
+{% endblock %}

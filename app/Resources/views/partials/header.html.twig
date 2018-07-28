@@ -9,6 +9,9 @@
             <a href="{{ path('voucher_search') }}" class="btn btn-default navbar-btn">{{ 'search'|trans }}</a>
             <a href="{{ path('voucher_chose_type') }}" class="btn btn-default navbar-btn">{{ 'create'|trans }}</a>
             <a href="{{ path('voucher_all') }}" class="btn btn-default navbar-btn">{{ 'all.vouchers'|trans }}</a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('pricing') }}" class="btn btn-default navbar-btn">Pricing</a>
+            {% endif %}
         </div>
         <div class="col-md-2 col-md-offset-0">
             {{ locale_switcher() }}
