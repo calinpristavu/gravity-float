@@ -1,0 +1,6 @@
+services:
+    AppBundle\Controller\VoucherController:
+        class: AppBundle\Controller\VoucherController
+        arguments:
+            - '@monolog.logger.vouchers'
+            - '@jms_serializer'

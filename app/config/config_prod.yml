@@ -8,6 +8,7 @@ imports:
 #        query_cache_driver: apc
 
 monolog:
+    channels: ['vouchers']
     handlers:
         main:
             type: fingers_crossed
@@ -17,6 +18,10 @@ monolog:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
+        vouchers:
+            type: stream
+            path: '%kernel.logs_dir%/voucher_actions.log'
+            channels: ['vouchers']
         console:
             type: console
             process_psr_3_messages: false

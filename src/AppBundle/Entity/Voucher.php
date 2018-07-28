@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Class Voucher
@@ -14,6 +15,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="vouchers")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\VoucherRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Voucher
 {
@@ -21,6 +24,7 @@ class Voucher
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     protected $id;
 
@@ -28,6 +32,7 @@ class Voucher
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Serializer\Expose()
      */
     protected $voucherCode;
 
@@ -35,6 +40,7 @@ class Voucher
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     * @Serializer\Expose()
      */
     protected $creationDate;
 
@@ -42,6 +48,7 @@ class Voucher
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
+     * @Serializer\Expose()
      */
     protected $expirationDate;
 
@@ -51,6 +58,7 @@ class Voucher
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User", inversedBy="createdVouchers")
+     * @Serializer\Expose()
      */
     protected $author;
 
@@ -60,6 +68,7 @@ class Voucher
      * @var Shop
      *
      * @ORM\ManyToOne(targetEntity="Shop", inversedBy="createdVouchers")
+     * @Serializer\Expose()
      */
     protected $shopWhereCreated;
 
@@ -67,6 +76,7 @@ class Voucher
      * @var float
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Serializer\Expose()
      */
     protected $remainingValue;
 
@@ -74,6 +84,7 @@ class Voucher
      * @var float
      *
      * @ORM\Column(type="float", nullable=true)
+     * @Serializer\Expose()
      */
     protected $partialPayment;
 
@@ -81,6 +92,7 @@ class Voucher
      * @var array
      *
      * @ORM\Column(type="array")
+     * @Serializer\Expose()
      */
     protected $numberOfUsers;
 
@@ -88,6 +100,7 @@ class Voucher
      * @var bool
      *
      * @ORM\Column(type="boolean")
+     * @Serializer\Expose()
      */
     protected $onlineVoucher;
 
@@ -97,11 +110,13 @@ class Voucher
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Serializer\Expose()
      */
     protected $methodOfPayment;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AvailableService")
+     * @Serializer\Expose()
      */
     protected $service;
 
@@ -109,6 +124,7 @@ class Voucher
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Serializer\Expose()
      */
     protected $orderNumber;
 
@@ -116,6 +132,7 @@ class Voucher
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Serializer\Expose()
      */
     protected $invoiceNumber;
 
@@ -123,6 +140,7 @@ class Voucher
      * @var bool
      *
      * @ORM\Column(type="boolean", nullable=true)
+     * @Serializer\Expose()
      */
     protected $includedPostalCharges;
 
@@ -130,6 +148,7 @@ class Voucher
      * @var bool
      *
      * @ORM\Column(type="boolean")
+     * @Serializer\Expose()
      */
     protected $blocked;
 
@@ -140,6 +159,7 @@ class Voucher
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Payment", mappedBy="voucherBought")
+     * @Serializer\Expose()
      */
     protected $payments;
 
@@ -147,16 +167,19 @@ class Voucher
      * @var string
      *
      * @ORM\Column(type="string", nullable=true)
+     * @Serializer\Expose()
      */
     protected $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\VoucherType", inversedBy="vouchers")
+     * @Serializer\Expose()
      */
     protected $type;
 
     /**
      * @ORM\Column(type="boolean", name="enabled")
+     * @Serializer\Expose()
      */
     protected $enabled;
 

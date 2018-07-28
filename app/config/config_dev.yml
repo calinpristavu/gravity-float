@@ -12,6 +12,7 @@ web_profiler:
     intercept_redirects: false
 
 monolog:
+    channels: ['vouchers']
     handlers:
         main:
             type: stream
@@ -28,6 +29,10 @@ monolog:
             type: server_log
             process_psr_3_messages: false
             host: 127.0.0.1:9911
+        vouchers:
+            type: stream
+            path: '%kernel.logs_dir%/voucher_actions.log'
+            channels: ['vouchers']
         # uncomment to get logging in your browser
         # you may have to allow bigger header sizes in your Web server configuration
         #firephp:

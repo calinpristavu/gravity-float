@@ -20,6 +20,8 @@ use AppBundle\Repository\VoucherCodeInformationRepository;
 use AppBundle\Repository\VoucherRepository;
 use AppBundle\Service\VoucherFinder;
 use Doctrine\Common\Persistence\ObjectManager;
+use JMS\Serializer\SerializerInterface;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -34,6 +36,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VoucherController extends Controller
 {
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    public function __construct(LoggerInterface $logger, SerializerInterface $serializer)
+    {
+        $this->logger = $logger;
+        $this->serializer = $serializer;
+    }
+
     /**
      * @Route("/voucher/search", name="voucher_search")
      */
@@ -73,7 +91,7 @@ class VoucherController extends Controller
             'currentPage' => $request->get('page'),
             'searchedCode' => $request->get('voucherCode'),
             'voucherCode' => $request->get('voucherCode'),
-            'fullWidth' => true
+            'fullWidth' => true,
         ]);
     }
 
@@ -111,12 +129,12 @@ class VoucherController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('voucher_create', [
-                'id' => $voucher->getId()
+                'id' => $voucher->getId(),
             ]);
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
@@ -140,13 +158,13 @@ class VoucherController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('voucher_preview', [
-                'id' => $voucher->getId()
+                'id' => $voucher->getId(),
             ]);
         }
 
         return [
             'form' => $form->createView(),
-            'voucher' => $voucher
+            'voucher' => $voucher,
         ];
     }
 
@@ -170,13 +188,13 @@ class VoucherController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('voucher_preview', [
-                'id' => $voucher->getId()
+                'id' => $voucher->getId(),
             ]);
         }
 
         return [
             'form' => $form->createView(),
-            'voucher' => $voucher
+            'voucher' => $voucher,
         ];
     }
 
@@ -190,7 +208,7 @@ class VoucherController extends Controller
                 ? 'AppBundle:Voucher:createValueVoucher'
                 : 'AppBundle:Voucher:createTreatmentVoucher',
             [
-                'voucher' => $voucher
+                'voucher' => $voucher,
             ]
         );
     }
@@ -202,7 +220,7 @@ class VoucherController extends Controller
     public function previewVoucherAction(Voucher $voucher)
     {
         return [
-            'voucher' => $voucher
+            'voucher' => $voucher,
         ];
     }
 
@@ -221,7 +239,7 @@ class VoucherController extends Controller
                 : 'AppBundle:Voucher:editTreatmentVoucher',
             [
                 'voucher' => $voucher,
-                'parent' => $this->getParentData($request)
+                'parent' => $this->getParentData($request),
             ]
         );
     }
@@ -243,6 +261,12 @@ class VoucherController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
+
+            $this->logger->info("Voucher edited. " . $this->serializer->serialize([
+                'voucher_type' => 'value',
+                'edited_by' => $this->getUser()->getEmail(),
+                'voucher' => $voucher,
+            ], 'json'));
 
             return $this->redirectToRoute($parent['parentRoute'], $parent);
         }
@@ -268,6 +292,12 @@ class VoucherController extends Controller
             $em->persist($voucher);
             $em->flush();
 
+            $this->logger->info("Voucher edited. " . $this->serializer->serialize([
+                'voucher_type' => 'treatment',
+                'edited_by' => $this->getUser()->getEmail(),
+                'voucher' => $voucher,
+            ], 'json'));
+
             return $this->redirectToRoute($parent['parentRoute'], $parent);
         }
 
@@ -281,9 +311,10 @@ class VoucherController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $unfinishedVouchers = $this->get(VoucherRepository::class)->findBy([
-            'voucherCode' => $voucher->getVoucherCode()
+            'voucherCode' => $voucher->getVoucherCode(),
         ]);
 
+        /** @var Voucher $unfinishedVoucher */
         foreach ($unfinishedVouchers as $unfinishedVoucher) {
             if ($unfinishedVoucher->getId() != $voucher->getId()) {
                 $em->remove($unfinishedVoucher);
@@ -300,6 +331,12 @@ class VoucherController extends Controller
         $voucherCodeInfo->incrementVoucherCode();
         $em->persist($voucherCodeInfo);
         $em->flush();
+
+        $this->logger->info("Voucher created. " . $this->serializer->serialize([
+            'voucher_type' => $voucher->getType(),
+            'edited_by' => $this->getUser()->getEmail(),
+            'voucher' => $voucher,
+        ], 'json'));
 
         return $this->render('floathamburg/vouchersavedsuccessfully.html.twig');
     }
@@ -367,7 +404,7 @@ class VoucherController extends Controller
             'filterFrom' => $filterFrom !== null ? $filterFrom->format('Y-m-d') : null,
             'filterTo' => $filterTo !== null ? $filterTo->format('Y-m-d') : null,
             'form' => $form->createView(),
-            'fullWidth' => true
+            'fullWidth' => true,
         ]);
     }
 
@@ -403,7 +440,7 @@ class VoucherController extends Controller
                 ? 'AppBundle:Voucher:useValueVoucher'
                 : 'AppBundle:Voucher:useTreatmentVoucher',
             [
-                'voucher' => $voucher
+                'voucher' => $voucher,
             ]
         );
     }
@@ -426,14 +463,14 @@ class VoucherController extends Controller
             return [
                 'form' => null,
                 'submitted' => true,
-                'voucher' => $voucher
+                'voucher' => $voucher,
             ];
         }
 
         return [
             'form' => $form->createView(),
             'submitted' => false,
-            'voucher' => $voucher
+            'voucher' => $voucher,
         ];
     }
 
@@ -455,7 +492,7 @@ class VoucherController extends Controller
             return [
                 'form' => null,
                 'submitted' => true,
-                'voucher' => $voucher
+                'voucher' => $voucher,
             ];
         }
 
@@ -512,6 +549,11 @@ class VoucherController extends Controller
         $em->persist($voucher);
         $em->flush();
 
+        $this->logger->info("Voucher blocked. " . $this->serializer->serialize([
+            'edited_by' => $this->getUser()->getEmail(),
+            'voucher' => $voucher,
+        ], 'json'));
+
         return $this->redirectToRoute($parent['parentRoute'], [
             'page' => $parent['page'],
             'filterFrom' => $parent['filterFrom'],
@@ -542,6 +584,11 @@ class VoucherController extends Controller
         $em->persist($voucher);
         $em->flush();
 
+        $this->logger->info("Voucher unblocked. " . $this->serializer->serialize([
+            'edited_by' => $this->getUser()->getEmail(),
+            'voucher' => $voucher,
+        ], 'json'));
+
         return $this->redirectToRoute($parent['parentRoute'], [
             'page' => $parent['page'],
             'filterFrom' => $parent['filterFrom'],
@@ -562,6 +609,11 @@ class VoucherController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($voucher);
             $em->flush();
+
+            $this->logger->info("Voucher comment changed. " . $this->serializer->serialize([
+                'edited_by' => $this->getUser()->getEmail(),
+                'voucher' => $voucher,
+            ], 'json'));
 
             return $this->redirectToRoute($parent['parentRoute'], [
                 'page' => $parent['page'],
@@ -585,7 +637,7 @@ class VoucherController extends Controller
             'page' => $request->query->get('page', null),
             'filterFrom' => $request->query->get('filterFrom', null),
             'filterTo' => $request->query->get('filterTo', null),
-            'voucherCode' => $request->query->get('voucherCode', null)
+            'voucherCode' => $request->query->get('voucherCode', null),
         ];
     }
 }

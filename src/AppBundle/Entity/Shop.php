@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="shops")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ShopRepository")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Shop
 {
@@ -31,6 +33,7 @@ class Shop
      *     max = 50,
      *     maxMessage = "name.too.long"
      * )
+     * @Serializer\Expose()
      */
     protected $name;
 
