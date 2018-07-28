@@ -26,22 +26,61 @@
             </p>
         </div>
 
-        <div>
+        <div class="voucher_types">
             <input
                     class="manager"
                     id="usage_type_1"
                     type="radio"
                     form=""
                     name="excluded"
-                    value="1"
-                    checked="checked">
+                    {% if voucher.service.id < 3 %}checked="checked"{% endif %}
+                    value="1">
             <label for="usage_type_1">{{ 'float'|trans }}</label>
 
-            <input class="manager" id="usage_type_2" type="radio" form="" name="excluded" value="2">
+            <input
+                    class="manager"
+                    id="usage_type_2"
+                    type="radio"
+                    form=""
+                    name="excluded"
+                    {% if voucher.service.id >= 3 and voucher.service.id < 10 %}checked="checked"{% endif %}
+                    value="2">
             <label for="usage_type_2">{{ 'massage'|trans }}</label>
 
-            <input class="manager" id="usage_type_3" type="radio" form="" name="excluded" value="3">
+            <input
+                    class="manager"
+                    id="usage_type_3"
+                    type="radio"
+                    form=""
+                    name="excluded"
+                    {% if voucher.service.id >= 10 and voucher.service.id < 22 %}checked="checked"{% endif %}
+                    value="3">
             <label for="usage_type_3">{{ 'float_&_massage'|trans }}</label>
+
+            {% if app.user.shop.id != 3 %}
+                <span class="interactive {% if not voucher.onlineVoucher %}hidden{% endif %}" data-managed-by="treatment_voucher_onlineVoucher">
+                    <input
+                            class="manager"
+                            id="usage_type_4"
+                            type="radio"
+                            form=""
+                            name="excluded"
+                            {% if voucher.service.id >= 22 %}checked="checked"{% endif %}
+                            value="4">
+                    <label for="usage_type_4">{{ 'cosmetic'|trans }}</label>
+                </span>
+            {% else %}
+                <span class="interactive">
+                    <input
+                            class="manager"
+                            id="usage_type_4"
+                            type="radio"
+                            form=""
+                            name="excluded"
+                            value="4">
+                    <label for="usage_type_4">{{ 'cosmetic'|trans }}</label>
+                </span>
+            {% endif %}
         </div>
 
         <div class="interactive" data-managed-by="usage_type" data-manager-val="1">
@@ -58,6 +97,12 @@
 
         <div class="interactive hidden" data-managed-by="usage_type" data-manager-val="3">
             {% for id in 10..21 %}
+                {{ form_row(form.service[id]) }}
+            {% endfor %}
+        </div>
+
+        <div class="interactive hidden" data-managed-by="usage_type" data-manager-val="4">
+            {% for id in 22..28 %}
                 {{ form_row(form.service[id]) }}
             {% endfor %}
         </div>
@@ -86,11 +131,12 @@
     <script src="{{ asset('assets/js/barcode.js') }}"></script>
     <script>
         $(document).ready(function () {
-            if ($("#treatment_voucher_onlineVoucher").is(':checked')) {
+            let onlineCheckbox = $("#treatment_voucher_onlineVoucher");
+            if (onlineCheckbox.is(':checked')) {
                 $("#online_voucher_data").removeClass("hidden");
             }
 
-            $("#treatment_voucher_onlineVoucher").on('click', function () {
+            onlineCheckbox.on('click', function () {
                 if ($("#treatment_voucher_onlineVoucher").is(':checked')) {
                     $("#treatment_voucher_orderNumber").attr("required", true);
                     $("#treatment_voucher_invoiceNumber").attr("required", true);
@@ -101,9 +147,14 @@
                 }
             });
 
-            $('input[name="treatment_voucher[service]"]').on('change', function () {
+            let services = $('input[name="treatment_voucher[service]"]');
+
+            services.on('change', function () {
                 $('#voucher_value').text($(this).attr('data-price'));
-            })
+            });
+
+            $('input[name="excluded"]:checked').trigger('change');
+            services.trigger('change');
         });
     </script>
 {% endblock %}

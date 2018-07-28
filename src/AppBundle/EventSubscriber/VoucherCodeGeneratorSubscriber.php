@@ -90,7 +90,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
 
     public function setUserRelatedInfo(VoucherEventInterface $event)
     {
-        $user = $this->getuser();
+        $user = $this->getUser();
         $event
             ->getVoucher()
             ->setBlocked(false)
@@ -98,7 +98,7 @@ class VoucherCodeGeneratorSubscriber implements EventSubscriberInterface
             ->setAuthor($user);
     }
 
-    private function getuser(): User
+    private function getUser(): User
     {
         return $this->tokenStorage->getToken()->getUser();
     }

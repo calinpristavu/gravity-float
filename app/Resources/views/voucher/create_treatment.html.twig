@@ -43,16 +43,29 @@
             <input class="manager" id="usage_type_3" type="radio" form="" name="excluded" value="3">
             <label for="usage_type_3">{{ 'float_&_massage'|trans }}</label>
 
-            <span class="interactive hidden" data-managed-by="treatment_voucher_onlineVoucher">
-                <input
-                    class="manager"
-                    id="usage_type_4"
-                    type="radio"
-                    form=""
-                    name="excluded"
-                    value="4">
-                <label for="usage_type_4">{{ 'cosmetic'|trans }}</label>
-            </span>
+            {% if app.user.shop.id != 3 %}
+                <span class="interactive hidden" data-managed-by="treatment_voucher_onlineVoucher">
+                    <input
+                        class="manager"
+                        id="usage_type_4"
+                        type="radio"
+                        form=""
+                        name="excluded"
+                        value="4">
+                    <label for="usage_type_4">{{ 'cosmetic'|trans }}</label>
+                </span>
+            {% else %}
+                <span class="interactive">
+                    <input
+                            class="manager"
+                            id="usage_type_4"
+                            type="radio"
+                            form=""
+                            name="excluded"
+                            value="4">
+                    <label for="usage_type_4">{{ 'cosmetic'|trans }}</label>
+                </span>
+            {% endif %}
         </div>
 
         <div class="interactive" data-managed-by="usage_type" data-manager-val="1">
