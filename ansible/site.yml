@@ -13,7 +13,6 @@
     - php
     - nodejs
     - curl
-    - mcrypt
     - wget
     - composer
     - mysql
@@ -28,7 +27,6 @@
     - php
     - nodejs
     - curl
-    - mcrypt
     - wget
     - composer
     - mysql
